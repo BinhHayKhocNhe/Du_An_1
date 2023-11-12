@@ -14,7 +14,7 @@ public interface myInterFace<EntityType, KeyType> {
 
     public void delete(KeyType id);
 
-    public void checkID(KeyType id);
+    public boolean checkID(KeyType id);
 
     EntityType selectById(KeyType id);
 
