@@ -459,3 +459,101 @@ CONSTRAINT PK_ID_Bill PRIMARY KEY(ID_Bill),
 CONSTRAINT FK_Tuition_Guardians FOREIGN KEY (ID_Guardians) REFERENCES Guardians(ID_Guardians),
 CONSTRAINT FK_Tuition_Staff FOREIGN KEY (ID_Staff) REFERENCES Staff(ID_Staff)
 );
+INSERT INTO Tuition (ID_Bill, Money, Status, ID_Staff, ID_Guardians, Year, ID_Course, Course_Name, Note)
+VALUES
+('B001', 500, 1, 'EMP001', 'GRD001', 2023, 'C001', 'Spring', 'Tuition 1'),
+('B002', 500, 1, 'EMP002', 'GRD002', 2023, 'C002', 'Summer', 'Tuition 1'),
+('B003', 500, 1, 'EMP003', 'GRD003', 2023, 'C003', 'Fall', 'Tuition 1'),
+('B004', 500, 1, 'EMP004', 'GRD004', 2023, 'C001', 'Summer', 'Tuition 2'),
+('B005', 500, 1, 'EMP005', 'GRD005', 2023, 'C002', 'Spring', 'Tuition 2'),
+('B006', 650, 1, 'EMP006', 'GRD006', 2023, 'C003', 'Fall', 'Tuition 2'),
+('B007', 700, 1, 'EMP007', 'GRD007', 2023, 'C001', 'Fall', 'Tuition 3'),
+('B008', 4500, 1, 'EMP008', 'GRD008', 2023, 'C002', 'Spring', 'Tuition 3'),
+('B009', 550, 1, 'EMP009', 'GRD009', 2023, 'C003', 'Summer', 'Tuition 3'),
+('B010', 600, 1, 'EMP010', 'GRD010', 2023, 'C001', 'Spring', 'Tuition 4'),
+('B011', 500, 1, 'EMP011', 'GRD011', 2023, 'C002', 'Spring', 'Tuition 4'),
+('B012', 700, 1, 'EMP012', 'GRD012', 2023, 'C003', 'Fall', 'Tuition 4'),
+('B013', 450, 1, 'EMP013', 'GRD013', 2023, 'C001', 'Summer', 'Tuition 5'),
+('B014', 550, 1, 'EMP014', 'GRD014', 2023, 'C002', 'Summer', 'Tuition 5'),
+('B015', 600, 1, 'EMP015', 'GRD015', 2023, 'C003', 'Fall', 'Tuition 5');
+
+CREATE TABLE Poor_Households(
+ID_Poor_Households NVARCHAR(50) NOT NULL,
+ID_Guardians NVARCHAR(50) NOT NULL,
+Status BIT NOT NULL,
+Note NVARCHAR(50),
+CONSTRAINT PK_Poor_Households PRIMARY KEY(ID_Poor_Households),
+CONSTRAINT FK_Poor_Households_Guardians FOREIGN KEY (ID_Guardians) REFERENCES Guardians(ID_Guardians)
+);
+INSERT INTO Poor_Households (ID_Poor_Households, ID_Guardians, Status, Note)
+VALUES
+('PH001', 'GRD001', 1, 'Family struggling financially'),
+('PH002', 'GRD003', 1, 'Low income household'),
+('PH003', 'GRD013', 1, 'Unemployed parents'),
+('PH004', 'GRD015', 1, 'Single parent'),
+('PH005', 'GRD011', 1, 'Limited access to education and resources');
+CREATE TABLE Teacher_Salary(
+ID_Teacher_Salary NVARCHAR(50) NOT NULL,
+ID_Teacher NVARCHAR(50) NOT NULL,
+Number_Of_Working_Days INT NOT NULL,
+Daily_Wage FLOAT NOT NULL,
+Month INT NOT NULL,
+Year INT NOT NULL,
+Note NVARCHAR(50),
+CONSTRAINT PK_Teacher_Salary PRIMARY KEY(ID_Teacher_Salary),
+CONSTRAINT FK_Teacher_Salary FOREIGN KEY (ID_Teacher) REFERENCES Teacher(ID_Teacher)
+);
+INSERT INTO Teacher_Salary (ID_Teacher_Salary, ID_Teacher, Number_Of_Working_Days, Daily_Wage, Month, Year, Note)
+VALUES
+('TS001', 'TCH001', 20, 100, 11, 2023, 'Salary for November 2023'),
+('TS002', 'TCH002', 22, 150, 11, 2023, 'Salary for November 2023'),
+('TS003', 'TCH003', 18, 200, 11, 2023, 'Salary for November 2023'),
+('TS004', 'TCH004', 20, 120, 11, 2023, 'Salary for November 2023'),
+('TS005', 'TCH005', 21, 130, 11, 2023, 'Salary for November 2023');
+
+CREATE TABLE Staff_Salary(
+ID_Staff_Salary NVARCHAR(50) NOT NULL,
+ID_Staff NVARCHAR(50) NOT NULL,
+Number_Of_Working_Days INT NOT NULL,
+Daily_Wage FLOAT NOT NULL,
+Month INT NOT NULL,
+Year INT NOT NULL,
+Note NVARCHAR(50),
+CONSTRAINT PK_Staff_Salary PRIMARY KEY(ID_Staff_Salary),
+CONSTRAINT FK_Staff_Salary FOREIGN KEY (ID_Staff) REFERENCES Staff(ID_Staff)
+);
+-- Thêm dữ liệu mẫu vào bảng Staff_Salary
+INSERT INTO Staff_Salary (ID_Staff_Salary, ID_Staff, Number_Of_Working_Days, Daily_Wage, Month, Year, Note)
+VALUES
+('SS001', 'EMP001', 22, 120, 11, 2023, 'Salary for November 2023'),
+('SS002', 'EMP002', 20, 100, 11, 2023, 'Salary for November 2023'),
+('SS003', 'EMP003', 21, 130, 11, 2023, 'Salary for November 2023'),
+('SS004', 'EMP004', 23, 80, 11, 2023, 'Salary for November 2023'),
+('SS005', 'EMP005', 22, 95, 11, 2023, 'Salary for November 2023');
+
+CREATE TABLE Finance(
+ID_Finance NVARCHAR(50) NOT NULL,
+Total_Money FLOAT NOT NULL,
+Month INT NOT NULL,
+Year INT NOT NULL,
+Total_Salary FLOAT NOT NULL,
+Remaining FLOAT NOT NULL,
+Note NVARCHAR(50),
+);
+CREATE TABLE Personal_Profile(
+ID_Student NVARCHAR(50) NOT NULL,
+ID_Staff NVARCHAR(50) NOT NULL,
+Date_Of_Profile_Creation DATETIME DEFAULT GETDATE(),
+Note NVARCHAR(255),
+ID_Profile NVARCHAR(50) NOT NULL,
+CONSTRAINT PK_ID_Profile PRIMARY KEY(ID_Profile),
+CONSTRAINT FK_Profile_Student FOREIGN KEY (ID_Student) REFERENCES Student(ID_Student),
+CONSTRAINT FK_Profile_Salary FOREIGN KEY (ID_Staff) REFERENCES Staff(ID_Staff)
+);
+CREATE TABLE Admission(
+ID_Profile NVARCHAR(50) NOT NULL,
+Admission_Date DATETIME NOT NULL,
+Note NVARCHAR(255),
+CONSTRAINT FK_ID_Profile FOREIGN KEY (ID_Profile) REFERENCES Personal_Profile(ID_Profile)
+);
+
