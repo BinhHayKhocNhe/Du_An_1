@@ -557,3 +557,21 @@ Note NVARCHAR(255),
 CONSTRAINT FK_ID_Profile FOREIGN KEY (ID_Profile) REFERENCES Personal_Profile(ID_Profile)
 );
 
+CREATE TABLE Staff_Working_Day(
+ID_Staff NVARCHAR(50) NOT NULL,
+Day INT NOT NULL,
+Month INT NOT NULL,
+Year INT NOT NULL,
+Note NVARCHAR(255),
+CONSTRAINT FK_Staff_Working_Day FOREIGN KEY (ID_Staff) REFERENCES Staff(ID_Staff)
+);
+-- Insert sample data into the Staff_Working_Day table
+
+INSERT INTO Staff_Working_Day (ID_Staff, Day, Month, Year, Note)
+VALUES
+    ('EMP001', 1, 11, 2023, 'Normal working day'),
+    ('EMP002', 5, 11, 2023, NULL),
+    ('EMP003', 2, 11, 2023, 'Need to work overtime'),
+    ('EMP004', 3, 11, 2023, 'Normal working day'),
+    ('EMP005', 8, 11, 2023, NULL),
+    ('EMP006', 4, 11, 2023, 'Need a day off');
