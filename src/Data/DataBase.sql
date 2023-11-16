@@ -1,5 +1,6 @@
 ﻿create database Du_An_1;
 use Du_An_1;
+
 CREATE TABLE Administrators(
 ID_Administrator NVARCHAR(50) NOT NULL,
 Password_Administrator NVARCHAR(50) NOT NULL,
@@ -9,17 +10,19 @@ Last_Name NVARCHAR(20) NOT NULL,
 Email NVARCHAR(50) NOT NULL,
 Phone_Number NVARCHAR(20) NOT NULL,
 Gender BIT NOT NULL,
+Address NVARCHAR(255) NOT NULL,
 Note NVARCHAR(255),
 CONSTRAINT PK_ID_Admin PRIMARY KEY(ID_Administrator)
 );
 
-INSERT INTO Administrators (ID_Administrator, Password_Administrator, First_Name, Middle_Name, Last_Name, Email, Phone_Number, Gender, Note)
+INSERT INTO Administrators (ID_Administrator, Password_Administrator, First_Name, Middle_Name, Last_Name, Email, Phone_Number, Gender, Address, Note)
 VALUES 
-('admin1', 'securepass1', 'John', '', 'Doe', 'john.d@example.com', '123456789', 1,  'Administrator 1'),
-('admin2', 'pass1234', 'Jane', '', 'Smith', 'jane.s@example.com', '987654321', 0,  'Administrator 2'),
-('admin3', 'adminadmin', 'Michael', '', 'Johnson', 'michael.j@example.com', '111223344', 1,  'Administrator 3'),
-('admin4', 'admin123', 'Emily', '', 'Brown', 'emily.b@example.com', '9988776655', 0, 'Administrator 4'),
-('admin5', 'adminpass123', 'Daniel', '', 'Lee', 'daniel.lee@example.com', '1122334455', 1, 'Administrator 5');
+('admin1', 'securepass1', 'John', '', 'Doe', 'john.d@example.com', '123456789', 1, '123 Main Street, Cityville', 'Administrator 1'),
+('admin2', 'pass1234', 'Jane', '', 'Smith', 'jane.s@example.com', '987654321', 0, '456 Oak Avenue, Townsville', 'Administrator 2'),
+('admin3', 'adminadmin', 'Michael', '', 'Johnson', 'michael.j@example.com', '111223344', 1, '789 Pine Road, Villageton', 'Administrator 3'),
+('admin4', 'admin123', 'Emily', '', 'Brown', 'emily.b@example.com', '9988776655', 0, '101 Cedar Lane, Hamletville', 'Administrator 4'),
+('admin5', 'adminpass123', 'Daniel', '', 'Lee', 'daniel.lee@example.com', '1122334455', 1, '202 Maple Drive, Township', 'Administrator 5');
+
 
 CREATE TABLE Staff (
 ID_Staff NVARCHAR(50) NOT NULL,
