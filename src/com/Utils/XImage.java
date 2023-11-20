@@ -1,4 +1,4 @@
-package Utils;
+package com.Utils;
 
 import java.awt.Image;
 import java.io.File;
@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
 public class XImage {
 
     public static Image getAppIcon() {
-        URL url = XImage.class.getResource("/Icon/logo_Poly.png");
+        URL url = XImage.class.getResource("/com/Icon/logo_Poly.png");
         return new ImageIcon(url).getImage();
     }
 
