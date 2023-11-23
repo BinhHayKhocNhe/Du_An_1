@@ -4,7 +4,9 @@
  */
 package com.Main;
 
+import com.Utils.Message;
 import com.Utils.Time;
+import com.Utils.XImage;
 
 /**
  *
@@ -17,8 +19,10 @@ public class Form_Management extends javax.swing.JFrame {
      */
     public Form_Management() {
         initComponents();
-        this.setResizable(false);
+        this.setIconImage(XImage.getAppIcon());
+        this.setTitle("Group 5 - Viet Duc School");
         this.setLocationRelativeTo(null);
+        this.setResizable(false);
     }
 
     /**
@@ -64,13 +68,13 @@ public class Form_Management extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem21 = new javax.swing.JMenuItem();
         jSeparator27 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        menuChangePass = new javax.swing.JMenuItem();
         jSeparator10 = new javax.swing.JPopupMenu.Separator();
         jMenuItem3 = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        menuLogOut = new javax.swing.JMenuItem();
         jSeparator15 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem16 = new javax.swing.JMenuItem();
+        menuExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jSeparator12 = new javax.swing.JPopupMenu.Separator();
@@ -281,9 +285,14 @@ public class Form_Management extends javax.swing.JFrame {
         jMenu1.add(jMenuItem21);
         jMenu1.add(jSeparator27);
 
-        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Refresh.png"))); // NOI18N
-        jMenuItem2.setText("Change Password");
-        jMenu1.add(jMenuItem2);
+        menuChangePass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Refresh.png"))); // NOI18N
+        menuChangePass.setText("Change Password");
+        menuChangePass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuChangePassActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuChangePass);
         jMenu1.add(jSeparator10);
 
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/reset-password.png"))); // NOI18N
@@ -296,19 +305,24 @@ public class Form_Management extends javax.swing.JFrame {
         jMenu1.add(jMenuItem3);
         jMenu1.add(jSeparator9);
 
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Log out.png"))); // NOI18N
-        jMenuItem1.setText("Log Out");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        menuLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Log out.png"))); // NOI18N
+        menuLogOut.setText("Log Out");
+        menuLogOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                menuLogOutActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(menuLogOut);
         jMenu1.add(jSeparator15);
 
-        jMenuItem16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/power-on.png"))); // NOI18N
-        jMenuItem16.setText("Exit");
-        jMenu1.add(jMenuItem16);
+        menuExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/power-on.png"))); // NOI18N
+        menuExit.setText("Exit");
+        menuExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuExitActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuExit);
 
         jMenuBar1.add(jMenu1);
 
@@ -447,9 +461,13 @@ public class Form_Management extends javax.swing.JFrame {
         t1.start();
     }//GEN-LAST:event_lbClockAncestorAdded
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void menuLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLogOutActionPerformed
+        if (Message.confirm(this, "Do you want to end your login session?")) {
+            Login show = new Login();
+            show.setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_menuLogOutActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
@@ -466,6 +484,17 @@ public class Form_Management extends javax.swing.JFrame {
     private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem20ActionPerformed
+
+    private void menuChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuChangePassActionPerformed
+        Form_Change_Password show = new Form_Change_Password();
+        show.setVisible(true);
+    }//GEN-LAST:event_menuChangePassActionPerformed
+
+    private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExitActionPerformed
+        if (Message.confirm(this, "Do you want exit ?")) {
+            System.exit(0);
+        }
+    }//GEN-LAST:event_menuExitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -522,18 +551,15 @@ public class Form_Management extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
-    private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem18;
     private javax.swing.JMenuItem jMenuItem19;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem20;
     private javax.swing.JMenuItem jMenuItem21;
     private javax.swing.JMenuItem jMenuItem3;
@@ -576,5 +602,8 @@ public class Form_Management extends javax.swing.JFrame {
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lbClock;
+    private javax.swing.JMenuItem menuChangePass;
+    private javax.swing.JMenuItem menuExit;
+    private javax.swing.JMenuItem menuLogOut;
     // End of variables declaration//GEN-END:variables
 }
