@@ -9,4 +9,4 @@ package com.Entity;
  * @author admin
  */
 public class Class {
-            }
+}
