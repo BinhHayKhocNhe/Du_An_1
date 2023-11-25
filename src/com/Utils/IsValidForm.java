@@ -6,12 +6,19 @@ package com.Utils;
 
 import java.util.regex.Pattern;
 import javax.swing.JTextField;
+import javax.swing.text.JTextComponent;
 
 /**
  *
  * @author Duong Minh Binh
  */
 public class IsValidForm {
+
+    public static void refreshForm(JTextComponent... textComponents) {
+        for (JTextComponent textComponent : textComponents) {
+            textComponent.setText("");
+        }
+    }
 
     public static boolean checkNullInformation(JTextField... textFields) {
         for (JTextField textField : textFields) {
