@@ -94,9 +94,8 @@ public class Administrators {
         this.Gender = Gender;
     }
 
-    public Administrators(String ID_Administrator, String Password_Administrator, String First_Name, String Middle_Name, String Last_Name, String Email, String Phone_Number, String Address, String Note, boolean Gender) {
+    public Administrators(String ID_Administrator, String First_Name, String Middle_Name, String Last_Name, String Email, String Phone_Number, String Address, String Note, boolean Gender) {
         this.ID_Administrator = ID_Administrator;
-        this.Password_Administrator = Password_Administrator;
         this.First_Name = First_Name;
         this.Middle_Name = Middle_Name;
         this.Last_Name = Last_Name;
