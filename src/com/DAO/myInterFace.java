@@ -16,6 +16,8 @@ public interface myInterFace<EntityType, KeyType> {
 
     public boolean checkID(EntityType entity);
 
+    public void find(EntityType entity);
+    
     EntityType selectById(KeyType id);
 
     List<EntityType> selectAll();
