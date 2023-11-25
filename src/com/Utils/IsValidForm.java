@@ -20,11 +20,11 @@ public class IsValidForm {
         }
     }
 
-    public static boolean checkNullInformation(JTextField... textFields) {
-        for (JTextField textField : textFields) {
-            if (textField.getText().isEmpty()) {
+    public static boolean checkNull(JTextComponent... textComponents) {
+        for (JTextComponent textComponent : textComponents) {
+            if (textComponent.getText().isEmpty()) {
                 Message.alert(null, "Please enter complete information !");
-                textField.requestFocus();
+                textComponent.requestFocus();
                 return false;
             }
         }
