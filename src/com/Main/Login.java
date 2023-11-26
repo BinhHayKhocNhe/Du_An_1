@@ -4,6 +4,9 @@
  */
 package com.Main;
 
+import com.DAO.Administrators_DAO;
+import com.Entity.Administrators;
+import com.Utils.Authentication;
 import com.Utils.Message;
 import com.Utils.XImage;
 import javax.swing.DefaultComboBoxModel;
@@ -14,6 +17,8 @@ import javax.swing.ImageIcon;
  * @author Duong Minh Binh
  */
 public class Login extends javax.swing.JFrame {
+
+    private Administrators_DAO adminDao = new Administrators_DAO();
 
     /**
      * Creates new form Login
@@ -284,6 +289,8 @@ public class Login extends javax.swing.JFrame {
         if (!checkNull()) {
             return;
         }
+        checkLogin();
+
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void lbShowPasswordAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_lbShowPasswordAncestorAdded
@@ -313,6 +320,27 @@ public class Login extends javax.swing.JFrame {
     private void fillComboBox() {
         String dataString[] = {"Admin", "Teacher", "Staff", "Parents"};
         cbRole.setModel((new DefaultComboBoxModel<>(dataString)));
+    }
+
+    private Administrators getForm() {
+        Administrators admin = new Administrators();
+        admin.setID_Administrator(txtUsername.getText());
+        admin.setPassword_Administrator(String.valueOf(txtPass.getPassword()));
+        return admin;
+    }
+
+    private void checkLogin() {
+        if (cbRole.getSelectedIndex() == 0) {
+            Administrators admin = getForm();
+            if (!adminDao.checkID(admin)) {
+                Message.alert(this, "Account name or password is incorrect !");
+                return;
+            }
+            Authentication.admin = getForm();
+            Menu_Admin show = new Menu_Admin();
+            show.setVisible(true);
+            this.dispose();
+        }
     }
 
     public static void main(String args[]) {
