@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 public class Time implements Runnable {
 
     JLabel timeLabel;
-
+static SimpleDateFormat formater = new SimpleDateFormat();
     public Time(JLabel timeLabel) {
         this.timeLabel = timeLabel;
     }
@@ -30,6 +30,10 @@ public class Time implements Runnable {
                 Logger.getLogger(Time.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+        public static String toString(Date date, String pattern) {
+        formater.applyPattern(pattern);
+        return formater.format(date);
     }
 
 }
