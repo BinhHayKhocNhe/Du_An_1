@@ -13,9 +13,10 @@ import java.sql.SQLException;
 public class JDBCHelper {
 
     private static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private static String url = "jdbc:sqlserver://LAPTOP-BD4VIBB3\\BINH:1433;databaseName=Du_An_1;encrypt=false";
-    private static String username = "sa";
-    private static String password = "123";
+    private static String url = "jdbc:sqlserver://MSI:1433;databaseName=Du_An_1; encrypt = false;";
+    private static String username="sa";
+    private static String password="songlong";
+    
 
     static {
         try {

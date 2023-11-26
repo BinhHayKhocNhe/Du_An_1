@@ -140,6 +140,11 @@ public class Form_Student extends javax.swing.JFrame {
         jLabel11.setText("Year of birth:");
 
         cbYear.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbYear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbYearActionPerformed(evt);
+            }
+        });
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel12.setText("Month of birth:");
@@ -415,6 +420,10 @@ public class Form_Student extends javax.swing.JFrame {
     private void btnUploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadActionPerformed
         this.chooseImage();
     }//GEN-LAST:event_btnUploadActionPerformed
+
+    private void cbYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbYearActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbYearActionPerformed
     private void refresh() {
         txtID.setText("");
         txtFristName.setText("");

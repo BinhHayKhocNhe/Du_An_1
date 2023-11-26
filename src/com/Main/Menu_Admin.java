@@ -9,7 +9,7 @@ package com.Main;
  *
  * @author User
  */
-public class Menu extends javax.swing.JFrame {
+public class Menu_Admin extends javax.swing.JFrame {
 
     int x = 210;    //chieu rong
     int y = 600;    //chieu cao
@@ -17,7 +17,7 @@ public class Menu extends javax.swing.JFrame {
     /**
      * Creates new form Menu
      */
-    public Menu() {
+    public Menu_Admin() {
         initComponents();
         cardTrangChu.setVisible(true);
         cardTaiKhoan.setVisible(false);
