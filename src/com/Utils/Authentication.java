@@ -5,6 +5,9 @@
 package com.Utils;
 
 import com.Entity.Administrators;
+import com.Entity.Guardians;
+import com.Entity.Staff;
+import com.Entity.Teacher;
 
 /**
  *
@@ -13,9 +16,9 @@ import com.Entity.Administrators;
 public class Authentication {
 
     public static Administrators admin = null;
-    public static Administrators staff = null;
-    public static Administrators teacher = null;
-    public static Administrators guardians = null;
+    public static Staff staff = null;
+    public static Teacher teacher = null;
+    public static Guardians guardians = null;
 
     //admin
     public static void clear_Admin() {
