@@ -13,7 +13,8 @@ import javax.swing.JLabel;
 public class Time implements Runnable {
 
     JLabel timeLabel;
-static SimpleDateFormat formater = new SimpleDateFormat();
+    static SimpleDateFormat formater = new SimpleDateFormat();
+
     public Time(JLabel timeLabel) {
         this.timeLabel = timeLabel;
     }
@@ -31,7 +32,8 @@ static SimpleDateFormat formater = new SimpleDateFormat();
             }
         }
     }
-        public static String toString(Date date, String pattern) {
+
+    public static String toString(Date date, String pattern) {
         formater.applyPattern(pattern);
         return formater.format(date);
     }
