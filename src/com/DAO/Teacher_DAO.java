@@ -16,12 +16,19 @@ import java.util.List;
  */
 public class Teacher_DAO implements myInterFace<Teacher, String> {
 
+    private static final String INSERT_SQL = "INSERT INTO Teacher (ID_Teacher, Password_Teacher, First_Name, Middle_Name, Last_Name, "
+            + "Email, Phone_Number, Gender, Status_Teacher, Level_Teacher, Address_Teacher, Avatar, Date_Of_Birth, Month_Of_Birth, Year_Of_Birth, Note) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Teacher where ID_Teacher = ?;";
     private final String SELECT_ALL_SQL = "SELECT * FROM Teacher;";
 
     @Override
     public void insert(Teacher entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String defaultPassword = "12345678";
+        JDBCHelper.executeQuery(INSERT_SQL, entity.getID_Teacher(), defaultPassword, entity.getFirst_Name(),
+                entity.getMiddle_Name(), entity.getLast_Name(), entity.getEmail(), entity.getPhone_Number(),
+                entity.isGender(), entity.isStatus_Teacher(), entity.getLevel_Teacher(), entity.getAddress_Staff(),
+                entity.getAvatar(), entity.getDate_Of_Birth(), entity.get);
     }
 
     @Override
