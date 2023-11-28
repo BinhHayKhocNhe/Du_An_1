@@ -25,7 +25,7 @@ import javax.swing.text.JTextComponent;
  * @author User
  */
 public class Menu_Admin extends javax.swing.JFrame {
-    
+
     private int x = 210;    //chieu rong
     private int y = 800;    //chieu cao
     private Administrators_DAO adminDAO = new Administrators_DAO();
@@ -50,10 +50,11 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.rdMaleTeacher.setSelected(true);
         this.uploadComboboxTeacher();
         this.initTableTeacher();
-        this.fillTableTeacher();
         this.setFormAdmin();
+        this.fillFindResetPassTeacher();
+        this.fillFindTableTeacher();
     }
-    
+
     private void openMenu() {
         jplSlideMenu.setSize(x, y);
         if (x == 0) {
@@ -72,7 +73,7 @@ public class Menu_Admin extends javax.swing.JFrame {
             x = 210;
         }
     }
-    
+
     private void closeMenu() {
         jplSlideMenu.setSize(x, y);
         this.setTimeSlide();
@@ -155,9 +156,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         cardListTeacher = new javax.swing.JPanel();
         tabTeacher = new javax.swing.JTabbedPane();
         jLayeredPane2 = new javax.swing.JLayeredPane();
-        jLabel2 = new javax.swing.JLabel();
         lbAvatarTeacher = new javax.swing.JLabel();
-        txtFindTeacher = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         txtIDTeacher = new javax.swing.JTextField();
         jLabel24 = new javax.swing.JLabel();
@@ -195,14 +194,14 @@ public class Menu_Admin extends javax.swing.JFrame {
         btnUpdateTeacher = new javax.swing.JButton();
         btnResetFormTeacher = new javax.swing.JButton();
         txtAddressTeacher = new javax.swing.JTextField();
-        jLabel38 = new javax.swing.JLabel();
         jLayeredPane4 = new javax.swing.JLayeredPane();
         jScrollPane4 = new javax.swing.JScrollPane();
         tableTeacher = new javax.swing.JTable();
+        txtFindTeacher = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
         jLayeredPane5 = new javax.swing.JLayeredPane();
         jLabel39 = new javax.swing.JLabel();
         txtIDResetPassTeacher = new javax.swing.JTextField();
-        btnFindResetPassTeacher = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         tableResetPassTeacher = new javax.swing.JTable();
         btnResetPassTeacher = new javax.swing.JButton();
@@ -777,9 +776,20 @@ public class Menu_Admin extends javax.swing.JFrame {
         });
 
         tabTeacher.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel2.setText("Find:");
+        tabTeacher.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                tabTeacherAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        tabTeacher.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabTeacherMouseClicked(evt);
+            }
+        });
 
         lbAvatarTeacher.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -868,10 +878,20 @@ public class Menu_Admin extends javax.swing.JFrame {
         btnAddTeacher.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnAddTeacher.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Add.png"))); // NOI18N
         btnAddTeacher.setText("ADD");
+        btnAddTeacher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddTeacherActionPerformed(evt);
+            }
+        });
 
         btnUpdateTeacher.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnUpdateTeacher.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/edit-24px.png"))); // NOI18N
         btnUpdateTeacher.setText("UPDATE");
+        btnUpdateTeacher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateTeacherActionPerformed(evt);
+            }
+        });
 
         btnResetFormTeacher.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnResetFormTeacher.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Refresh.png"))); // NOI18N
@@ -882,11 +902,7 @@ public class Menu_Admin extends javax.swing.JFrame {
             }
         });
 
-        jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Zoom.png"))); // NOI18N
-
-        jLayeredPane2.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(lbAvatarTeacher, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane2.setLayer(txtFindTeacher, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(jLabel23, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(txtIDTeacher, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(jLabel24, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -923,7 +939,6 @@ public class Menu_Admin extends javax.swing.JFrame {
         jLayeredPane2.setLayer(btnUpdateTeacher, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(btnResetFormTeacher, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(txtAddressTeacher, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane2.setLayer(jLabel38, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane2Layout = new javax.swing.GroupLayout(jLayeredPane2);
         jLayeredPane2.setLayout(jLayeredPane2Layout);
@@ -1010,14 +1025,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(rdMaleTeacher)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(rdFemaleTeacher))
-                            .addGroup(jLayeredPane2Layout.createSequentialGroup()
-                                .addGap(105, 105, 105)
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtFindTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(rdFemaleTeacher)))
                         .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane2Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1036,14 +1044,9 @@ public class Menu_Admin extends javax.swing.JFrame {
         jLayeredPane2Layout.setVerticalGroup(
             jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jLayeredPane2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jLayeredPane2Layout.createSequentialGroup()
-                        .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtFindTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel38))
-                        .addGap(36, 36, 36)
+                        .addGap(66, 66, 66)
                         .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel23)
                             .addComponent(txtIDTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1076,6 +1079,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                             .addComponent(rdOFFTeacher))
                         .addGap(24, 24, 24))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane2Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(lbAvatarTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnUploadImgTeacher)
@@ -1101,7 +1105,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                         .addComponent(btnUpdateTeacher)
                         .addComponent(btnResetFormTeacher))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         tabTeacher.addTab("INFORMATION", jLayeredPane2);
@@ -1124,17 +1128,40 @@ public class Menu_Admin extends javax.swing.JFrame {
         });
         jScrollPane4.setViewportView(tableTeacher);
 
+        txtFindTeacher.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFindTeacherKeyReleased(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setText("Find:");
+
         jLayeredPane4.setLayer(jScrollPane4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane4.setLayer(txtFindTeacher, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane4.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane4Layout = new javax.swing.GroupLayout(jLayeredPane4);
         jLayeredPane4.setLayout(jLayeredPane4Layout);
         jLayeredPane4Layout.setHorizontalGroup(
             jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 821, Short.MAX_VALUE)
+            .addGroup(jLayeredPane4Layout.createSequentialGroup()
+                .addGap(261, 261, 261)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45)
+                .addComponent(txtFindTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jLayeredPane4Layout.setVerticalGroup(
             jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane4Layout.createSequentialGroup()
+                .addGap(0, 10, Short.MAX_VALUE)
+                .addGroup(jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtFindTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         tabTeacher.addTab("LIST", jLayeredPane4);
@@ -1142,10 +1169,9 @@ public class Menu_Admin extends javax.swing.JFrame {
         jLabel39.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel39.setText("ID Teacher:");
 
-        btnFindResetPassTeacher.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Zoom.png"))); // NOI18N
-        btnFindResetPassTeacher.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFindResetPassTeacherActionPerformed(evt);
+        txtIDResetPassTeacher.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIDResetPassTeacherKeyReleased(evt);
             }
         });
 
@@ -1165,14 +1191,23 @@ public class Menu_Admin extends javax.swing.JFrame {
         btnResetPassTeacher.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnResetPassTeacher.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Refresh.png"))); // NOI18N
         btnResetPassTeacher.setText("Reset Password");
+        btnResetPassTeacher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetPassTeacherActionPerformed(evt);
+            }
+        });
 
         btnExitResetPassTeacher.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnExitResetPassTeacher.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Log out.png"))); // NOI18N
         btnExitResetPassTeacher.setText("Exit");
+        btnExitResetPassTeacher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitResetPassTeacherActionPerformed(evt);
+            }
+        });
 
         jLayeredPane5.setLayer(jLabel39, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane5.setLayer(txtIDResetPassTeacher, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane5.setLayer(btnFindResetPassTeacher, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane5.setLayer(jScrollPane5, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane5.setLayer(btnResetPassTeacher, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane5.setLayer(btnExitResetPassTeacher, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -1190,9 +1225,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                             .addGroup(jLayeredPane5Layout.createSequentialGroup()
                                 .addComponent(jLabel39)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtIDResetPassTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnFindResetPassTeacher))))
+                                .addComponent(txtIDResetPassTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jLayeredPane5Layout.createSequentialGroup()
                         .addGap(310, 310, 310)
                         .addComponent(btnResetPassTeacher)
@@ -1204,18 +1237,16 @@ public class Menu_Admin extends javax.swing.JFrame {
             jLayeredPane5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jLayeredPane5Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addGroup(jLayeredPane5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jLayeredPane5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtIDResetPassTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel39))
-                    .addComponent(btnFindResetPassTeacher))
+                .addGroup(jLayeredPane5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtIDResetPassTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel39))
                 .addGap(36, 36, 36)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jLayeredPane5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnResetPassTeacher)
                     .addComponent(btnExitResetPassTeacher))
-                .addContainerGap(153, Short.MAX_VALUE))
+                .addContainerGap(169, Short.MAX_VALUE))
         );
 
         tabTeacher.addTab("REFRESH PASSWORD", jLayeredPane5);
@@ -1510,17 +1541,6 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.resetFormInformation();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
-    private void btnFindResetPassTeacherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindResetPassTeacherActionPerformed
-        if (txtIDResetPassTeacher.getText().isEmpty()) {
-            txtIDResetPassTeacher.requestFocus();
-            Message.alert(this, "Please enter complete information ! !");
-            return;
-        } else if (!teacher_DAO.checkIDTeacher(txtIDResetPassTeacher.getText())) {
-            Message.alert(this, "Without this teacher !");
-            return;
-        }
-    }//GEN-LAST:event_btnFindResetPassTeacherActionPerformed
-
     private void btnResetFormTeacherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetFormTeacherActionPerformed
         this.resetFormTeacher();
     }//GEN-LAST:event_btnResetFormTeacherActionPerformed
@@ -1536,6 +1556,56 @@ public class Menu_Admin extends javax.swing.JFrame {
             tableTeacher.setEnabled(true);
         }
     }//GEN-LAST:event_tableTeacherMouseClicked
+
+    private void btnAddTeacherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTeacherActionPerformed
+        this.addTeacher();
+    }//GEN-LAST:event_btnAddTeacherActionPerformed
+
+    private void btnUpdateTeacherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateTeacherActionPerformed
+        this.updateTeacher();
+    }//GEN-LAST:event_btnUpdateTeacherActionPerformed
+
+    private void txtFindTeacherKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFindTeacherKeyReleased
+        this.fillFindTableTeacher();
+    }//GEN-LAST:event_txtFindTeacherKeyReleased
+
+    private void tabTeacherAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tabTeacherAncestorAdded
+
+    }//GEN-LAST:event_tabTeacherAncestorAdded
+
+    private void tabTeacherMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabTeacherMouseClicked
+        int selectedIndex = tabTeacher.getSelectedIndex();
+        if (selectedIndex == 1) {
+            txtFindTeacher.setText("");
+            this.fillFindTableTeacher();
+        } else if (selectedIndex == 2) {
+            txtIDResetPassTeacher.setText("");
+            this.fillFindResetPassTeacher();
+        }
+    }//GEN-LAST:event_tabTeacherMouseClicked
+
+    private void txtIDResetPassTeacherKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIDResetPassTeacherKeyReleased
+        this.fillFindResetPassTeacher();
+    }//GEN-LAST:event_txtIDResetPassTeacherKeyReleased
+
+    private void btnResetPassTeacherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetPassTeacherActionPerformed
+        int index = tableResetPassTeacher.getSelectedRow();
+        String ID_Teacher = tableResetPassTeacher.getValueAt(index, 1).toString();
+        txtIDResetPassTeacher.setText(ID_Teacher);
+        if (Message.confirm(this, "Do you want to reset the password for this teacher?")) {
+            teacher_DAO.adminResetPassTeacher(ID_Teacher);
+            this.fillFindResetPassTeacher();
+            tabTeacher.setSelectedIndex(0);
+            txtIDResetPassTeacher.setText("");
+        }
+
+    }//GEN-LAST:event_btnResetPassTeacherActionPerformed
+
+    private void btnExitResetPassTeacherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitResetPassTeacherActionPerformed
+        if (Message.confirm(this, "Do you want exit ?")) {
+            this.setCardFalse();
+        }
+    }//GEN-LAST:event_btnExitResetPassTeacherActionPerformed
     private void setCardFalse() {
         cardTrangChu.setVisible(false);
         cardInformation.setVisible(false);
@@ -1545,7 +1615,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         cardNhapdiem.setVisible(false);
         cardhelp.setVisible(false);
     }
-    
+
     private void setTimeSlide() {
         if (x == 210) {
             new Thread(new Runnable() {
@@ -1563,7 +1633,7 @@ public class Menu_Admin extends javax.swing.JFrame {
             x = 0;
         }
     }
-    
+
     private boolean checkNull() {
         JPasswordField passwordField[] = {txtCurrentPass, txtNewPass};
         if (!IsValidForm.checkNull(passwordField)) {
@@ -1575,13 +1645,13 @@ public class Menu_Admin extends javax.swing.JFrame {
         }
         return true;
     }
-    
+
     private void resetFormChangePassWord() {
         JTextField text[] = {txtCurrentPass, txtNewPass, txtEnterPass};
         IsValidForm.refreshForm(text);
         tabAccount.setSelectedIndex(0);
     }
-    
+
     private void setFormAdmin() {
         Administrators admin = adminDAO.selectById(Authentication.admin.getID_Administrator());
         txtID.setText(admin.getID_Administrator());
@@ -1594,7 +1664,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         txtAddress.setText(admin.getAddress());
         (admin.isGender() ? rdMale : rdFemale).setSelected(true);
     }
-    
+
     private Administrators getFormAdmin() {
         Administrators admin = new Administrators();
         admin.setID_Administrator(Authentication.admin.getID_Administrator());
@@ -1608,18 +1678,18 @@ public class Menu_Admin extends javax.swing.JFrame {
         admin.setGender(rdMale.isSelected() ? true : false);
         return admin;
     }
-    
+
     private void changePassword() {
         adminDAO.changePassword(Authentication.admin.getID_Administrator(),
                 String.valueOf(txtCurrentPass.getPassword()), String.valueOf(txtEnterPass.getPassword()));
         this.resetFormChangePassWord();
     }
-    
+
     private void resetFormInformation() {
         JTextComponent text[] = {txtFirstName, txtMidName, txtLastName, txtEmail, txtPhone, txtAddress, txtNote};
         IsValidForm.refreshForm(text);
     }
-    
+
     private void updateInformation() {
         JTextField textField[] = {txtFirstName, txtLastName, txtEmail, txtPhone, txtAddress};
         if (!IsValidForm.checkNull(textField)) {
@@ -1633,14 +1703,14 @@ public class Menu_Admin extends javax.swing.JFrame {
             txtPhone.requestFocus();
             return;
         }
-        
+
         if (Message.confirm(this, "You want to change information?")) {
             Administrators admin = getFormAdmin();
             adminDAO.update(admin);
             Message.alert(null, "Edited information successfully !");
         }
     }
-    
+
     private void initTableTeacher() {
         String columns[] = {"ID", "Fullname", "Email", "Phone", "Address", "Gender", "Status", "Level", "Date of birth", "Start date"};
         tableModelTeacher.setColumnIdentifiers(columns);
@@ -1649,7 +1719,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         tableModelResetPassTeacher.setColumnIdentifiers(columnsResetPass);
         tableResetPassTeacher.setModel(tableModelResetPassTeacher);
     }
-    
+
     private void uploadComboboxTeacher() {
         DefaultComboBoxModel cbYearModel = new DefaultComboBoxModel();
         DefaultComboBoxModel cbMonthModel = new DefaultComboBoxModel();
@@ -1672,7 +1742,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         }
         cbLevelTeacher.setModel(cbLevel);
     }
-    
+
     private int getDaysInMonth(int month, int year) {
         switch (month) {
             case 4:
@@ -1686,7 +1756,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                 return 31;
         }
     }
-    
+
     private void updateDays() {
         DefaultComboBoxModel cbDayModel = new DefaultComboBoxModel<>();
         int selectedMonth = (Integer) cbMonthTeacher.getSelectedItem();
@@ -1698,26 +1768,9 @@ public class Menu_Admin extends javax.swing.JFrame {
         }
         cbDateTeacher.setModel(cbDayModel);
     }
-    
-    private void fillTableTeacher() {
-        tableModelTeacher.setRowCount(0);
-        try {
-            List<Teacher> list = teacher_DAO.selectAll();
-            for (Teacher teacher : list) {
-                Object rows[] = {teacher.getID_Teacher(), teacher.getMiddle_Name() + " " + teacher.getLast_Name() + " " + teacher.getFirst_Name(),
-                    teacher.getEmail(), teacher.getPhone_Number(), teacher.getAddress_Staff(),
-                    teacher.isGender() ? "Male" : "Female", teacher.isStatus_Teacher() ? "ON" : "OFF",
-                    teacher.getLevel_Teacher(), teacher.getYear_Of_Birth() + "-" + teacher.getMonth_Of_Birth() + "-" + teacher.getDate_Of_Birth(),
-                    teacher.getStart_Date()};
-                tableModelTeacher.addRow(rows);
-            }
-        } catch (Exception e) {
-            e.getMessage();
-        }
-    }
-    
+
     private void resetFormTeacher() {
-        JTextComponent text[] = {txtFindTeacher, txtIDTeacher, txtFirstNameTeacher, txtMidNameTeacher, txtLastNameTeacher, txtEmailTeacher,
+        JTextComponent text[] = {txtIDTeacher, txtFirstNameTeacher, txtMidNameTeacher, txtLastNameTeacher, txtEmailTeacher,
             txtPhoneTeacher, txtAddressTeacher, txtNoteTeacher, txtStartDateTeacher};
         IsValidForm.refreshForm(text);
         rdMaleTeacher.setSelected(true);
@@ -1726,8 +1779,9 @@ public class Menu_Admin extends javax.swing.JFrame {
         cbMonthTeacher.setSelectedIndex(0);
         cbDateTeacher.setSelectedIndex(0);
         cbLevelTeacher.setSelectedIndex(0);
+        txtIDTeacher.requestFocus();
     }
-    
+
     private void chooseImageTeacher() {
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
@@ -1737,7 +1791,7 @@ public class Menu_Admin extends javax.swing.JFrame {
             lbAvatarTeacher.setToolTipText(file.getName());
         }
     }
-    
+
     private void setFormTeacher(Teacher teacher) {
         txtIDTeacher.setText(teacher.getID_Teacher());
         txtFirstNameTeacher.setText(teacher.getFirst_Name());
@@ -1756,7 +1810,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         txtStartDateTeacher.setText(String.valueOf(teacher.getStart_Date()));
         lbAvatarTeacher.setIcon(XImage.read(teacher.getAvatar()));
     }
-    
+
     private void clickTable() {
         int index = tableTeacher.getSelectedRow();
         String ID_Teacher = tableTeacher.getValueAt(index, 0).toString();
@@ -1764,7 +1818,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.setFormTeacher(teacher);
         tabTeacher.setSelectedIndex(0);
     }
-    
+
     private Teacher getFormTeacher() {
         Teacher teacher = new Teacher();
         teacher.setID_Teacher(txtIDTeacher.getText());
@@ -1785,6 +1839,87 @@ public class Menu_Admin extends javax.swing.JFrame {
         return teacher;
     }
 
+    private void addTeacher() {
+        JTextComponent text[] = {txtIDTeacher, txtFirstNameTeacher, txtLastNameTeacher,
+            txtEmailTeacher, txtPhoneTeacher, txtAddressTeacher};
+        IsValidForm.checkNull(text);
+        if (lbAvatarTeacher.getToolTipText() == null) {
+            Message.alert(this, "Please choose a representative photo !");
+            return;
+        }
+        Teacher teacher = getFormTeacher();
+        if (teacher_DAO.checkCountIDTeacher(txtIDTeacher.getText()) == false) {
+            Message.alert(this, "The teacher code is already in use !");
+            return;
+        }
+        try {
+            teacher_DAO.insert(teacher);
+            this.fillFindTableTeacher();
+            this.resetFormTeacher();
+            Message.alert(this, "Teacher added successfully !");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateTeacher() {
+        JTextField textField[] = {txtIDTeacher, txtFirstNameTeacher, txtLastNameTeacher,
+            txtEmailTeacher, txtPhoneTeacher, txtAddressTeacher};
+        if (!IsValidForm.checkNull(textField)) {
+            return;
+        } else if (!IsValidForm.isValidEmail(txtEmailTeacher.getText())) {
+            Message.alert(this, "Email is not valid !");
+            txtEmailTeacher.requestFocus();
+            return;
+        } else if (!IsValidForm.isValidPhoneNumber(txtPhoneTeacher.getText())) {
+            Message.alert(this, "Phone number is not valid !");
+            txtPhoneTeacher.requestFocus();
+            return;
+        }
+
+        if (Message.confirm(this, "You want to change information?")) {
+            Teacher teacher = getFormTeacher();
+            teacher_DAO.update(teacher);
+            this.fillFindTableTeacher();
+            Message.alert(this, "Edited information successfully !");
+            this.resetFormTeacher();
+        }
+    }
+
+    private void fillFindTableTeacher() {
+        tableModelTeacher.setRowCount(0);
+        try {
+            List<Teacher> list = teacher_DAO.selectByKeyword(txtFindTeacher.getText());
+            for (Teacher teacher : list) {
+                Object rows[] = {teacher.getID_Teacher(), teacher.getMiddle_Name() + " " + teacher.getLast_Name() + " " + teacher.getFirst_Name(),
+                    teacher.getEmail(), teacher.getPhone_Number(), teacher.getAddress_Staff(),
+                    teacher.isGender() ? "Male" : "Female", teacher.isStatus_Teacher() ? "ON" : "OFF",
+                    teacher.getLevel_Teacher(), teacher.getYear_Of_Birth() + "-" + teacher.getMonth_Of_Birth() + "-" + teacher.getDate_Of_Birth(),
+                    teacher.getStart_Date()};
+                tableModelTeacher.addRow(rows);
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }
+
+    private void fillFindResetPassTeacher() {
+        tableModelResetPassTeacher.setRowCount(0);
+        try {
+            List<Teacher> list = teacher_DAO.selectByKeyword(txtIDResetPassTeacher.getText());
+            int i = 1;
+            for (Teacher teacher : list) {
+                String hashedPassword = teacher.getPassword_Teacher();
+                String hiddenPassword = "*".repeat(hashedPassword.length());
+                Object rows[] = {i++, teacher.getID_Teacher(), teacher.getMiddle_Name() + " " + teacher.getLast_Name() + " "
+                    + teacher.getFirst_Name(), hiddenPassword};
+                tableModelResetPassTeacher.addRow(rows);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -1799,21 +1934,21 @@ public class Menu_Admin extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                    
+
                 }
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(Menu_Admin.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(Menu_Admin.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(Menu_Admin.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Menu_Admin.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -1840,7 +1975,6 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JButton btnAddTeacher;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnExitResetPassTeacher;
-    private javax.swing.JButton btnFindResetPassTeacher;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnResetFormTeacher;
     private javax.swing.JButton btnResetPassTeacher;
@@ -1894,7 +2028,6 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
-    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

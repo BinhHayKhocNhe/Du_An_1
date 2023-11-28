@@ -6,6 +6,7 @@ package com.Main;
 
 import com.DAO.Administrators_DAO;
 import com.Entity.Administrators;
+import com.Entity.Staff;
 import com.Utils.Authentication;
 import com.Utils.Message;
 import com.Utils.XImage;
@@ -329,6 +330,12 @@ public class Login extends javax.swing.JFrame {
         return admin;
     }
 
+//    private Staff getFormStaff() {
+//        Staff staff = new Staff();
+//        staff.setID_Staff(txtUsername.getText());
+//        staff.setPassword_Staff(String.valueOf(txtPass.getPassword()));
+//        return staff;
+//    }
     private void checkLogin() {
         if (cbRole.getSelectedIndex() == 0) {
             Administrators admin = getForm();

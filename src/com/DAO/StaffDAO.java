@@ -44,7 +44,9 @@ public class StaffDAO implements myInterFace<Staff, String> {
 
     @Override
     public Staff selectById(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "SELECT * FROM Staff WHERE ID_Staff LIKE ?";
+        List<Staff> list = selectBySql(sql, id + "%");
+        return list.size() > 0 ? list.get(0) : null;
     }
 
     @Override
@@ -63,15 +65,21 @@ public class StaffDAO implements myInterFace<Staff, String> {
                 while (rs.next()) {
                     Staff entity = new Staff();
                     entity.setID_Staff(rs.getString("ID_Staff"));
-                    entity.setFirst_Name(rs.getString("First_Name") + " "
-                            + rs.getString("Middle_Name") + " "
-                            + rs.getString("Last_Name"));
+                    entity.setFirst_Name(rs.getString("First_Name"));
+                    entity.setMiddle_Name(rs.getString("Middle_Name"));
+                    entity.setLast_Name(rs.getString("Last_Name"));
                     entity.setEmail(rs.getString("Email"));
                     entity.setGender(rs.getBoolean("Gender"));
                     entity.setStatus_Staff(rs.getBoolean("Status_Staff"));
                     entity.setStart_Date(rs.getDate("Start_Date"));
                     entity.setPosition(rs.getString("Position"));
                     entity.setNote(rs.getString("Note"));
+                    entity.setAvatar(rs.getString("Avatar"));
+                    entity.setAddress_Staff(rs.getString("Address_Staff"));
+                    entity.setYear_Of_Birth(rs.getInt("Year_Of_Birth"));
+                    entity.setMonth_Of_Birth(rs.getInt("Month_Of_Birth"));
+                    entity.setDate_Of_Birth(rs.getInt("Date_Of_Birth"));
+                    entity.setPhone_Number(rs.getString("Phone_Number"));
 
                     list.add(entity);
                 }
@@ -83,8 +91,9 @@ public class StaffDAO implements myInterFace<Staff, String> {
         }
         return list;
     }
-    public List<Staff> selectByKeyword(String keyword){
-        String sql="SELECT * FROM Staff WHERE ID_Staff LIKE ?";
-        return this.selectBySql(sql, "%"+keyword+"%");
+
+    public List<Staff> selectByKeyword(String keyword) {
+        String sql = "SELECT * FROM Staff WHERE ID_Staff LIKE ? or Last_Name like ?";
+        return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
     }
 }
