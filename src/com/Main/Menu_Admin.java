@@ -1590,13 +1590,20 @@ public class Menu_Admin extends javax.swing.JFrame {
 
     private void btnResetPassTeacherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetPassTeacherActionPerformed
         int index = tableResetPassTeacher.getSelectedRow();
-        String ID_Teacher = tableResetPassTeacher.getValueAt(index, 1).toString();
-        txtIDResetPassTeacher.setText(ID_Teacher);
-        if (Message.confirm(this, "Do you want to reset the password for this teacher?")) {
-            teacher_DAO.adminResetPassTeacher(ID_Teacher);
-            this.fillFindResetPassTeacher();
-            tabTeacher.setSelectedIndex(0);
-            txtIDResetPassTeacher.setText("");
+
+        if (index >= 0) {
+            String ID_Teacher = tableResetPassTeacher.getValueAt(index, 1).toString();
+            txtIDResetPassTeacher.setText(ID_Teacher);
+
+            if (Message.confirm(this, "Do you want to reset the password for this teacher?")) {
+                teacher_DAO.adminResetPassTeacher(ID_Teacher);
+                this.fillFindResetPassTeacher();
+                tabTeacher.setSelectedIndex(0);
+                txtIDResetPassTeacher.setText("");
+            }
+        } else {
+            // Xử lý khi không có hàng nào được chọn
+            Message.alert(this, "Please select a teacher to reset the password.");
         }
 
     }//GEN-LAST:event_btnResetPassTeacherActionPerformed
