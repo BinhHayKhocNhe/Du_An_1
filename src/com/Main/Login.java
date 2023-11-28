@@ -334,6 +334,7 @@ public class Login extends javax.swing.JFrame {
         return admin;
     }
 
+
         private Staff getFormStaff() {
             Staff staff = new Staff();
             staff.setID_Staff(txtUsername.getText());

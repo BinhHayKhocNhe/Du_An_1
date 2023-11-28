@@ -13,6 +13,7 @@ import java.sql.SQLException;
 public class JDBCHelper {
 
 
+
     
     private static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
@@ -21,6 +22,8 @@ public class JDBCHelper {
     private static String url = "jdbc:sqlserver://MSI:1433;databaseName=Du_An_1; encrypt = false;";
     private static String username="sa";
     private static String password="songlong";
+
+
 
     
 //    Việt
