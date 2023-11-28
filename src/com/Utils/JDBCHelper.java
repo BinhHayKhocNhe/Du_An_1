@@ -12,12 +12,26 @@ import java.sql.SQLException;
 
 public class JDBCHelper {
 
+
+    
     private static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-     private static String url = "jdbc:sqlserver://MSI:1433;databaseName=Du_An_1; encrypt = false;";
+
+
+//    Thuận
+    private static String url = "jdbc:sqlserver://MSI:1433;databaseName=Du_An_1; encrypt = false;";
     private static String username="sa";
     private static String password="songlong";
-    
 
+    
+//    Việt
+//    private static String url = "jdbc:sqlserver://VIET-DESKTOP:1433;databaseName=Du_An_1;encrypt=false";
+//    private static String username = "sa";
+//    private static String password = "sa";
+    
+//    Bình
+//    private static String url = "jdbc:sqlserver://LAPTOP-BD4VIBB3\\BINH:1433;databaseName=Du_An_1;encrypt=false";
+//    private static String username = "sa";
+//    private static String password = "123";
     static {
         try {
             Class.forName(driver);
@@ -39,7 +53,6 @@ public class JDBCHelper {
         }
         return pstmt;
     }
-
     public static void executeUpdate(String sql, Object... args) {
         try (PreparedStatement stmt = prepareStatement(sql, args)) {
             stmt.executeUpdate();
@@ -47,7 +60,6 @@ public class JDBCHelper {
             e.printStackTrace();
         }
     }
-
     public static ResultSet executeQuery(String sql, Object... args) {
         try {
             PreparedStatement stmt = prepareStatement(sql, args);
@@ -56,7 +68,6 @@ public class JDBCHelper {
             throw new RuntimeException("Lỗi khi thực hiện truy vấn!", e);
         }
     }
-
     public static Object value(String sql, Object... args) {
         try (ResultSet rs = JDBCHelper.executeQuery(sql, args)) {
             if (rs.next()) {

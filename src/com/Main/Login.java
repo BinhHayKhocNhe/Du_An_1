@@ -5,7 +5,9 @@
 package com.Main;
 
 import com.DAO.Administrators_DAO;
+import com.DAO.StaffDAO;
 import com.Entity.Administrators;
+import com.Entity.Staff;
 import com.Utils.Authentication;
 import com.Utils.Message;
 import com.Utils.XImage;
@@ -19,6 +21,7 @@ import javax.swing.ImageIcon;
 public class Login extends javax.swing.JFrame {
 
     private Administrators_DAO adminDao = new Administrators_DAO();
+    private StaffDAO staffDAO = new StaffDAO();
 
     /**
      * Creates new form Login
@@ -153,10 +156,12 @@ public class Login extends javax.swing.JFrame {
 
         txtUsername.setForeground(new java.awt.Color(255, 255, 255));
         txtUsername.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txtUsername.setText("emp001");
         txtUsername.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(255, 255, 255), null));
 
         txtPass.setForeground(new java.awt.Color(255, 255, 255));
         txtPass.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txtPass.setText("thuan");
         txtPass.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.white, null));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -329,6 +334,13 @@ public class Login extends javax.swing.JFrame {
         return admin;
     }
 
+        private Staff getFormStaff() {
+            Staff staff = new Staff();
+            staff.setID_Staff(txtUsername.getText());
+            staff.setPassword_Staff(String.valueOf(txtPass.getPassword()));
+            return staff;
+        }
+
     private void checkLogin() {
         if (cbRole.getSelectedIndex() == 0) {
             Administrators admin = getForm();
@@ -340,7 +352,20 @@ public class Login extends javax.swing.JFrame {
             Menu_Admin show = new Menu_Admin();
             show.setVisible(true);
             this.dispose();
+        } 
+        else if (cbRole.getSelectedIndex() == 2) {
+            Staff staff = getFormStaff();
+            if (!staffDAO.checkID(staff)) {
+                Message.alert(this, "Account name or password is incorrect !");
+                return;
+            }
+            Authentication.staff = getFormStaff();
+            System.out.println(""+Authentication.staff.getID_Staff());
+            Form_Staff form_Staff = new Form_Staff();
+            form_Staff.setVisible(true);
+            this.dispose();
         }
+
     }
 
     public static void main(String args[]) {

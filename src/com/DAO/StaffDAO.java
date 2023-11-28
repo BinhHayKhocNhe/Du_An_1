@@ -6,10 +6,13 @@ package com.DAO;
 
 import com.Utils.JDBCHelper;
 import com.Entity.Staff;
+import com.Utils.Message;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -34,7 +37,19 @@ public class StaffDAO implements myInterFace<Staff, String> {
 
     @Override
     public boolean checkID(Staff entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "Select count(ID_Staff) from Staff where ID_Staff = ? and Password_Staff = ? ";
+        ResultSet rs = JDBCHelper.executeQuery(sql, entity.getID_Staff(), entity.getPassword_Staff());
+        try {
+            while (rs.next()) {
+                int count = rs.getInt(1);
+                if (count > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 
     @Override
@@ -95,5 +110,37 @@ public class StaffDAO implements myInterFace<Staff, String> {
     public List<Staff> selectByKeyword(String keyword) {
         String sql = "SELECT * FROM Staff WHERE ID_Staff LIKE ? or Last_Name like ?";
         return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
+    }
+
+    public void changePassword(String ID, String currentPassword, String newPassword) {
+        final String checkCurrentPassword = "SELECT Password_Staff FROM Staff WHERE ID_Staff = ?";
+        final String sql = "UPDATE Staff SET Password_Staff = ? WHERE ID_Staff = ? and Password_Staff=?";
+        try {
+            ResultSet resultSet = JDBCHelper.executeQuery(checkCurrentPassword, ID);
+
+            if (!resultSet.next()) {
+                Message.alert(null, "User not found!");
+                return;
+            }
+
+            String storedPassword = resultSet.getString("Password_Staff");
+
+            if (!storedPassword.equals(currentPassword)) {
+                Message.alert(null, "Current password is incorrect!");
+                return;
+            }
+
+            if (currentPassword.equals(newPassword)) {
+                Message.alert(null, "The new password must not be the same as the current password!");
+                return;
+            }
+
+            JDBCHelper.executeUpdate(sql, newPassword, ID, currentPassword);
+            Message.alert(null, "Changed password successfully!");
+
+            resultSet.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -7,6 +7,8 @@ package com.Main;
 
 import com.DAO.StaffDAO;
 import com.Entity.Staff;
+import com.Utils.Authentication;
+import com.Utils.IsValidForm;
 import com.Utils.Message;
 import com.Utils.Time;
 import com.Utils.XImage;
@@ -14,10 +16,14 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.io.File;
 import java.security.interfaces.RSAKey;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -36,14 +42,17 @@ public class Form_Staff extends javax.swing.JFrame {
      * Creates new form Menu
      */
     public Form_Staff() {
+
         initComponents();
+//        formLogin();
+
         this.setIconImage(XImage.getAppIcon());
         this.setTitle("Group 5 - Viet Duc School");
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.uploadCombobox();
         fillTable();
-
+        InforStaff();
     }
 
     private void CardFalse() {
@@ -137,9 +146,14 @@ public class Form_Staff extends javax.swing.JFrame {
             cbMonthModel.addElement(i);
         }
         cboYear.setModel(cbYearModel);
+        cboYear1.setModel(cbYearModel);
         cboMonth.setModel(cbMonthModel);
+        cboMonth1.setModel(cbMonthModel);
         updateDays();
         cboMonth.addActionListener((e) -> {
+            updateDays();
+        });
+        cboMonth1.addActionListener((e) -> {
             updateDays();
         });
     }
@@ -160,14 +174,23 @@ public class Form_Staff extends javax.swing.JFrame {
 
     private void updateDays() {
         DefaultComboBoxModel cbDayModel = new DefaultComboBoxModel<>();
+        DefaultComboBoxModel cbDayModel1 = new DefaultComboBoxModel<>();
         int selectedMonth = (Integer) cboMonth.getSelectedItem();
+        int selectedMonth1 = (Integer) cboMonth1.getSelectedItem();
         int selectedYear = (Integer) cboYear.getSelectedItem();
+        int selectedYear1 = (Integer) cboYear1.getSelectedItem();
         int daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
+        int daysInMonth1 = getDaysInMonth(selectedMonth1, selectedYear1);
         cboDay.removeAllItems();
         for (int i = 1; i <= daysInMonth; i++) {
             cbDayModel.addElement(i);
         }
         cboDay.setModel(cbDayModel);
+        cboDay1.removeAllItems();
+        for (int i = 1; i <= daysInMonth1; i++) {
+            cbDayModel1.addElement(i);
+        }
+        cboDay1.setModel(cbDayModel);
     }
 // Xóa trắng
 
@@ -185,6 +208,10 @@ public class Form_Staff extends javax.swing.JFrame {
         lblAvatar.setText("");
         txtPosition.setText("");
         txtStartDay.setText("");
+        cboDay.setSelectedIndex(0);
+        cboMonth.setSelectedIndex(0);
+        cboYear.setSelectedIndex(0);
+
     }
 // đổ dữ liệu lên table
 
@@ -238,7 +265,59 @@ public class Form_Staff extends javax.swing.JFrame {
         txtL_Name.setText(sta.getLast_Name());
         lblAvatar.setIcon(XImage.read(sta.getAvatar()));
         txtPosition.setText(sta.getPosition());
-        System.out.println(sta.getMiddle_Name());
+
+    }
+
+// Lấy thông tin Staff
+    private void setFormIforn(Staff sta) {
+        txtId_Staff1.setText(sta.getID_Staff());
+        txtF_Name1.setText(sta.getFirst_Name());
+        txtEmail1.setText(sta.getEmail());
+        (sta.isGender() ? rdoMale1 : rdoFemale1).setSelected(true);
+        (sta.isStatus_Staff() ? rdoOn1 : rdoOff1).setSelected(true);
+        cboYear1.setSelectedItem(sta.getYear_Of_Birth());
+        cboMonth1.setSelectedItem(sta.getMonth_Of_Birth());
+        cboDay1.setSelectedItem(sta.getDate_Of_Birth());
+        txtStartDay1.setText(String.valueOf(sta.getStart_Date()));
+        txtNote1.setText(sta.getNote());
+        txtP_Num1.setText(sta.getPhone_Number());
+        txtAddress1.setText(sta.getAddress_Staff());
+        txtM_Name1.setText(sta.getMiddle_Name());
+        txtL_Name1.setText(sta.getLast_Name());
+        lblAvatar.setIcon(XImage.read(sta.getAvatar()));
+        txtPosition1.setText(sta.getPosition());
+        lblNameBig.setText(sta.getFirst_Name() + " " + sta.getMiddle_Name() + " " + sta.getLast_Name());
+        Message.alert(this, "Hello " + sta.getFirst_Name() + " " + sta.getMiddle_Name() + " " + sta.getLast_Name());
+    }
+
+    private void InforStaff() {
+        Staff staff = dao.selectById(Authentication.staff.getID_Staff());
+        setFormIforn(staff);
+    }
+// change pass
+
+    private boolean checkNull() {
+        JPasswordField passwordField[] = {txtCurrentPass, txtNewPass};
+        if (!IsValidForm.checkNull(passwordField)) {
+            return false;
+        } else if (!Arrays.equals(txtNewPass.getPassword(), txtEnterPass.getPassword())) {
+            txtEnterPass.requestFocus();
+            Message.alert(this, "New password does not match when re-entered !");
+            return false;
+        }
+        return true;
+    }
+
+    private void resetFormChangePassWord() {
+        JTextField text[] = {txtCurrentPass, txtNewPass, txtEnterPass};
+        IsValidForm.refreshForm(text);
+        jTabbedPane1.setSelectedIndex(0);
+    }
+
+    private void changePassword() {
+        dao.changePassword(Authentication.staff.getID_Staff(),
+                String.valueOf(txtCurrentPass.getPassword()), String.valueOf(txtEnterPass.getPassword()));
+        this.resetFormChangePassWord();
     }
 
     /**
@@ -256,7 +335,7 @@ public class Form_Staff extends javax.swing.JFrame {
         jplSlideMenu = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        lblNameBig = new javax.swing.JLabel();
         lblCloseMenu = new javax.swing.JLabel();
         lblHome = new javax.swing.JLabel();
         lblAcc = new javax.swing.JLabel();
@@ -368,6 +447,17 @@ public class Form_Staff extends javax.swing.JFrame {
         rdoOn1 = new javax.swing.JRadioButton();
         rdoOff1 = new javax.swing.JRadioButton();
         jPanel7 = new javax.swing.JPanel();
+        jLabel43 = new javax.swing.JLabel();
+        jLabel44 = new javax.swing.JLabel();
+        jLabel45 = new javax.swing.JLabel();
+        txtCurrentPass = new javax.swing.JPasswordField();
+        txtNewPass = new javax.swing.JPasswordField();
+        txtEnterPass = new javax.swing.JPasswordField();
+        btnAccept = new javax.swing.JButton();
+        btnExit = new javax.swing.JButton();
+        lbShowCurrentPass = new javax.swing.JLabel();
+        lbShowEnterPass = new javax.swing.JLabel();
+        lbShowNewPass = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
         jSeparator5 = new javax.swing.JSeparator();
         cardNhapdiem = new javax.swing.JPanel();
@@ -400,8 +490,10 @@ public class Form_Staff extends javax.swing.JFrame {
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/user.png"))); // NOI18N
 
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel4.setText("Staff");
+        lblNameBig.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblNameBig.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNameBig.setText("Staff");
+        lblNameBig.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         lblCloseMenu.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         lblCloseMenu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -428,10 +520,7 @@ public class Form_Staff extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(lblCloseMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(87, 87, 87)
-                .addComponent(jLabel4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(lblNameBig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -442,8 +531,8 @@ public class Form_Staff extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addComponent(lblNameBig)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         jplSlideMenu.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 210, 150));
@@ -1050,15 +1139,15 @@ public class Form_Staff extends javax.swing.JFrame {
         cardInforLayout.setHorizontalGroup(
             cardInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cardInforLayout.createSequentialGroup()
-                .addContainerGap(218, Short.MAX_VALUE)
-                .addComponent(INFORMATION, javax.swing.GroupLayout.PREFERRED_SIZE, 868, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
-            .addGroup(cardInforLayout.createSequentialGroup()
                 .addGap(520, 520, 520)
                 .addGroup(cardInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator3))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardInforLayout.createSequentialGroup()
+                .addGap(215, 215, 215)
+                .addComponent(INFORMATION, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
         cardInforLayout.setVerticalGroup(
             cardInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1066,9 +1155,9 @@ public class Form_Staff extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(INFORMATION, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
 
         jplMain.add(cardInfor, "card3");
@@ -1080,6 +1169,9 @@ public class Form_Staff extends javax.swing.JFrame {
                 cardStaffMouseClicked(evt);
             }
         });
+
+        jTabbedPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(51, 51, 51), new java.awt.Color(102, 102, 102)));
+        jTabbedPane1.setPreferredSize(new java.awt.Dimension(600, 414));
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -1131,15 +1223,20 @@ public class Form_Staff extends javax.swing.JFrame {
 
         jLabel37.setText("Year of birth:");
 
-        cboYear1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboYear1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", " " }));
 
         jLabel38.setText("Month of birth:");
 
-        cboMonth1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboMonth1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", " " }));
 
         jLabel39.setText("Day of birth:");
 
-        cboDay1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboDay1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", " " }));
+        cboDay1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboDay1ActionPerformed(evt);
+            }
+        });
 
         lblAvatar1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -1333,20 +1430,112 @@ public class Form_Staff extends javax.swing.JFrame {
                         .addComponent(lblAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnUpload1)))
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("INFORMATON", jPanel8);
+
+        jLabel43.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel43.setText("Current password:");
+
+        jLabel44.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel44.setText("New password:");
+
+        jLabel45.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel45.setText("Enter the password:");
+
+        btnAccept.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnAccept.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Accept.png"))); // NOI18N
+        btnAccept.setText("Accept");
+        btnAccept.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAcceptActionPerformed(evt);
+            }
+        });
+
+        btnExit.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Exit.png"))); // NOI18N
+        btnExit.setText("Exit");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
+
+        lbShowCurrentPass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/show.png"))); // NOI18N
+        lbShowCurrentPass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbShowCurrentPassMouseClicked(evt);
+            }
+        });
+
+        lbShowEnterPass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/show.png"))); // NOI18N
+        lbShowEnterPass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbShowEnterPassMouseClicked(evt);
+            }
+        });
+
+        lbShowNewPass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/show.png"))); // NOI18N
+        lbShowNewPass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbShowNewPassMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 837, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(197, 197, 197)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel43)
+                            .addComponent(jLabel45))
+                        .addGap(43, 43, 43)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                                .addComponent(btnAccept)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnExit))
+                            .addComponent(txtNewPass)
+                            .addComponent(txtCurrentPass)
+                            .addComponent(txtEnterPass, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel44))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbShowCurrentPass)
+                    .addComponent(lbShowEnterPass)
+                    .addComponent(lbShowNewPass))
+                .addContainerGap(245, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 440, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(82, 82, 82)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel43)
+                    .addComponent(txtCurrentPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbShowCurrentPass))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel44)
+                        .addComponent(txtNewPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbShowNewPass))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel45)
+                        .addComponent(txtEnterPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbShowEnterPass))
+                .addGap(45, 45, 45)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAccept)
+                    .addComponent(btnExit))
+                .addContainerGap(113, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("CHANGE PASSWORD", jPanel7);
@@ -1361,15 +1550,16 @@ public class Form_Staff extends javax.swing.JFrame {
         cardStaffLayout.setHorizontalGroup(
             cardStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cardStaffLayout.createSequentialGroup()
-                .addContainerGap(257, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 837, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(cardStaffLayout.createSequentialGroup()
-                .addGap(520, 520, 520)
-                .addGroup(cardStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator5))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(cardStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(cardStaffLayout.createSequentialGroup()
+                        .addGap(520, 520, 520)
+                        .addGroup(cardStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator5)))
+                    .addGroup(cardStaffLayout.createSequentialGroup()
+                        .addGap(215, 215, 215)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         cardStaffLayout.setVerticalGroup(
             cardStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1377,9 +1567,9 @@ public class Form_Staff extends javax.swing.JFrame {
                 .addComponent(jLabel27)
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(68, 68, 68))
         );
 
         jplMain.add(cardStaff, "card3");
@@ -1524,7 +1714,7 @@ public class Form_Staff extends javax.swing.JFrame {
     }//GEN-LAST:event_lblHomeMouseClicked
 
     private void lblAccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAccMouseClicked
-CardFalse();
+        CardFalse();
         cardStaff.setVisible(true);
 
     }//GEN-LAST:event_lblAccMouseClicked
@@ -1536,7 +1726,7 @@ CardFalse();
     }//GEN-LAST:event_lblSta_LiMouseClicked
 
     private void cardStaffMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cardStaffMouseClicked
-        
+
     }//GEN-LAST:event_cardStaffMouseClicked
 
     private void lblsuadiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsuadiemMouseClicked
@@ -1741,6 +1931,44 @@ CardFalse();
         // TODO add your handling code here:
     }//GEN-LAST:event_rdoMale1ActionPerformed
 
+    private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
+        if (!checkNull()) {
+            return;
+        }
+        this.changePassword();
+    }//GEN-LAST:event_btnAcceptActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        if (Message.confirm(this, "Do you want exit ?")) {
+            this.CardFalse();
+        }
+    }//GEN-LAST:event_btnExitActionPerformed
+
+    private void lbShowCurrentPassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbShowCurrentPassMouseClicked
+        boolean isPasswordVisible = txtCurrentPass.getEchoChar() == 0;
+        txtCurrentPass.setEchoChar(isPasswordVisible ? '\u2022' : (char) 0);
+        lbShowCurrentPass.setIcon(isPasswordVisible ? new ImageIcon(getClass().getResource("/com/Icon/show.png"))
+                : new ImageIcon(getClass().getResource("/com/Icon/eye-crossed.png")));
+    }//GEN-LAST:event_lbShowCurrentPassMouseClicked
+
+    private void lbShowEnterPassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbShowEnterPassMouseClicked
+        boolean isPasswordVisible = txtEnterPass.getEchoChar() == 0;
+        txtEnterPass.setEchoChar(isPasswordVisible ? '\u2022' : (char) 0);
+        lbShowEnterPass.setIcon(isPasswordVisible ? new ImageIcon(getClass().getResource("/com/Icon/show.png"))
+                : new ImageIcon(getClass().getResource("/com/Icon/eye-crossed.png")));
+    }//GEN-LAST:event_lbShowEnterPassMouseClicked
+
+    private void lbShowNewPassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbShowNewPassMouseClicked
+        boolean isPasswordVisible = txtNewPass.getEchoChar() == 0;
+        txtNewPass.setEchoChar(isPasswordVisible ? '\u2022' : (char) 0);
+        lbShowNewPass.setIcon(isPasswordVisible ? new ImageIcon(getClass().getResource("/com/Icon/show.png"))
+                : new ImageIcon(getClass().getResource("/com/Icon/eye-crossed.png")));
+    }//GEN-LAST:event_lbShowNewPassMouseClicked
+
+    private void cboDay1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboDay1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboDay1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1779,12 +2007,14 @@ CardFalse();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane INFORMATION;
+    private javax.swing.JButton btnAccept;
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnAdd1;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnDelete1;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnEdit1;
+    private javax.swing.JButton btnExit;
     private javax.swing.JButton btnNew;
     private javax.swing.JButton btnNew1;
     private javax.swing.JButton btnUpload;
@@ -1838,10 +2068,12 @@ CardFalse();
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1864,6 +2096,9 @@ CardFalse();
     private javax.swing.JPanel jplSlideMenu;
     private javax.swing.JPanel jplTitle;
     private javax.swing.JPanel jpllMenuBar;
+    private javax.swing.JLabel lbShowCurrentPass;
+    private javax.swing.JLabel lbShowEnterPass;
+    private javax.swing.JLabel lbShowNewPass;
     private javax.swing.JLabel lblAcc;
     private javax.swing.JLabel lblAvatar;
     private javax.swing.JLabel lblAvatar1;
@@ -1871,6 +2106,7 @@ CardFalse();
     private javax.swing.JLabel lblHelp;
     private javax.swing.JLabel lblHome;
     private javax.swing.JLabel lblLog_out;
+    private javax.swing.JLabel lblNameBig;
     private javax.swing.JLabel lblOpenMenu;
     private javax.swing.JLabel lblSche;
     private javax.swing.JLabel lblSta_Li;
@@ -1886,8 +2122,10 @@ CardFalse();
     private javax.swing.JTable tblStaff;
     private javax.swing.JTextField txtAddress;
     private javax.swing.JTextField txtAddress1;
+    private javax.swing.JPasswordField txtCurrentPass;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEmail1;
+    private javax.swing.JPasswordField txtEnterPass;
     private javax.swing.JTextField txtF_Name;
     private javax.swing.JTextField txtF_Name1;
     private javax.swing.JTextField txtFind;
@@ -1898,6 +2136,7 @@ CardFalse();
     private javax.swing.JTextField txtL_Name1;
     private javax.swing.JTextField txtM_Name;
     private javax.swing.JTextField txtM_Name1;
+    private javax.swing.JPasswordField txtNewPass;
     private javax.swing.JTextField txtNote;
     private javax.swing.JTextField txtNote1;
     private javax.swing.JTextField txtP_Num;
