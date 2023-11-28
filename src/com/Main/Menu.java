@@ -6,11 +6,10 @@
 package com.Main;
 
 import javax.swing.JOptionPane;
-
-/**
- *
- * @author User
- */
+import com.DAO.HocSinhDao;
+import com.Entity.Student;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
 public class Menu extends javax.swing.JFrame {
 
     int x = 210;    //chieu rong
@@ -24,6 +23,8 @@ public class Menu extends javax.swing.JFrame {
         cardTrangChu.setVisible(true);
         cardTaiKhoan.setVisible(false);
         jplSlideMenu.setSize(210, 600);
+        
+        loadDataToTable();
     }
 
     public void openMenu() {
@@ -76,7 +77,45 @@ public class Menu extends javax.swing.JFrame {
 
     }
     
- 
+   private void loadDataToTable() {
+   List<Student> studentList = HocSinhDao.getAllStudents();
+
+        DefaultTableModel model = new DefaultTableModel();
+        tbl_list_hocsinh.setModel(model);
+
+        // Add columns to the table model
+        model.addColumn("ID");
+        model.addColumn("First Name");
+        model.addColumn("Middle Name");
+        model.addColumn("Last Name");
+        model.addColumn("Gender");
+        model.addColumn("Address");
+        model.addColumn("Status");
+        model.addColumn("Avatar");
+        model.addColumn("Date of Birth");
+        model.addColumn("Month of Birth");
+        model.addColumn("Year of Birth");
+        model.addColumn("Note");
+
+        // Add data to the table model
+        for (Student student : studentList) {
+            Object[] rowData = {
+                    student.getID_Student(),
+                    student.getFirst_Name(),
+                    student.getMiddle_Name(),
+                    student.getLast_Name(),
+                    student.isGender(),
+                    student.getAddress_Student(),
+                    student.isStatus_Student(),
+                    student.getAvatar(),
+                    student.getDate_Of_Birth(),
+                    student.getMonth_Of_Birth(),
+                    student.getYear_Of_Birth(),
+                    student.getNote()
+            };
+            model.addRow(rowData);
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -144,7 +183,7 @@ public class Menu extends javax.swing.JFrame {
         lbShowNewPass = new javax.swing.JLabel();
         cardListhocsinh = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tbl_list_hocsinh = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jComboBox5 = new javax.swing.JComboBox<>();
@@ -530,22 +569,19 @@ public class Menu extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jLayeredPane3Layout.createSequentialGroup()
-                        .addGroup(jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jLayeredPane3Layout.createSequentialGroup()
-                                .addGroup(jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel19)
-                                    .addComponent(jLabel20)
-                                    .addComponent(jLabel21))
-                                .addGap(23, 23, 23)
-                                .addGroup(jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtMidName, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
-                                    .addComponent(txtFirstName)
-                                    .addComponent(txtLastName)))
-                            .addGroup(jLayeredPane3Layout.createSequentialGroup()
-                                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
-                                .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(70, 70, 70)
+                        .addGroup(jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel19)
+                            .addComponent(jLabel20)
+                            .addComponent(jLabel21)
+                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(23, 23, 23)
+                        .addGroup(jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtMidName, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                                .addComponent(txtFirstName)
+                                .addComponent(txtLastName)))
+                        .addGap(74, 74, 74)
                         .addGroup(jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jLayeredPane3Layout.createSequentialGroup()
                                 .addComponent(jLabel22)
@@ -576,7 +612,7 @@ public class Menu extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnRefresh))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         jLayeredPane3Layout.setVerticalGroup(
             jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -761,18 +797,18 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_list_hocsinh.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Id Student", "Full name", "Address", "Status", "Class"
+                "Id Student", "Full name", "Address", "Status", "Class", "Gender"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tbl_list_hocsinh);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Id student");
@@ -954,9 +990,9 @@ public class Menu extends javax.swing.JFrame {
         cardNhapdiemLayout.setVerticalGroup(
             cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cardNhapdiemLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(cardNhapdiemLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -966,7 +1002,6 @@ public class Menu extends javax.swing.JFrame {
                             .addComponent(jButton2)
                             .addComponent(jLabel10)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardNhapdiemLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel11))
@@ -1006,7 +1041,7 @@ public class Menu extends javax.swing.JFrame {
                     .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton8)
                         .addComponent(jButton7)))
-                .addContainerGap(242, Short.MAX_VALUE))
+                .addContainerGap(251, Short.MAX_VALUE))
         );
 
         jplMain.add(cardNhapdiem, "card3");
@@ -1051,7 +1086,7 @@ public class Menu extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jComboBox6, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardLichLayout.createSequentialGroup()
-                .addGap(0, 216, Short.MAX_VALUE)
+                .addGap(0, 226, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 708, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardLichLayout.createSequentialGroup()
@@ -1079,7 +1114,7 @@ public class Menu extends javax.swing.JFrame {
                     .addComponent(jButton10)
                     .addComponent(jLabel9)
                     .addComponent(jButton11))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         jplMain.add(cardLich, "card3");
@@ -1122,7 +1157,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardhelpLayout.createSequentialGroup()
-                .addContainerGap(274, Short.MAX_VALUE)
+                .addContainerGap(210, Short.MAX_VALUE)
                 .addGroup(cardhelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(cardhelpLayout.createSequentialGroup()
                         .addComponent(jLabel7)
@@ -1142,7 +1177,7 @@ public class Menu extends javax.swing.JFrame {
                         .addGroup(cardhelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel38)
                             .addComponent(jLabel39))))
-                .addContainerGap(141, Short.MAX_VALUE))
+                .addContainerGap(78, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardhelpLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel35)
@@ -1178,7 +1213,7 @@ public class Menu extends javax.swing.JFrame {
                         .addComponent(jLabel39)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel35)
-                .addContainerGap(144, Short.MAX_VALUE))
+                .addContainerGap(339, Short.MAX_VALUE))
         );
 
         jplMain.add(cardhelp, "card3");
@@ -1497,7 +1532,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
@@ -1528,6 +1562,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JRadioButton rdFemale;
     private javax.swing.JRadioButton rdMale;
     private javax.swing.JTabbedPane tabAccount;
+    private javax.swing.JTable tbl_list_hocsinh;
     private javax.swing.JTextField txtAddress;
     private javax.swing.JPasswordField txtCurrentPass;
     private javax.swing.JTextField txtEmail;

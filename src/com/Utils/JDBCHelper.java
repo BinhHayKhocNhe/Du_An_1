@@ -19,13 +19,13 @@ public class JDBCHelper {
 //    private static String username="sa";
 //    private static String password="songlong";
 //    Việt
-//    private static String url = "jdbc:sqlserver://VIET-DESKTOP:1433;databaseName=Du_An_1;encrypt=false";
-//    private static String username = "sa";
-//    private static String password = "sa";
-//    Bình
-    private static String url = "jdbc:sqlserver://LAPTOP-BD4VIBB3\\BINH:1433;databaseName=Du_An_1;encrypt=false";
+    private static String url = "jdbc:sqlserver://VIET-DESKTOP:1433;databaseName=Du_An_1;encrypt=false";
     private static String username = "sa";
-    private static String password = "123";
+    private static String password = "sa";
+//    Bình
+//    private static String url = "jdbc:sqlserver://LAPTOP-BD4VIBB3\\BINH:1433;databaseName=Du_An_1;encrypt=false";
+//    private static String username = "sa";
+//    private static String password = "123";
 
     static {
         try {
