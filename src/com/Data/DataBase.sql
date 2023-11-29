@@ -15,6 +15,8 @@ Note NVARCHAR(255),
 CONSTRAINT PK_ID_Admin PRIMARY KEY(ID_Administrator)
 );
 
+
+
 INSERT INTO Administrators (ID_Administrator, Password_Administrator, First_Name, Middle_Name, Last_Name, Email, Phone_Number, Gender, Address, Note)
 VALUES 
 ('admin1', 'securepass1', 'John', '', 'Doe', 'john.d@example.com', '123456789', 1, '123 Main Street, Cityville', 'Administrator 1'),
@@ -22,7 +24,6 @@ VALUES
 ('admin3', 'adminadmin', 'Michael', '', 'Johnson', 'michael.j@example.com', '111223344', 1, '789 Pine Road, Villageton', 'Administrator 3'),
 ('admin4', 'admin123', 'Emily', '', 'Brown', 'emily.b@example.com', '9988776655', 0, '101 Cedar Lane, Hamletville', 'Administrator 4'),
 ('admin5', 'adminpass123', 'Daniel', '', 'Lee', 'daniel.lee@example.com', '1122334455', 1, '202 Maple Drive, Township', 'Administrator 5');
-
 CREATE TABLE Staff (
 ID_Staff NVARCHAR(50) NOT NULL,
 Password_Staff NVARCHAR(50) NOT NULL,
@@ -43,6 +44,7 @@ Start_Date DATETIME DEFAULT GETDATE(),
 Note NVARCHAR(255),
 CONSTRAINT PK_ID_Staff PRIMARY KEY(ID_Staff)
 );
+
 INSERT INTO Staff (ID_Staff, Password_Staff, First_Name, Middle_Name, Last_Name, Email, Phone_Number, Gender, Status_Staff, Position, Address_Staff, Avatar, Date_Of_Birth, Month_Of_Birth, Year_Of_Birth, Note)
 VALUES 
 ('EMP001', 'password123', 'John', 'A.', 'Doe', 'john.doe@email.com', '123456789', 1, 1, 'Doctor', '123 Main Street, City', 'avatar1.jpg', 1, 1, 1980, 'Excellent doctor with years of experience in healthcare.'),
