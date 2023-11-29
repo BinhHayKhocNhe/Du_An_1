@@ -169,8 +169,7 @@ CONSTRAINT FK_ID_StudentClass FOREIGN KEY (ID_Class) REFERENCES Class(ID_Class)
 );
 -- Thêm khóa ngoại
 
-
-INSERT INTO Student (ID_Student, First_Name, Middle_Name, Last_Name, Gender, Address_Student, Class, Status_Student, Avatar, Date_Of_Birth, Month_Of_Birth, Year_Of_Birth, Note)
+INSERT INTO Student (ID_Student, First_Name, Middle_Name, Last_Name, Gender, Address_Student, ID_Class, Status_Student, Avatar, Date_Of_Birth, Month_Of_Birth, Year_Of_Birth, Note)
 VALUES
 ('STU001', 'Emma', '', 'Johnson', 0, '123 Main Street, City','C001', 1, 'avatar1.jpg', 5, 3, 2019, 'Active and engaged learner.'),
 ('STU002', 'Liam', 'A.', 'Smith', 1, '456 Oak Avenue, Town','C001', 1, 'avatar2.jpg', 8, 6, 2020, 'Enthusiastic about mathematics.'),
