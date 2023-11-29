@@ -3,26 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
             <file>file:/D:/Du_An_1/Bai_lab/Du_An_Truong_Mam_Non/src/com/Main/Menu_Admin.java</file>
-            <file>file:/D:/Du_An_1/Bai_lab/Du_An_Truong_Mam_Non/src/com/DAO/StaffDAO.java</file>
             <file>file:/D:/Du_An_1/Bai_lab/Du_An_Truong_Mam_Non/src/com/DAO/Teacher_DAO.java</file>
-=======
-            <file>file:/D:/duan1/Du_An_1/src/com/Main/Form_Staff.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/DAO/Teacher_DAO.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/Entity/Course.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/DAO/HocSinhDao.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/Main/Menu_Admin.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/Entity/Class.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/DAO/Administrators_DAO.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/Entity/Guardians.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/Main/Menu.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/Data/DataBase.sql</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/Main/Login.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/DAO/StaffDAO.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/Utils/JDBCHelper.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/Entity/Student.java</file>
->>>>>>> d3231492c6976b0cbd3fd7f833ea150a594c4d0c
+            <file>file:/D:/Du_An_1/Bai_lab/Du_An_Truong_Mam_Non/src/com/DAO/StudentDAO.java</file>
         </group>
     </open-files>
 </project-private>
