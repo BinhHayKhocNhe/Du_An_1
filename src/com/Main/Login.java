@@ -126,6 +126,11 @@ public class Login extends javax.swing.JFrame {
         cbRole.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cbRole.setForeground(new java.awt.Color(255, 255, 255));
         cbRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbRoleActionPerformed(evt);
+            }
+        });
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
@@ -156,12 +161,12 @@ public class Login extends javax.swing.JFrame {
 
         txtUsername.setForeground(new java.awt.Color(255, 255, 255));
         txtUsername.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txtUsername.setText("admin4");
+        txtUsername.setText("emp001");
         txtUsername.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(255, 255, 255), null));
 
         txtPass.setForeground(new java.awt.Color(255, 255, 255));
         txtPass.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txtPass.setText("admin123");
+        txtPass.setText("thuan");
         txtPass.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.white, null));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -309,6 +314,10 @@ public class Login extends javax.swing.JFrame {
                 : new ImageIcon(getClass().getResource("/com/Icon/eye-crossed.png")));
 
     }//GEN-LAST:event_lbShowPasswordMouseClicked
+
+    private void cbRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbRoleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbRoleActionPerformed
     private boolean checkNull() {
         if (txtUsername.getText().isEmpty()) {
             Message.alert(this, "Please enter complete information !");
