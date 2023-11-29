@@ -155,7 +155,7 @@ Middle_Name NVARCHAR(20),
 Last_Name NVARCHAR(20) NOT NULL,
 Gender BIT NOT NULL,
 Address_Student NVARCHAR(255) NOT NULL,
-Class NVARCHAR(20) NOT NULL,
+ID_Class NVARCHAR(20) NOT NULL,
 Status_Student BIT NOT NULL,
 Avatar NVARCHAR(50) NOT NULL,
 Date_Of_Birth INT NOT NULL,
@@ -164,6 +164,11 @@ Year_Of_Birth INT NOT NULL,
 Note NVARCHAR(255),
 CONSTRAINT PK_ID_Student PRIMARY KEY(ID_Student)
 );
+
+
+
+
+select * from Student
 INSERT INTO Student (ID_Student, First_Name, Middle_Name, Last_Name, Gender, Address_Student, Class, Status_Student, Avatar, Date_Of_Birth, Month_Of_Birth, Year_Of_Birth, Note)
 VALUES
 ('STU001', 'Emma', '', 'Johnson', 0, '123 Main Street, City','C001', 1, 'avatar1.jpg', 5, 3, 2019, 'Active and engaged learner.'),

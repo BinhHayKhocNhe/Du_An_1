@@ -11,7 +11,7 @@ public class StudentDAO implements myInterFace<Student, String> {
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Student WHERE ID_Student = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM Student";
     private final String UPDATE_SQL = "UPDATE Student SET First_Name = ?, Middle_Name = ?, Last_Name = ?, "
-            + "Gender = ?, Address_Student = ?, Class=?, Status_Student = ?, Avatar = ?, Date_Of_Birth = ?, "
+            + "Gender = ?, Address_Student = ?, ID_Class=?, Status_Student = ?, Avatar = ?, Date_Of_Birth = ?, "
             + "Month_Of_Birth = ?, Year_Of_Birth = ?, Note = ? WHERE ID_Student = ?";
 
     @Override
@@ -22,7 +22,7 @@ public class StudentDAO implements myInterFace<Student, String> {
     @Override
     public void update(Student entity) {
         JDBCHelper.executeUpdate(UPDATE_SQL, entity.getFirst_Name(), entity.getMiddle_Name(), entity.getLast_Name(),
-                entity.isGender(), entity.getAddress_Student(), entity.getClass_Student(), entity.isStatus_Student(), entity.getAvatar(),
+                entity.isGender(), entity.getAddress_Student(), entity.getID_Class(), entity.isStatus_Student(), entity.getAvatar(),
                 entity.getDate_Of_Birth(), entity.getMonth_Of_Birth(), entity.getYear_Of_Birth(), entity.getNote(),
                 entity.getID_Student());
     }
@@ -61,7 +61,7 @@ public class StudentDAO implements myInterFace<Student, String> {
             while (rs.next()) {
                 Student student = new Student(rs.getString("ID_Student"), rs.getString("First_Name"),
                         rs.getString("Middle_Name"), rs.getString("Last_Name"), rs.getString("Address_Student"),
-                        rs.getString("Class"), rs.getString("Avatar"), rs.getString("Note"), rs.getBoolean("Gender"),
+                        rs.getString("ID_Class"), rs.getString("Avatar"), rs.getString("Note"), rs.getBoolean("Gender"),
                         rs.getBoolean("Status_Student"), rs.getInt("Date_Of_Birth"),
                         rs.getInt("Month_Of_Birth"), rs.getInt("Year_Of_Birth"));
                 studentList.add(student);
