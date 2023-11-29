@@ -161,12 +161,12 @@ public class Login extends javax.swing.JFrame {
 
         txtUsername.setForeground(new java.awt.Color(255, 255, 255));
         txtUsername.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txtUsername.setText("admin4");
+        txtUsername.setText("EMP001");
         txtUsername.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(255, 255, 255), null));
 
         txtPass.setForeground(new java.awt.Color(255, 255, 255));
         txtPass.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txtPass.setText("admin123");
+        txtPass.setText("thuan");
         txtPass.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.white, null));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -368,7 +368,7 @@ public class Login extends javax.swing.JFrame {
                 return;
             }
             Authentication.staff = getFormStaff();
-            System.out.println("" + Authentication.staff.getID_Staff());
+//            System.out.println("" + Authentication.staff.getLast_Name());
             Form_Staff form_Staff = new Form_Staff();
             form_Staff.setVisible(true);
             this.dispose();

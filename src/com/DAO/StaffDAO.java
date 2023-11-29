@@ -90,32 +90,29 @@ public class StaffDAO implements myInterFace<Staff, String> {
         List<Staff> list = new ArrayList<>();
         try {
             ResultSet rs = null;
-            try {
-                rs = JDBCHelper.executeQuery(sql, args);
-                while (rs.next()) {
-                    Staff entity = new Staff();
-                    entity.setID_Staff(rs.getString("ID_Staff"));
-                    entity.setPassword_Staff(rs.getString("Password_Staff"));
-                    entity.setFirst_Name(rs.getString("First_Name"));
-                    entity.setMiddle_Name(rs.getString("Middle_Name"));
-                    entity.setLast_Name(rs.getString("Last_Name"));
-                    entity.setEmail(rs.getString("Email"));
-                    entity.setGender(rs.getBoolean("Gender"));
-                    entity.setStatus_Staff(rs.getBoolean("Status_Staff"));
-                    entity.setStart_Date(rs.getDate("Start_Date"));
-                    entity.setPosition(rs.getString("Position"));
-                    entity.setNote(rs.getString("Note"));
-                    entity.setAvatar(rs.getString("Avatar"));
-                    entity.setAddress_Staff(rs.getString("Address_Staff"));
-                    entity.setYear_Of_Birth(rs.getInt("Year_Of_Birth"));
-                    entity.setMonth_Of_Birth(rs.getInt("Month_Of_Birth"));
-                    entity.setDate_Of_Birth(rs.getInt("Date_Of_Birth"));
-                    entity.setPhone_Number(rs.getString("Phone_Number"));
-                    list.add(entity);
-                }
-            } finally {
-                rs.getStatement().getConnection().close();
+            rs = JDBCHelper.executeQuery(sql, args);
+            while (rs.next()) {
+                Staff entity = new Staff();
+                entity.setID_Staff(rs.getString("ID_Staff"));
+                entity.setPassword_Staff(rs.getString("Password_Staff"));
+                entity.setFirst_Name(rs.getString("First_Name"));
+                entity.setMiddle_Name(rs.getString("Middle_Name"));
+                entity.setLast_Name(rs.getString("Last_Name"));
+                entity.setEmail(rs.getString("Email"));
+                entity.setGender(rs.getBoolean("Gender"));
+                entity.setStatus_Staff(rs.getBoolean("Status_Staff"));
+                entity.setStart_Date(rs.getDate("Start_Date"));
+                entity.setPosition(rs.getString("Position"));
+                entity.setNote(rs.getString("Note"));
+                entity.setAvatar(rs.getString("Avatar"));
+                entity.setAddress_Staff(rs.getString("Address_Staff"));
+                entity.setYear_Of_Birth(rs.getInt("Year_Of_Birth"));
+                entity.setMonth_Of_Birth(rs.getInt("Month_Of_Birth"));
+                entity.setDate_Of_Birth(rs.getInt("Date_Of_Birth"));
+                entity.setPhone_Number(rs.getString("Phone_Number"));
+                list.add(entity);
             }
+            rs.getStatement().getConnection().close();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -184,4 +181,26 @@ public class StaffDAO implements myInterFace<Staff, String> {
         }
         return false;
     }
+public String ReturnPosition(String ID) {
+    final String sql = "SELECT Position FROM Staff WHERE ID_Staff = ?";
+    String position = null;
+    
+    try {
+        // Truyền tham số vào câu SQL
+        ResultSet rs = JDBCHelper.executeQuery(sql, ID);
+
+        // Kiểm tra xem có dữ liệu không
+        if (rs.next()) {
+            // Di chuyển con trỏ đến dòng đầu tiên và lấy giá trị từ cột "Position"
+            position = rs.getString("Position");
+        }
+
+        // Đóng ResultSet
+        rs.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    
+    return position;
+}
 }

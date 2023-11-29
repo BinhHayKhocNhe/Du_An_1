@@ -25,6 +25,7 @@ import java.util.List;
 public class Menu extends javax.swing.JFrame {
 
     StudentDAO studentDAO = new StudentDAO();
+    ClassDAO classDAO = new ClassDAO();
     int x = 210;    //chieu rong
     int y = 600;    //chieu cao
 
@@ -1500,7 +1501,7 @@ public class Menu extends javax.swing.JFrame {
         List<Student> studentList = studentDAO.selectAll();
 
 // Lấy danh sách lớp học từ DAO
-        List<Class> classList = ClassDAO.getAllClasses();
+        List<Class> classList = classDAO.selectAll();
 
 // Tạo danh sách dòng dữ liệu cho bảng
         DefaultTableModel tableModel = new DefaultTableModel();
