@@ -6,10 +6,14 @@
 package com.Main;
 
 import javax.swing.JOptionPane;
+
 import com.DAO.HocSinhDao;
 import com.DAO.SQLException;
 import com.DAO.ClassDAO;
 import com.Entity.Class;
+
+import com.DAO.StudentDAO;
+
 import com.Entity.Student;
 import com.Utils.JDBCHelper;
 import java.awt.event.ActionEvent;
@@ -20,6 +24,7 @@ import java.util.List;
 
 public class Menu extends javax.swing.JFrame {
 
+    StudentDAO studentDAO = new StudentDAO();
     int x = 210;    //chieu rong
     int y = 600;    //chieu cao
 
@@ -31,9 +36,9 @@ public class Menu extends javax.swing.JFrame {
         cardTrangChu.setVisible(true);
         cardTaiKhoan.setVisible(false);
         jplSlideMenu.setSize(210, 600);
-
-        loadDataToTable();
-        loadClassNamesToComboBox();
+//
+//        loadDataToTable();
+//        loadClassNamesToComboBox();
     }
 
     public void openMenu() {
@@ -86,89 +91,109 @@ public class Menu extends javax.swing.JFrame {
 
     }
 
-    private void loadDataToTable() {
-        List<Student> studentList = HocSinhDao.getAllStudents();
-        List<Class> classList = ClassDAO.getAllClasses();
-
-        DefaultTableModel studentModel = new DefaultTableModel();
-        DefaultTableModel classModel = new DefaultTableModel();
-
-        studentModel.addColumn("Student ID");
-        studentModel.addColumn("Full Name");
-        studentModel.addColumn("Gender");
-        studentModel.addColumn("Address");
-        studentModel.addColumn("Status");
-
-        // Add data to the table model for Student
-        for (Student student : studentList) {
-            String fullName = student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name();
-            String genderString = student.isGender() ? "Male" : "Female";
-            Object[] rowData = {
-                student.getID_Student(),
-                fullName,
-                genderString,
-                student.getAddress_Student(),
-                student.isStatus_Student(), //             
-            };
-            studentModel.addRow(rowData);
-        }
-
-        classModel.addColumn("Class ID");
-        classModel.addColumn("Class Name");
-
-        for (Class classEntity : classList) {
-            Object[] rowData = {
-                classEntity.getID_Class(),
-                classEntity.getClass_Name()
-
-            };
-            classModel.addRow(rowData);
-        }
-
-        DefaultTableModel mergedModel = mergeModels(studentModel, classModel);
-
-        tbl_list_hocsinh.setModel(mergedModel);
-    }
-
-    private DefaultTableModel mergeModels(DefaultTableModel model1, DefaultTableModel model2) {
-        DefaultTableModel mergedModel = new DefaultTableModel();
-
-        for (int i = 0; i < model1.getColumnCount(); i++) {
-            mergedModel.addColumn(model1.getColumnName(i));
-        }
-
-        for (int i = 0; i < model2.getColumnCount(); i++) {
-            mergedModel.addColumn(model2.getColumnName(i));
-        }
-
-        int rowCount = Math.max(model1.getRowCount(), model2.getRowCount());
-        for (int i = 0; i < rowCount; i++) {
-            Object[] rowData = new Object[model1.getColumnCount() + model2.getColumnCount()];
-            for (int j = 0; j < model1.getColumnCount(); j++) {
-                rowData[j] = (i < model1.getRowCount()) ? model1.getValueAt(i, j) : null;
-            }
-            for (int j = 0; j < model2.getColumnCount(); j++) {
-                rowData[model1.getColumnCount() + j] = (i < model2.getRowCount()) ? model2.getValueAt(i, j) : null;
-            }
-            mergedModel.addRow(rowData);
-        }
-
-        return mergedModel;
-
-    }
-
-    private void loadClassNamesToComboBox() {
-
-        List<Class> classes = ClassDAO.getAllClasses();
-
-        cmbclass.removeAllItems();
-
-        for (Class classEntity : classes) {
-            cmbclass.addItem(classEntity.getClass_Name());
-        }
-    }
-
-
+//    private void loadDataToTable() {
+//
+//        List<Student> studentList = HocSinhDao.getAllStudents();
+//        List<Class> classList = ClassDAO.getAllClasses();
+//
+//        List<Student> studentList = studentDAO.selectAll();
+//        DefaultTableModel model = new DefaultTableModel();
+//        tbl_list_hocsinh.setModel(model);
+//
+//
+//        DefaultTableModel studentModel = new DefaultTableModel();
+//        DefaultTableModel classModel = new DefaultTableModel();
+//
+//        studentModel.addColumn("Student ID");
+//        studentModel.addColumn("Full Name");
+//        studentModel.addColumn("Gender");
+//        studentModel.addColumn("Address");
+//        studentModel.addColumn("Status");
+//
+//        // Add data to the table model for Student
+//        for (Student student : studentList) {
+//            String fullName = student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name();
+//            String genderString = student.isGender() ? "Male" : "Female";
+//            Object[] rowData = {
+//                student.getID_Student(),
+//
+//                fullName,
+//                genderString,
+//                student.getAddress_Student(),
+//                student.isStatus_Student(), //             
+//
+//                student.getFirst_Name(),
+//                student.getMiddle_Name(),
+//                student.getLast_Name(),
+//                student.isGender(),
+//                student.getAddress_Student(),
+//                student.isStatus_Student(),
+//                student.getAvatar(),
+//                student.getDate_Of_Birth(),
+//                student.getMonth_Of_Birth(),
+//                student.getYear_Of_Birth(),
+//                student.getNote()
+//
+//            };
+//            studentModel.addRow(rowData);
+//        }
+//
+//        classModel.addColumn("Class ID");
+//        classModel.addColumn("Class Name");
+//
+//        for (Class classEntity : classList) {
+//            Object[] rowData = {
+//                classEntity.getID_Class(),
+//                classEntity.getClass_Name()
+//
+//            };
+//            classModel.addRow(rowData);
+//        }
+//
+//        DefaultTableModel mergedModel = mergeModels(studentModel, classModel);
+//
+//        tbl_list_hocsinh.setModel(mergedModel);
+//    }
+//
+//    private DefaultTableModel mergeModels(DefaultTableModel model1, DefaultTableModel model2) {
+//        DefaultTableModel mergedModel = new DefaultTableModel();
+//
+//        for (int i = 0; i < model1.getColumnCount(); i++) {
+//            mergedModel.addColumn(model1.getColumnName(i));
+//        }
+//
+//        for (int i = 0; i < model2.getColumnCount(); i++) {
+//            mergedModel.addColumn(model2.getColumnName(i));
+//        }
+//
+//        int rowCount = Math.max(model1.getRowCount(), model2.getRowCount());
+//        for (int i = 0; i < rowCount; i++) {
+//            Object[] rowData = new Object[model1.getColumnCount() + model2.getColumnCount()];
+//            for (int j = 0; j < model1.getColumnCount(); j++) {
+//                rowData[j] = (i < model1.getRowCount()) ? model1.getValueAt(i, j) : null;
+//            }
+//            for (int j = 0; j < model2.getColumnCount(); j++) {
+//                rowData[model1.getColumnCount() + j] = (i < model2.getRowCount()) ? model2.getValueAt(i, j) : null;
+//            }
+//            mergedModel.addRow(rowData);
+//        }
+//
+//        return mergedModel;
+//
+//    }
+//
+//    private void loadClassNamesToComboBox() {
+//
+//        List<Class> classes = ClassDAO.getAllClasses();
+//
+//        cmbclass.removeAllItems();
+//
+//        for (Class classEntity : classes) {
+//            cmbclass.addItem(classEntity.getClass_Name());
+//        }
+//    }
+//
+//
 
   
  

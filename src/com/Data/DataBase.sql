@@ -43,6 +43,7 @@ Start_Date DATETIME DEFAULT GETDATE(),
 Note NVARCHAR(255),
 CONSTRAINT PK_ID_Staff PRIMARY KEY(ID_Staff)
 );
+
 INSERT INTO Staff (ID_Staff, Password_Staff, First_Name, Middle_Name, Last_Name, Email, Phone_Number, Gender, Status_Staff, Position, Address_Staff, Avatar, Date_Of_Birth, Month_Of_Birth, Year_Of_Birth, Note)
 VALUES 
 ('EMP001', 'password123', 'John', 'A.', 'Doe', 'john.doe@email.com', '123456789', 1, 1, 'Doctor', '123 Main Street, City', 'avatar1.jpg', 1, 1, 1980, 'Excellent doctor with years of experience in healthcare.'),
