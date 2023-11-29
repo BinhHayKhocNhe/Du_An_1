@@ -6,8 +6,19 @@
 package com.Main;
 
 import javax.swing.JOptionPane;
+
+import com.DAO.HocSinhDao;
+import com.DAO.SQLException;
+import com.DAO.ClassDAO;
+import com.Entity.Class;
+
 import com.DAO.StudentDAO;
+
 import com.Entity.Student;
+import com.Utils.JDBCHelper;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
@@ -25,8 +36,9 @@ public class Menu extends javax.swing.JFrame {
         cardTrangChu.setVisible(true);
         cardTaiKhoan.setVisible(false);
         jplSlideMenu.setSize(210, 600);
-
-        loadDataToTable();
+//
+//        loadDataToTable();
+//        loadClassNamesToComboBox();
     }
 
     public void openMenu() {
@@ -79,45 +91,112 @@ public class Menu extends javax.swing.JFrame {
 
     }
 
-    private void loadDataToTable() {
-        List<Student> studentList = studentDAO.selectAll();
-        DefaultTableModel model = new DefaultTableModel();
-        tbl_list_hocsinh.setModel(model);
+//    private void loadDataToTable() {
+//
+//        List<Student> studentList = HocSinhDao.getAllStudents();
+//        List<Class> classList = ClassDAO.getAllClasses();
+//
+//        List<Student> studentList = studentDAO.selectAll();
+//        DefaultTableModel model = new DefaultTableModel();
+//        tbl_list_hocsinh.setModel(model);
+//
+//
+//        DefaultTableModel studentModel = new DefaultTableModel();
+//        DefaultTableModel classModel = new DefaultTableModel();
+//
+//        studentModel.addColumn("Student ID");
+//        studentModel.addColumn("Full Name");
+//        studentModel.addColumn("Gender");
+//        studentModel.addColumn("Address");
+//        studentModel.addColumn("Status");
+//
+//        // Add data to the table model for Student
+//        for (Student student : studentList) {
+//            String fullName = student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name();
+//            String genderString = student.isGender() ? "Male" : "Female";
+//            Object[] rowData = {
+//                student.getID_Student(),
+//
+//                fullName,
+//                genderString,
+//                student.getAddress_Student(),
+//                student.isStatus_Student(), //             
+//
+//                student.getFirst_Name(),
+//                student.getMiddle_Name(),
+//                student.getLast_Name(),
+//                student.isGender(),
+//                student.getAddress_Student(),
+//                student.isStatus_Student(),
+//                student.getAvatar(),
+//                student.getDate_Of_Birth(),
+//                student.getMonth_Of_Birth(),
+//                student.getYear_Of_Birth(),
+//                student.getNote()
+//
+//            };
+//            studentModel.addRow(rowData);
+//        }
+//
+//        classModel.addColumn("Class ID");
+//        classModel.addColumn("Class Name");
+//
+//        for (Class classEntity : classList) {
+//            Object[] rowData = {
+//                classEntity.getID_Class(),
+//                classEntity.getClass_Name()
+//
+//            };
+//            classModel.addRow(rowData);
+//        }
+//
+//        DefaultTableModel mergedModel = mergeModels(studentModel, classModel);
+//
+//        tbl_list_hocsinh.setModel(mergedModel);
+//    }
+//
+//    private DefaultTableModel mergeModels(DefaultTableModel model1, DefaultTableModel model2) {
+//        DefaultTableModel mergedModel = new DefaultTableModel();
+//
+//        for (int i = 0; i < model1.getColumnCount(); i++) {
+//            mergedModel.addColumn(model1.getColumnName(i));
+//        }
+//
+//        for (int i = 0; i < model2.getColumnCount(); i++) {
+//            mergedModel.addColumn(model2.getColumnName(i));
+//        }
+//
+//        int rowCount = Math.max(model1.getRowCount(), model2.getRowCount());
+//        for (int i = 0; i < rowCount; i++) {
+//            Object[] rowData = new Object[model1.getColumnCount() + model2.getColumnCount()];
+//            for (int j = 0; j < model1.getColumnCount(); j++) {
+//                rowData[j] = (i < model1.getRowCount()) ? model1.getValueAt(i, j) : null;
+//            }
+//            for (int j = 0; j < model2.getColumnCount(); j++) {
+//                rowData[model1.getColumnCount() + j] = (i < model2.getRowCount()) ? model2.getValueAt(i, j) : null;
+//            }
+//            mergedModel.addRow(rowData);
+//        }
+//
+//        return mergedModel;
+//
+//    }
+//
+//    private void loadClassNamesToComboBox() {
+//
+//        List<Class> classes = ClassDAO.getAllClasses();
+//
+//        cmbclass.removeAllItems();
+//
+//        for (Class classEntity : classes) {
+//            cmbclass.addItem(classEntity.getClass_Name());
+//        }
+//    }
+//
+//
 
-        // Add columns to the table model
-        model.addColumn("ID");
-        model.addColumn("First Name");
-        model.addColumn("Middle Name");
-        model.addColumn("Last Name");
-        model.addColumn("Gender");
-        model.addColumn("Address");
-        model.addColumn("Status");
-        model.addColumn("Avatar");
-        model.addColumn("Date of Birth");
-        model.addColumn("Month of Birth");
-        model.addColumn("Year of Birth");
-        model.addColumn("Note");
-
-        // Add data to the table model
-        for (Student student : studentList) {
-            Object[] rowData = {
-                student.getID_Student(),
-                student.getFirst_Name(),
-                student.getMiddle_Name(),
-                student.getLast_Name(),
-                student.isGender(),
-                student.getAddress_Student(),
-                student.isStatus_Student(),
-                student.getAvatar(),
-                student.getDate_Of_Birth(),
-                student.getMonth_Of_Birth(),
-                student.getYear_Of_Birth(),
-                student.getNote()
-            };
-            model.addRow(rowData);
-        }
-    }
-
+  
+ 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -186,9 +265,9 @@ public class Menu extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_list_hocsinh = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jComboBox5 = new javax.swing.JComboBox<>();
-        jButton9 = new javax.swing.JButton();
+        txt_id_hocsinh = new javax.swing.JTextField();
+        cmbclass = new javax.swing.JComboBox<>();
+        btn_tim_hocsinh = new javax.swing.JButton();
         cardNhapdiem = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -814,15 +893,20 @@ public class Menu extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Id student");
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        txt_id_hocsinh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                txt_id_hocsinhActionPerformed(evt);
             }
         });
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbclass.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jButton9.setText("Find");
+        btn_tim_hocsinh.setText("Find");
+        btn_tim_hocsinh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_tim_hocsinhActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout cardListhocsinhLayout = new javax.swing.GroupLayout(cardListhocsinh);
         cardListhocsinh.setLayout(cardListhocsinhLayout);
@@ -834,11 +918,11 @@ public class Menu extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardListhocsinhLayout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txt_id_hocsinh, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbclass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
-                        .addComponent(jButton9)
+                        .addComponent(btn_tim_hocsinh)
                         .addGap(42, 42, 42))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardListhocsinhLayout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 622, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -849,9 +933,9 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(cardListhocsinhLayout.createSequentialGroup()
                 .addGap(7, 7, 7)
                 .addGroup(cardListhocsinhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton9)
+                    .addComponent(txt_id_hocsinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbclass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_tim_hocsinh)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1379,9 +1463,9 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField6ActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void txt_id_hocsinhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_id_hocsinhActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_txt_id_hocsinhActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
 
@@ -1410,6 +1494,61 @@ public class Menu extends javax.swing.JFrame {
     private void lbShowNewPassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbShowNewPassMouseClicked
 
     }//GEN-LAST:event_lbShowNewPassMouseClicked
+
+    private void btn_tim_hocsinhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tim_hocsinhActionPerformed
+String studentId = txt_id_hocsinh.getText();
+
+// Lấy danh sách học sinh từ DAO
+List<Student> studentList = HocSinhDao.getAllStudents();
+
+// Lấy danh sách lớp học từ DAO
+List<Class> classList = ClassDAO.getAllClasses();
+
+// Tạo danh sách dòng dữ liệu cho bảng
+DefaultTableModel tableModel = new DefaultTableModel();
+tableModel.addColumn("Student ID");
+tableModel.addColumn("Full Name");
+tableModel.addColumn("Gender");
+tableModel.addColumn("Address");
+tableModel.addColumn("Status");
+tableModel.addColumn("Class ID");
+tableModel.addColumn("Class Name");
+
+// Lọc danh sách học sinh và lớp học dựa trên ID học sinh
+for (Student student : studentList) {
+    if (student.getID_Student().equalsIgnoreCase(studentId)) {
+        String fullName = student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name();
+        String genderString = student.isGender() ? "Male" : "Female";
+        
+        // Dòng dữ liệu cho học sinh
+        Object[] rowData = {
+            student.getID_Student(),
+            fullName,
+            genderString,
+            student.getAddress_Student(),
+            student.isStatus_Student(),
+            "", // Dòng này để trống cho thông tin lớp học, bạn có thể cập nhật sau
+            ""  // Dòng này để trống cho thông tin tên lớp học, bạn có thể cập nhật sau
+        };
+        
+        // Thêm dòng dữ liệu học sinh vào bảng
+        tableModel.addRow(rowData);
+        
+        // Tìm lớp học tương ứng với ID học sinh
+        for (Class classEntity : classList) {
+            if (classEntity.getID_Student().equalsIgnoreCase(studentId)) {
+                // Cập nhật thông tin lớp học vào dòng dữ liệu đã tạo
+                tableModel.setValueAt(classEntity.getID_Class(), tableModel.getRowCount() - 1, 5);
+                tableModel.setValueAt(classEntity.getClass_Name(), tableModel.getRowCount() - 1, 6);
+            }
+        }
+    }
+}
+
+// Cập nhật bảng tbl_list_hocsinh bằng dữ liệu đã tạo
+tbl_list_hocsinh.setModel(tableModel);           
+
+    }//GEN-LAST:event_btn_tim_hocsinhActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1454,6 +1593,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btn_tim_hocsinh;
     private javax.swing.JPanel cardDoimk;
     private javax.swing.JPanel cardLich;
     private javax.swing.JPanel cardListhocsinh;
@@ -1461,6 +1601,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JPanel cardTaiKhoan;
     private javax.swing.JPanel cardTrangChu;
     private javax.swing.JPanel cardhelp;
+    private javax.swing.JComboBox<String> cmbclass;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -1473,12 +1614,10 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JComboBox<String> jComboBox6;
     private javax.swing.JComboBox<String> jComboBox7;
     private javax.swing.JLabel jLabel1;
@@ -1536,7 +1675,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
@@ -1575,5 +1713,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtNewPass;
     private javax.swing.JTextArea txtNote;
     private javax.swing.JTextField txtPhone;
+    private javax.swing.JTextField txt_id_hocsinh;
     // End of variables declaration//GEN-END:variables
 }

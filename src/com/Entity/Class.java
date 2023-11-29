@@ -3,68 +3,72 @@ package com.Entity;
 
 public class Class {
 
-    private String idClass;
-    private String className;
-    private String idTeacher;
-    private String idStudent;
-    private int quantity;
-    private String note;
 
-    public Class(String idClass, String className, String idTeacher, String idStudent, int quantity, String note) {
-        this.idClass = idClass;
-        this.className = className;
-        this.idTeacher = idTeacher;
-        this.idStudent = idStudent;
-        this.quantity = quantity;
-        this.note = note;
+    private String ID_Class;
+    private String Class_Name;
+    private String ID_Teacher;
+    private String ID_Student;
+    private int Quantity;
+    private String Note;
+
+    public String getID_Class() {
+        return ID_Class;
     }
 
-    public String getIdClass() {
-        return idClass;
+    public void setID_Class(String ID_Class) {
+        this.ID_Class = ID_Class;
     }
 
-    public void setIdClass(String idClass) {
-        this.idClass = idClass;
+    public String getClass_Name() {
+        return Class_Name;
     }
 
-    public String getClassName() {
-        return className;
+    public void setClass_Name(String Class_Name) {
+        this.Class_Name = Class_Name;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public String getID_Teacher() {
+        return ID_Teacher;
     }
 
-    public String getIdTeacher() {
-        return idTeacher;
+    public void setID_Teacher(String ID_Teacher) {
+        this.ID_Teacher = ID_Teacher;
     }
 
-    public void setIdTeacher(String idTeacher) {
-        this.idTeacher = idTeacher;
+    public String getID_Student() {
+        return ID_Student;
     }
 
-    public String getIdStudent() {
-        return idStudent;
-    }
-
-    public void setIdStudent(String idStudent) {
-        this.idStudent = idStudent;
+    public void setID_Student(String ID_Student) {
+        this.ID_Student = ID_Student;
     }
 
     public int getQuantity() {
-        return quantity;
+        return Quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setQuantity(int Quantity) {
+        this.Quantity = Quantity;
     }
 
     public String getNote() {
-        return note;
+        return Note;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setNote(String Note) {
+        this.Note = Note;
+    }
+
+    public Class(String ID_Class, String Class_Name, String ID_Teacher, String ID_Student, int Quantity, String Note) {
+        this.ID_Class = ID_Class;
+        this.Class_Name = Class_Name;
+        this.ID_Teacher = ID_Teacher;
+        this.ID_Student = ID_Student;
+        this.Quantity = Quantity;
+        this.Note = Note;
+    }
+
+    public Class() {
     }
 }
 

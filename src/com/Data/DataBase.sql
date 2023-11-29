@@ -15,6 +15,8 @@ Note NVARCHAR(255),
 CONSTRAINT PK_ID_Admin PRIMARY KEY(ID_Administrator)
 );
 
+select * from Student 
+
 INSERT INTO Administrators (ID_Administrator, Password_Administrator, First_Name, Middle_Name, Last_Name, Email, Phone_Number, Gender, Address, Note)
 VALUES 
 ('admin1', 'securepass1', 'John', '', 'Doe', 'john.d@example.com', '123456789', 1, '123 Main Street, Cityville', 'Administrator 1'),
@@ -22,7 +24,6 @@ VALUES
 ('admin3', 'adminadmin', 'Michael', '', 'Johnson', 'michael.j@example.com', '111223344', 1, '789 Pine Road, Villageton', 'Administrator 3'),
 ('admin4', 'admin123', 'Emily', '', 'Brown', 'emily.b@example.com', '9988776655', 0, '101 Cedar Lane, Hamletville', 'Administrator 4'),
 ('admin5', 'adminpass123', 'Daniel', '', 'Lee', 'daniel.lee@example.com', '1122334455', 1, '202 Maple Drive, Township', 'Administrator 5');
-
 CREATE TABLE Staff (
 ID_Staff NVARCHAR(50) NOT NULL,
 Password_Staff NVARCHAR(50) NOT NULL,

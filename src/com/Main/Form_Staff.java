@@ -6,7 +6,9 @@
 package com.Main;
 
 import com.DAO.StaffDAO;
+import com.DAO.StudentDAO;
 import com.Entity.Staff;
+import com.Entity.Student;
 import com.Utils.Authentication;
 import com.Utils.IsValidForm;
 import com.Utils.Message;
@@ -15,7 +17,6 @@ import com.Utils.XImage;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.io.File;
-import java.security.interfaces.RSAKey;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -23,7 +24,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -36,7 +36,8 @@ public class Form_Staff extends javax.swing.JFrame {
     int y = 700;    //chieu cao
     private JFileChooser fileChooser = new JFileChooser();
     private String pathOfSelectedImage = null;
-    StaffDAO dao = new StaffDAO();
+    StaffDAO daoStaff = new StaffDAO();
+    StudentDAO daostu = new StudentDAO();
 
     /**
      * Creates new form Menu
@@ -52,6 +53,7 @@ public class Form_Staff extends javax.swing.JFrame {
         this.setResizable(false);
         this.uploadCombobox();
         fillTable();
+        setTableStudent();
         InforStaff();
     }
 
@@ -61,7 +63,7 @@ public class Form_Staff extends javax.swing.JFrame {
         cardInfor.setVisible(false);
         cardSchedule.setVisible(false);
         cardStaff.setVisible(false);
-        cardNhapdiem.setVisible(false);
+        cardAddStudent.setVisible(false);
         cardhelp.setVisible(false);
         cardHome1.setVisible(false);
         closeMenu();
@@ -220,7 +222,7 @@ public class Form_Staff extends javax.swing.JFrame {
         model.setRowCount(0);
         try {
             String keyword = txtFind.getText();
-            List<Staff> list = dao.selectByKeyword(keyword);
+            List<Staff> list = daoStaff.selectByKeyword(keyword);
             for (Staff sta : list) {
                 Object[] row = {
                     sta.getID_Staff(),
@@ -243,7 +245,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private void ClickTable() {
         int row = tblStaff.getSelectedRow();
         String ID_Staff = (String) tblStaff.getValueAt(row, 0);
-        Staff sta = dao.selectById(ID_Staff);
+        Staff sta = daoStaff.selectById(ID_Staff);
         this.setForm(sta);
         INFORMATION.setSelectedIndex(0);
     }
@@ -291,7 +293,7 @@ public class Form_Staff extends javax.swing.JFrame {
     }
 
     private void InforStaff() {
-        Staff staff = dao.selectById(Authentication.staff.getID_Staff());
+        Staff staff = daoStaff.selectById(Authentication.staff.getID_Staff());
         setFormIforn(staff);
     }
 // change pass
@@ -315,9 +317,33 @@ public class Form_Staff extends javax.swing.JFrame {
     }
 
     private void changePassword() {
-        dao.changePassword(Authentication.staff.getID_Staff(),
+        daoStaff.changePassword(Authentication.staff.getID_Staff(),
                 String.valueOf(txtCurrentPass.getPassword()), String.valueOf(txtEnterPass.getPassword()));
         this.resetFormChangePassWord();
+    }
+
+// set Studen table
+    private void setTableStudent() {
+        DefaultTableModel model = (DefaultTableModel) tblList_stu.getModel();
+        model.setRowCount(0);
+        try {
+            String kyeword = txtFind_Stu.getText();
+            List<Student> stu = daostu.selectByKeyword(kyeword);
+            for (Student student : stu) {
+                Object row[] = {
+                    student.getID_Student(),
+                    student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name(),
+                    student.isGender() ? "Male" : "Female",
+                    student.isStatus_Student() ? "On" : "Off",
+                    student.getDate_Of_Birth() + "/" + student.getMonth_Of_Birth() + "/" + student.getYear_Of_Birth(),
+                    student.getNote()
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+            Message.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
     }
 
     /**
@@ -460,8 +486,16 @@ public class Form_Staff extends javax.swing.JFrame {
         lbShowNewPass = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
         jSeparator5 = new javax.swing.JSeparator();
-        cardNhapdiem = new javax.swing.JPanel();
+        cardAddStudent = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
+        jSeparator6 = new javax.swing.JSeparator();
+        jTabbedPane2 = new javax.swing.JTabbedPane();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblList_stu = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        txtFind_Stu = new javax.swing.JTextField();
         cardSchedule = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         cardhelp = new javax.swing.JPanel();
@@ -626,7 +660,7 @@ public class Form_Staff extends javax.swing.JFrame {
 
         lblsuadiem.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         lblsuadiem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblsuadiem.setText("Enter scores");
+        lblsuadiem.setText("Point");
         lblsuadiem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblsuadiemMouseClicked(evt);
@@ -1574,30 +1608,110 @@ public class Form_Staff extends javax.swing.JFrame {
 
         jplMain.add(cardStaff, "card3");
 
-        cardNhapdiem.setBackground(new java.awt.Color(255, 255, 255));
-        cardNhapdiem.setPreferredSize(new java.awt.Dimension(1100, 540));
+        cardAddStudent.setBackground(new java.awt.Color(255, 255, 255));
+        cardAddStudent.setPreferredSize(new java.awt.Dimension(1100, 540));
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel5.setText("Nhập điểm");
+        jLabel5.setText(" STUDENT");
 
-        javax.swing.GroupLayout cardNhapdiemLayout = new javax.swing.GroupLayout(cardNhapdiem);
-        cardNhapdiem.setLayout(cardNhapdiemLayout);
-        cardNhapdiemLayout.setHorizontalGroup(
-            cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(cardNhapdiemLayout.createSequentialGroup()
-                .addGap(410, 410, 410)
-                .addComponent(jLabel5)
-                .addContainerGap(579, Short.MAX_VALUE))
+        jTabbedPane2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 153, 153), new java.awt.Color(51, 51, 51)));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 866, Short.MAX_VALUE)
         );
-        cardNhapdiemLayout.setVerticalGroup(
-            cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(cardNhapdiemLayout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jLabel5)
-                .addContainerGap(481, Short.MAX_VALUE))
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 379, Short.MAX_VALUE)
         );
 
-        jplMain.add(cardNhapdiem, "card3");
+        jTabbedPane2.addTab("INFORMATION STUDENT", jPanel5);
+
+        tblList_stu.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID Student", "Full Name", "Gender", "Status", "Birth Day", "Note"
+            }
+        ));
+        jScrollPane2.setViewportView(tblList_stu);
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setText("ID or Nam Student");
+
+        txtFind_Stu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFind_StuActionPerformed(evt);
+            }
+        });
+        txtFind_Stu.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFind_StuKeyReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(68, 68, 68)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtFind_Stu, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(131, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(12, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtFind_Stu, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jTabbedPane2.addTab("LIST STUDENT", jPanel6);
+
+        javax.swing.GroupLayout cardAddStudentLayout = new javax.swing.GroupLayout(cardAddStudent);
+        cardAddStudent.setLayout(cardAddStudentLayout);
+        cardAddStudentLayout.setHorizontalGroup(
+            cardAddStudentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cardAddStudentLayout.createSequentialGroup()
+                .addGap(520, 520, 520)
+                .addGroup(cardAddStudentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator6))
+                .addGap(375, 375, 375))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardAddStudentLayout.createSequentialGroup()
+                .addGap(215, 215, 215)
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
+        );
+        cardAddStudentLayout.setVerticalGroup(
+            cardAddStudentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cardAddStudentLayout.createSequentialGroup()
+                .addComponent(jLabel5)
+                .addGap(0, 0, 0)
+                .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(68, 68, 68))
+        );
+
+        jplMain.add(cardAddStudent, "card3");
 
         cardSchedule.setBackground(new java.awt.Color(255, 255, 255));
         cardSchedule.setPreferredSize(new java.awt.Dimension(1100, 540));
@@ -1731,7 +1845,7 @@ public class Form_Staff extends javax.swing.JFrame {
 
     private void lblsuadiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsuadiemMouseClicked
         CardFalse();
-
+        cardAddStudent.setVisible(true);
     }//GEN-LAST:event_lblsuadiemMouseClicked
 
     private void lblHelpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHelpMouseClicked
@@ -1969,6 +2083,16 @@ public class Form_Staff extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cboDay1ActionPerformed
 
+    private void txtFind_StuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFind_StuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFind_StuActionPerformed
+
+    private void txtFind_StuKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFind_StuKeyReleased
+        // TODO add your handling code here:
+        setTableStudent();
+
+    }//GEN-LAST:event_txtFind_StuKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -2021,10 +2145,10 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JButton btnUpload1;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JPanel cardAddStudent;
     private javax.swing.JPanel cardHome;
     private javax.swing.JPanel cardHome1;
     private javax.swing.JPanel cardInfor;
-    private javax.swing.JPanel cardNhapdiem;
     private javax.swing.JPanel cardSchedule;
     private javax.swing.JPanel cardStaff;
     private javax.swing.JPanel cardThemSau;
@@ -2068,6 +2192,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
@@ -2083,15 +2208,20 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JPanel jplMain;
     private javax.swing.JPanel jplSlideMenu;
     private javax.swing.JPanel jplTitle;
@@ -2119,6 +2249,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JRadioButton rdoOff1;
     private javax.swing.JRadioButton rdoOn;
     private javax.swing.JRadioButton rdoOn1;
+    private javax.swing.JTable tblList_stu;
     private javax.swing.JTable tblStaff;
     private javax.swing.JTextField txtAddress;
     private javax.swing.JTextField txtAddress1;
@@ -2129,6 +2260,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JTextField txtF_Name;
     private javax.swing.JTextField txtF_Name1;
     private javax.swing.JTextField txtFind;
+    private javax.swing.JTextField txtFind_Stu;
     private javax.swing.JTextPane txtGioiThieu;
     private javax.swing.JTextField txtId_Staff;
     private javax.swing.JTextField txtId_Staff1;
