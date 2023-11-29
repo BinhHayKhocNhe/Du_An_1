@@ -125,6 +125,8 @@ Job NVARCHAR(50) NOT NULL,
 Note NVARCHAR(255),
 CONSTRAINT PK_ID_Guardians PRIMARY KEY(ID_Guardians)
 );
+SELECT DISTINCT Job
+FROM Guardians;
 INSERT INTO Guardians (ID_Guardians, Password_Guardians, First_Name, Middle_Name, Last_Name, Email, Phone_Number, Gender, Address_Guardians, Job, Note)
 VALUES 
 ('GRD001', 'guardian123', 'Michael', 'A.', 'Johnson', 'michael.j@email.com', '123456789', 1, '456 Guardian Street, City', 'Engineer', 'Active supporter of the child''s education.'),
@@ -155,20 +157,19 @@ Middle_Name NVARCHAR(20),
 Last_Name NVARCHAR(20) NOT NULL,
 Gender BIT NOT NULL,
 Address_Student NVARCHAR(255) NOT NULL,
-ID_Class NVARCHAR(20) NOT NULL,
+ID_Class NVARCHAR(50) NOT NULL,
 Status_Student BIT NOT NULL,
 Avatar NVARCHAR(50) NOT NULL,
 Date_Of_Birth INT NOT NULL,
 Month_Of_Birth INT NOT NULL,
 Year_Of_Birth INT NOT NULL,
 Note NVARCHAR(255),
-CONSTRAINT PK_ID_Student PRIMARY KEY(ID_Student)
+CONSTRAINT PK_ID_Student PRIMARY KEY(ID_Student),
+CONSTRAINT FK_ID_StudentClass FOREIGN KEY (ID_Class) REFERENCES Class(ID_Class)
 );
+-- Thêm khóa ngoại
 
 
-
-
-select * from Student
 INSERT INTO Student (ID_Student, First_Name, Middle_Name, Last_Name, Gender, Address_Student, Class, Status_Student, Avatar, Date_Of_Birth, Month_Of_Birth, Year_Of_Birth, Note)
 VALUES
 ('STU001', 'Emma', '', 'Johnson', 0, '123 Main Street, City','C001', 1, 'avatar1.jpg', 5, 3, 2019, 'Active and engaged learner.'),
