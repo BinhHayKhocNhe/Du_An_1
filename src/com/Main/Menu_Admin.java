@@ -6,12 +6,15 @@
 package com.Main;
 
 import com.DAO.Administrators_DAO;
+import com.DAO.StaffDAO;
 import com.DAO.Teacher_DAO;
 import com.Entity.Administrators;
+import com.Entity.Staff;
 import com.Entity.Teacher;
 import com.Utils.Authentication;
 import com.Utils.IsValidForm;
 import com.Utils.Message;
+import com.Utils.Time;
 import com.Utils.XImage;
 import java.io.File;
 import java.util.Arrays;
@@ -30,8 +33,11 @@ public class Menu_Admin extends javax.swing.JFrame {
     private int y = 800;    //chieu cao
     private Administrators_DAO adminDAO = new Administrators_DAO();
     private Teacher_DAO teacher_DAO = new Teacher_DAO();
+    private StaffDAO staff_DAO = new StaffDAO();
     private DefaultTableModel tableModelTeacher = new DefaultTableModel();
     private DefaultTableModel tableModelResetPassTeacher = new DefaultTableModel();
+    private DefaultTableModel tableModelStaff = new DefaultTableModel();
+    private DefaultTableModel tableModelResetPassStaff = new DefaultTableModel();
     private JFileChooser fileChooser = new JFileChooser();
 
     /**
@@ -48,11 +54,19 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.txtStartDateTeacher.setEditable(false);
         this.rdONTeacher.setSelected(true);
         this.rdMaleTeacher.setSelected(true);
+        this.rdONStaff.setSelected(true);
+        this.rdMaleStaff.setSelected(true);
+        this.txtStartDateStaff.setEditable(false);
         this.uploadComboboxTeacher();
+        this.uploadComboboxStaff();
         this.initTableTeacher();
+        this.initTableStaff();
         this.setFormAdmin();
         this.fillFindResetPassTeacher();
         this.fillFindTableTeacher();
+        this.fillTableStaff();
+        this.fillFindResetPassStaff();
+
     }
 
     private void openMenu() {
@@ -91,11 +105,13 @@ public class Menu_Admin extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
         buttonGroup3 = new javax.swing.ButtonGroup();
+        buttonGroup4 = new javax.swing.ButtonGroup();
+        buttonGroup5 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jplSlideMenu = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        lbNameAdmin = new javax.swing.JLabel();
         lblCloseMenu = new javax.swing.JLabel();
         haha = new javax.swing.JLabel();
         lblTrangChu = new javax.swing.JLabel();
@@ -105,7 +121,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         lblthoat = new javax.swing.JLabel();
         lbldoimk = new javax.swing.JLabel();
         lblhotro = new javax.swing.JLabel();
-        lblsuadiem = new javax.swing.JLabel();
+        lbStaff = new javax.swing.JLabel();
         lbllich1 = new javax.swing.JLabel();
         jpllMenuBar = new javax.swing.JPanel();
         lblOpenMenu = new javax.swing.JLabel();
@@ -206,8 +222,59 @@ public class Menu_Admin extends javax.swing.JFrame {
         tableResetPassTeacher = new javax.swing.JTable();
         btnResetPassTeacher = new javax.swing.JButton();
         btnExitResetPassTeacher = new javax.swing.JButton();
-        cardNhapdiem = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
+        cardListStaff = new javax.swing.JPanel();
+        tabStaff = new javax.swing.JTabbedPane();
+        jLayeredPane6 = new javax.swing.JLayeredPane();
+        lbAvatarStaff = new javax.swing.JLabel();
+        jLabel38 = new javax.swing.JLabel();
+        txtIDStaff = new javax.swing.JTextField();
+        jLabel40 = new javax.swing.JLabel();
+        txtFirstNameStaff = new javax.swing.JTextField();
+        jLabel41 = new javax.swing.JLabel();
+        txtLastNameStaff = new javax.swing.JTextField();
+        jLabel42 = new javax.swing.JLabel();
+        txtMidNameStaff = new javax.swing.JTextField();
+        jLabel43 = new javax.swing.JLabel();
+        txtEmailStaff = new javax.swing.JTextField();
+        jLabel44 = new javax.swing.JLabel();
+        txtPhoneStaff = new javax.swing.JTextField();
+        jLabel45 = new javax.swing.JLabel();
+        jLabel46 = new javax.swing.JLabel();
+        rdMaleStaff = new javax.swing.JRadioButton();
+        rdFemaleStaff = new javax.swing.JRadioButton();
+        jLabel47 = new javax.swing.JLabel();
+        btnUploadImgStaff = new javax.swing.JButton();
+        rdONStaff = new javax.swing.JRadioButton();
+        rdOFFStaff = new javax.swing.JRadioButton();
+        jLabel48 = new javax.swing.JLabel();
+        cbPositionStaff = new javax.swing.JComboBox<>();
+        jLabel49 = new javax.swing.JLabel();
+        jLabel50 = new javax.swing.JLabel();
+        cbYearStaff = new javax.swing.JComboBox<>();
+        cbMonthStaff = new javax.swing.JComboBox<>();
+        jLabel51 = new javax.swing.JLabel();
+        cbDateStaff = new javax.swing.JComboBox<>();
+        jLabel52 = new javax.swing.JLabel();
+        txtStartDateStaff = new javax.swing.JTextField();
+        jLabel53 = new javax.swing.JLabel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        txtNoteStaff = new javax.swing.JTextArea();
+        btnAddStaff = new javax.swing.JButton();
+        btnUpdateStaff = new javax.swing.JButton();
+        btnResetFormStaff = new javax.swing.JButton();
+        txtAddressStaff = new javax.swing.JTextField();
+        jLayeredPane7 = new javax.swing.JLayeredPane();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tableStaff = new javax.swing.JTable();
+        txtFindStaff = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLayeredPane8 = new javax.swing.JLayeredPane();
+        jLabel54 = new javax.swing.JLabel();
+        txtIDResetPassStaff = new javax.swing.JTextField();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tableResetPassStaff = new javax.swing.JTable();
+        btnResetPassStaff = new javax.swing.JButton();
+        btnExitResetPassStaff = new javax.swing.JButton();
         cardLich = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         cardhelp = new javax.swing.JPanel();
@@ -236,8 +303,9 @@ public class Menu_Admin extends javax.swing.JFrame {
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/user.png"))); // NOI18N
 
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel4.setText("Teacher");
+        lbNameAdmin.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lbNameAdmin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbNameAdmin.setText("Admin");
 
         lblCloseMenu.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         lblCloseMenu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -253,7 +321,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(69, Short.MAX_VALUE)
+                .addContainerGap(42, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3)
@@ -261,8 +329,8 @@ public class Menu_Admin extends javax.swing.JFrame {
                         .addComponent(lblCloseMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(72, 72, 72))))
+                        .addComponent(lbNameAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,7 +341,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addComponent(lbNameAdmin)
                 .addContainerGap(34, Short.MAX_VALUE))
         );
 
@@ -351,15 +419,15 @@ public class Menu_Admin extends javax.swing.JFrame {
         });
         jplSlideMenu.add(lblhotro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 210, 30));
 
-        lblsuadiem.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        lblsuadiem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblsuadiem.setText("Enter scores");
-        lblsuadiem.addMouseListener(new java.awt.event.MouseAdapter() {
+        lbStaff.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lbStaff.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbStaff.setText("Staff");
+        lbStaff.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblsuadiemMouseClicked(evt);
+                lbStaffMouseClicked(evt);
             }
         });
-        jplSlideMenu.add(lblsuadiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 210, 30));
+        jplSlideMenu.add(lbStaff, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 210, 30));
 
         lbllich1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         lbllich1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1186,6 +1254,11 @@ public class Menu_Admin extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tableResetPassTeacher.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableResetPassTeacherMouseClicked(evt);
+            }
+        });
         jScrollPane5.setViewportView(tableResetPassTeacher);
 
         btnResetPassTeacher.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -1267,29 +1340,505 @@ public class Menu_Admin extends javax.swing.JFrame {
 
         jplMain.add(cardListTeacher, "card3");
 
-        cardNhapdiem.setBackground(new java.awt.Color(255, 255, 255));
+        cardListStaff.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel5.setText("Nhập điểm");
+        tabStaff.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        tabStaff.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                tabStaffAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        tabStaff.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabStaffMouseClicked(evt);
+            }
+        });
 
-        javax.swing.GroupLayout cardNhapdiemLayout = new javax.swing.GroupLayout(cardNhapdiem);
-        cardNhapdiem.setLayout(cardNhapdiemLayout);
-        cardNhapdiemLayout.setHorizontalGroup(
-            cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(cardNhapdiemLayout.createSequentialGroup()
-                .addGap(387, 387, 387)
-                .addComponent(jLabel5)
-                .addContainerGap(552, Short.MAX_VALUE))
+        lbAvatarStaff.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel38.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel38.setText("ID Staff:");
+
+        jLabel40.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel40.setText("First Name:");
+
+        jLabel41.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel41.setText("Middle Name:");
+
+        jLabel42.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel42.setText("Email:");
+
+        jLabel43.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel43.setText("Last Name:");
+
+        jLabel44.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel44.setText("Phone:");
+
+        jLabel45.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel45.setText("Address:");
+
+        jLabel46.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel46.setText("Gender:");
+
+        buttonGroup4.add(rdMaleStaff);
+        rdMaleStaff.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        rdMaleStaff.setText("Male");
+
+        buttonGroup4.add(rdFemaleStaff);
+        rdFemaleStaff.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        rdFemaleStaff.setText("Female");
+
+        jLabel47.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel47.setText("Status:");
+
+        btnUploadImgStaff.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnUploadImgStaff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Upload.png"))); // NOI18N
+        btnUploadImgStaff.setText("Upload");
+        btnUploadImgStaff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUploadImgStaffActionPerformed(evt);
+            }
+        });
+
+        buttonGroup5.add(rdONStaff);
+        rdONStaff.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        rdONStaff.setText("ON");
+
+        buttonGroup5.add(rdOFFStaff);
+        rdOFFStaff.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        rdOFFStaff.setText("OFF");
+
+        jLabel48.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel48.setText("Position:");
+
+        cbPositionStaff.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel49.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel49.setText("Year of birth:");
+
+        jLabel50.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel50.setText("Month of birth:");
+
+        cbYearStaff.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        cbMonthStaff.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel51.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel51.setText("Date of birth:");
+
+        cbDateStaff.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel52.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel52.setText("Start Date:");
+
+        jLabel53.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel53.setText("Note:");
+
+        txtNoteStaff.setColumns(20);
+        txtNoteStaff.setRows(5);
+        jScrollPane6.setViewportView(txtNoteStaff);
+
+        btnAddStaff.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnAddStaff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Add.png"))); // NOI18N
+        btnAddStaff.setText("ADD");
+        btnAddStaff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddStaffActionPerformed(evt);
+            }
+        });
+
+        btnUpdateStaff.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnUpdateStaff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/edit-24px.png"))); // NOI18N
+        btnUpdateStaff.setText("UPDATE");
+        btnUpdateStaff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateStaffActionPerformed(evt);
+            }
+        });
+
+        btnResetFormStaff.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnResetFormStaff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Refresh.png"))); // NOI18N
+        btnResetFormStaff.setText("REFRESH");
+        btnResetFormStaff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetFormStaffActionPerformed(evt);
+            }
+        });
+
+        jLayeredPane6.setLayer(lbAvatarStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jLabel38, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(txtIDStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jLabel40, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(txtFirstNameStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jLabel41, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(txtLastNameStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jLabel42, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(txtMidNameStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jLabel43, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(txtEmailStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jLabel44, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(txtPhoneStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jLabel45, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jLabel46, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(rdMaleStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(rdFemaleStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jLabel47, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(btnUploadImgStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(rdONStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(rdOFFStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jLabel48, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(cbPositionStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jLabel49, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jLabel50, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(cbYearStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(cbMonthStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jLabel51, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(cbDateStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jLabel52, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(txtStartDateStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jLabel53, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(jScrollPane6, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(btnAddStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(btnUpdateStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(btnResetFormStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane6.setLayer(txtAddressStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jLayeredPane6Layout = new javax.swing.GroupLayout(jLayeredPane6);
+        jLayeredPane6.setLayout(jLayeredPane6Layout);
+        jLayeredPane6Layout.setHorizontalGroup(
+            jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                        .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                .addComponent(jLabel53)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnAddStaff)
+                                .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                    .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                            .addComponent(jLabel49)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(cbYearStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                            .addComponent(jLabel48)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(cbPositionStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                            .addComponent(jLabel50)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(cbMonthStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                            .addComponent(jLabel52)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(txtStartDateStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUpdateStaff)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnResetFormStaff))
+                    .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                        .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel40)
+                                    .addComponent(jLabel38)
+                                    .addComponent(jLabel41)
+                                    .addComponent(jLabel43))
+                                .addGap(18, 18, 18)
+                                .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                        .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txtFirstNameStaff, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                                            .addComponent(txtMidNameStaff, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                                            .addComponent(txtIDStaff))
+                                        .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                                .addGap(38, 38, 38)
+                                                .addComponent(jLabel42)
+                                                .addGap(38, 38, 38)
+                                                .addComponent(txtEmailStaff))
+                                            .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                                .addGap(40, 40, 40)
+                                                .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                                        .addComponent(jLabel47)
+                                                        .addGap(18, 18, 18)
+                                                        .addComponent(rdONStaff)
+                                                        .addGap(18, 18, 18)
+                                                        .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addComponent(jLabel51)
+                                                            .addComponent(rdOFFStaff)))
+                                                    .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                                        .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addComponent(jLabel45)
+                                                            .addComponent(jLabel44))
+                                                        .addGap(18, 18, 18)
+                                                        .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addComponent(txtAddressStaff, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
+                                                            .addComponent(txtPhoneStaff)))))))
+                                    .addComponent(txtLastNameStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                .addComponent(jLabel46)
+                                .addGap(18, 18, 18)
+                                .addComponent(rdMaleStaff)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rdFemaleStaff)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane6Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbAvatarStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(54, 54, 54))
+                            .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                        .addGap(102, 102, 102)
+                                        .addComponent(btnUploadImgStaff))
+                                    .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cbDateStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(88, 88, 88))))))
         );
-        cardNhapdiemLayout.setVerticalGroup(
-            cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(cardNhapdiemLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel5)
-                .addContainerGap(484, Short.MAX_VALUE))
+        jLayeredPane6Layout.setVerticalGroup(
+            jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jLayeredPane6Layout.createSequentialGroup()
+                        .addGap(66, 66, 66)
+                        .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel38)
+                            .addComponent(txtIDStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel42)
+                            .addComponent(txtEmailStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel40)
+                            .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel44)
+                                .addComponent(txtPhoneStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtFirstNameStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel41)
+                            .addComponent(txtMidNameStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel45)
+                            .addComponent(txtAddressStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtLastNameStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel43))
+                        .addGap(22, 22, 22)
+                        .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel46)
+                            .addComponent(rdMaleStaff)
+                            .addComponent(rdFemaleStaff)
+                            .addComponent(jLabel47)
+                            .addComponent(rdONStaff)
+                            .addComponent(rdOFFStaff))
+                        .addGap(24, 24, 24))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane6Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lbAvatarStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUploadImgStaff)
+                        .addGap(12, 12, 12)))
+                .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel49)
+                    .addComponent(cbYearStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel50)
+                    .addComponent(cbMonthStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel51)
+                    .addComponent(cbDateStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel48)
+                    .addComponent(cbPositionStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel52)
+                    .addComponent(txtStartDateStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel53)
+                    .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnAddStaff)
+                        .addComponent(btnUpdateStaff)
+                        .addComponent(btnResetFormStaff))
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
-        jplMain.add(cardNhapdiem, "card3");
+        tabStaff.addTab("INFORMATION", jLayeredPane6);
+
+        tableStaff.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tableStaff.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableStaffMouseClicked(evt);
+            }
+        });
+        jScrollPane7.setViewportView(tableStaff);
+
+        txtFindStaff.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFindStaffKeyReleased(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setText("Find:");
+
+        jLayeredPane7.setLayer(jScrollPane7, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane7.setLayer(txtFindStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane7.setLayer(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jLayeredPane7Layout = new javax.swing.GroupLayout(jLayeredPane7);
+        jLayeredPane7.setLayout(jLayeredPane7Layout);
+        jLayeredPane7Layout.setHorizontalGroup(
+            jLayeredPane7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 821, Short.MAX_VALUE)
+            .addGroup(jLayeredPane7Layout.createSequentialGroup()
+                .addGap(261, 261, 261)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45)
+                .addComponent(txtFindStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jLayeredPane7Layout.setVerticalGroup(
+            jLayeredPane7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane7Layout.createSequentialGroup()
+                .addGap(0, 10, Short.MAX_VALUE)
+                .addGroup(jLayeredPane7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtFindStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        tabStaff.addTab("LIST", jLayeredPane7);
+
+        jLabel54.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel54.setText("ID Teacher:");
+
+        txtIDResetPassStaff.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIDResetPassStaffKeyReleased(evt);
+            }
+        });
+
+        tableResetPassStaff.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tableResetPassStaff.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableResetPassStaffMouseClicked(evt);
+            }
+        });
+        jScrollPane8.setViewportView(tableResetPassStaff);
+
+        btnResetPassStaff.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnResetPassStaff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Refresh.png"))); // NOI18N
+        btnResetPassStaff.setText("Reset Password");
+        btnResetPassStaff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetPassStaffActionPerformed(evt);
+            }
+        });
+
+        btnExitResetPassStaff.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnExitResetPassStaff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Log out.png"))); // NOI18N
+        btnExitResetPassStaff.setText("Exit");
+        btnExitResetPassStaff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitResetPassStaffActionPerformed(evt);
+            }
+        });
+
+        jLayeredPane8.setLayer(jLabel54, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane8.setLayer(txtIDResetPassStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane8.setLayer(jScrollPane8, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane8.setLayer(btnResetPassStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane8.setLayer(btnExitResetPassStaff, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jLayeredPane8Layout = new javax.swing.GroupLayout(jLayeredPane8);
+        jLayeredPane8.setLayout(jLayeredPane8Layout);
+        jLayeredPane8Layout.setHorizontalGroup(
+            jLayeredPane8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jLayeredPane8Layout.createSequentialGroup()
+                .addGroup(jLayeredPane8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jLayeredPane8Layout.createSequentialGroup()
+                        .addGap(144, 144, 144)
+                        .addGroup(jLayeredPane8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jLayeredPane8Layout.createSequentialGroup()
+                                .addComponent(jLabel54)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtIDResetPassStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jLayeredPane8Layout.createSequentialGroup()
+                        .addGap(310, 310, 310)
+                        .addComponent(btnResetPassStaff)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnExitResetPassStaff)))
+                .addContainerGap(225, Short.MAX_VALUE))
+        );
+        jLayeredPane8Layout.setVerticalGroup(
+            jLayeredPane8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jLayeredPane8Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(jLayeredPane8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtIDResetPassStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel54))
+                .addGap(36, 36, 36)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jLayeredPane8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnResetPassStaff)
+                    .addComponent(btnExitResetPassStaff))
+                .addContainerGap(169, Short.MAX_VALUE))
+        );
+
+        tabStaff.addTab("REFRESH PASSWORD", jLayeredPane8);
+
+        javax.swing.GroupLayout cardListStaffLayout = new javax.swing.GroupLayout(cardListStaff);
+        cardListStaff.setLayout(cardListStaffLayout);
+        cardListStaffLayout.setHorizontalGroup(
+            cardListStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardListStaffLayout.createSequentialGroup()
+                .addContainerGap(219, Short.MAX_VALUE)
+                .addComponent(tabStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 825, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        cardListStaffLayout.setVerticalGroup(
+            cardListStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tabStaff)
+        );
+
+        jplMain.add(cardListStaff, "card3");
 
         cardLich.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -1437,15 +1986,12 @@ public class Menu_Admin extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cardListTeacherMouseClicked
 
-    private void lblsuadiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsuadiemMouseClicked
-        cardTrangChu.setVisible(false);
-        cardInformation.setVisible(false);
-        cardLich.setVisible(false);
-        cardDoimk.setVisible(false);
-        cardListTeacher.setVisible(false);
-        cardNhapdiem.setVisible(true);
-        cardhelp.setVisible(false);
-    }//GEN-LAST:event_lblsuadiemMouseClicked
+    private void lbStaffMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbStaffMouseClicked
+        this.setCardFalse();
+        cardListStaff.setVisible(true);
+        this.setTimeSlide();
+        this.tabStaff.setSelectedIndex(0);
+    }//GEN-LAST:event_lbStaffMouseClicked
 
     private void hahaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hahaMouseClicked
         cardTrangChu.setVisible(false);
@@ -1453,7 +1999,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         cardLich.setVisible(false);
         cardDoimk.setVisible(false);
         cardListTeacher.setVisible(false);
-        cardNhapdiem.setVisible(false);
+        cardListStaff.setVisible(false);
         cardhelp.setVisible(false);
         cardDoimk1.setVisible(true);
     }//GEN-LAST:event_hahaMouseClicked
@@ -1464,7 +2010,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         cardLich.setVisible(false);
         cardDoimk.setVisible(false);
         cardListTeacher.setVisible(false);
-        cardNhapdiem.setVisible(false);
+        cardListStaff.setVisible(false);
         cardhelp.setVisible(true);
     }//GEN-LAST:event_lblhotroMouseClicked
 
@@ -1474,7 +2020,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         cardLich.setVisible(false);
         cardDoimk.setVisible(true);
         cardListTeacher.setVisible(false);
-        cardNhapdiem.setVisible(false);
+        cardListStaff.setVisible(false);
         cardhelp.setVisible(false);
     }//GEN-LAST:event_lbldoimkMouseClicked
 
@@ -1494,7 +2040,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         cardLich.setVisible(true);
         cardDoimk.setVisible(false);
         cardListTeacher.setVisible(false);
-        cardNhapdiem.setVisible(false);
+        cardListStaff.setVisible(false);
         cardhelp.setVisible(false);
         this.setTimeSlide();
     }//GEN-LAST:event_lbllich1MouseClicked
@@ -1589,23 +2135,12 @@ public class Menu_Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_txtIDResetPassTeacherKeyReleased
 
     private void btnResetPassTeacherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetPassTeacherActionPerformed
-        int index = tableResetPassTeacher.getSelectedRow();
-
-        if (index >= 0) {
-            String ID_Teacher = tableResetPassTeacher.getValueAt(index, 1).toString();
-            txtIDResetPassTeacher.setText(ID_Teacher);
-
-            if (Message.confirm(this, "Do you want to reset the password for this teacher?")) {
-                teacher_DAO.adminResetPassTeacher(ID_Teacher);
-                this.fillFindResetPassTeacher();
-                tabTeacher.setSelectedIndex(0);
-                txtIDResetPassTeacher.setText("");
-            }
-        } else {
-            // Xử lý khi không có hàng nào được chọn
-            Message.alert(this, "Please select a teacher to reset the password.");
+        if (Message.confirm(this, "Do you want to reset the password for this teacher?")) {
+            teacher_DAO.adminResetPassTeacher(txtIDResetPassTeacher.getText());
+            this.fillFindResetPassTeacher();
+            tabTeacher.setSelectedIndex(0);
+            txtIDResetPassTeacher.setText("");
         }
-
     }//GEN-LAST:event_btnResetPassTeacherActionPerformed
 
     private void btnExitResetPassTeacherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitResetPassTeacherActionPerformed
@@ -1613,13 +2148,88 @@ public class Menu_Admin extends javax.swing.JFrame {
             this.setCardFalse();
         }
     }//GEN-LAST:event_btnExitResetPassTeacherActionPerformed
+
+    private void btnUploadImgStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadImgStaffActionPerformed
+        this.chooseImageStaff();
+    }//GEN-LAST:event_btnUploadImgStaffActionPerformed
+
+    private void btnAddStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddStaffActionPerformed
+        this.addStaff();
+    }//GEN-LAST:event_btnAddStaffActionPerformed
+
+    private void btnUpdateStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateStaffActionPerformed
+        this.updateStaff();
+    }//GEN-LAST:event_btnUpdateStaffActionPerformed
+
+    private void btnResetFormStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetFormStaffActionPerformed
+        this.resetFormStaff();
+    }//GEN-LAST:event_btnResetFormStaffActionPerformed
+
+    private void tableStaffMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableStaffMouseClicked
+        tableStaff.setEnabled(false);
+        if (evt.getClickCount() == 2) {
+            this.clickTableStaff();
+            tableStaff.setEnabled(true);
+        }
+    }//GEN-LAST:event_tableStaffMouseClicked
+
+    private void txtFindStaffKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFindStaffKeyReleased
+        this.fillTableStaff();
+    }//GEN-LAST:event_txtFindStaffKeyReleased
+
+    private void txtIDResetPassStaffKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIDResetPassStaffKeyReleased
+        this.fillFindResetPassStaff();
+    }//GEN-LAST:event_txtIDResetPassStaffKeyReleased
+
+    private void btnResetPassStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetPassStaffActionPerformed
+
+        if (Message.confirm(this, "Do you want to reset the password for this teacher?")) {
+            staff_DAO.adminResetPassStaff(txtIDResetPassStaff.getText());
+            this.fillFindResetPassStaff();
+            tabStaff.setSelectedIndex(0);
+            txtIDResetPassStaff.setText("");
+        }
+    }//GEN-LAST:event_btnResetPassStaffActionPerformed
+
+    private void btnExitResetPassStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitResetPassStaffActionPerformed
+        if (Message.confirm(this, "Do you want exit ?")) {
+            this.setCardFalse();
+        }
+    }//GEN-LAST:event_btnExitResetPassStaffActionPerformed
+
+    private void tabStaffAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tabStaffAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabStaffAncestorAdded
+
+    private void tabStaffMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabStaffMouseClicked
+        int selectedIndex = tabStaff.getSelectedIndex();
+        if (selectedIndex == 1) {
+            txtFindStaff.setText("");
+            this.fillTableStaff();
+        } else if (selectedIndex == 2) {
+            txtIDResetPassStaff.setText("");
+            this.fillFindResetPassStaff();
+        }
+    }//GEN-LAST:event_tabStaffMouseClicked
+
+    private void tableResetPassStaffMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableResetPassStaffMouseClicked
+        int index = tableResetPassStaff.getSelectedRow();
+        String ID_Staff = tableResetPassStaff.getValueAt(index, 1).toString();
+        txtIDResetPassStaff.setText(ID_Staff);
+    }//GEN-LAST:event_tableResetPassStaffMouseClicked
+
+    private void tableResetPassTeacherMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableResetPassTeacherMouseClicked
+        int index = tableResetPassTeacher.getSelectedRow();
+        String ID_Teacher = tableResetPassTeacher.getValueAt(index, 1).toString();
+        txtIDResetPassTeacher.setText(ID_Teacher);
+    }//GEN-LAST:event_tableResetPassTeacherMouseClicked
     private void setCardFalse() {
         cardTrangChu.setVisible(false);
         cardInformation.setVisible(false);
         cardLich.setVisible(false);
         cardDoimk.setVisible(false);
         cardListTeacher.setVisible(false);
-        cardNhapdiem.setVisible(false);
+        cardListStaff.setVisible(false);
         cardhelp.setVisible(false);
     }
 
@@ -1670,6 +2280,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         txtNote.setText(admin.getNote());
         txtAddress.setText(admin.getAddress());
         (admin.isGender() ? rdMale : rdFemale).setSelected(true);
+        lbNameAdmin.setText(admin.getMiddle_Name() + " " + admin.getLast_Name() + " " + admin.getFirst_Name());
     }
 
     private Administrators getFormAdmin() {
@@ -1774,6 +2385,7 @@ public class Menu_Admin extends javax.swing.JFrame {
             cbDayModel.addElement(i);
         }
         cbDateTeacher.setModel(cbDayModel);
+        cbDateStaff.setModel(cbDayModel);
     }
 
     private void resetFormTeacher() {
@@ -1927,6 +2539,207 @@ public class Menu_Admin extends javax.swing.JFrame {
         }
     }
 
+    private void initTableStaff() {
+        String columns[] = {"ID", "Fullname", "Email", "Phone", "Address", "Gender", "Status", "Position", "Date of birth", "Start date"};
+        tableModelStaff.setColumnIdentifiers(columns);
+        tableStaff.setModel(tableModelStaff);
+        String columnsResetPass[] = {"No.", "ID Staff", "Fullname", "Password"};
+        tableModelResetPassStaff.setColumnIdentifiers(columnsResetPass);
+        tableResetPassStaff.setModel(tableModelResetPassStaff);
+    }
+
+    private void uploadComboboxStaff() {
+        DefaultComboBoxModel cbYearModel = new DefaultComboBoxModel();
+        DefaultComboBoxModel cbMonthModel = new DefaultComboBoxModel();
+        DefaultComboBoxModel cbPosition = new DefaultComboBoxModel();
+        for (int i = 1970; i < 2005; i++) {
+            cbYearModel.addElement(i);
+        }
+        for (int i = 1; i <= 12; i++) {
+            cbMonthModel.addElement(i);
+        }
+        cbYearStaff.setModel(cbYearModel);
+        cbMonthStaff.setModel(cbMonthModel);
+        updateDays();
+        cbMonthStaff.addActionListener((e) -> {
+            updateDays();
+        });
+        String datas[] = {"Chef", "Doctor", "IT", "Laborer", "Office", "Security Guard"};
+        for (String data : datas) {
+            cbPosition.addElement(data);
+        }
+        cbPositionStaff.setModel(cbPosition);
+    }
+
+    private void resetFormStaff() {
+        JTextComponent text[] = {txtIDStaff, txtFirstNameStaff, txtMidNameStaff, txtLastNameStaff, txtEmailStaff,
+            txtPhoneStaff, txtAddressStaff, txtNoteStaff, txtStartDateStaff};
+        IsValidForm.refreshForm(text);
+        rdMaleStaff.setSelected(true);
+        rdONStaff.setSelected(true);
+        cbYearStaff.setSelectedIndex(0);
+        cbMonthStaff.setSelectedIndex(0);
+        cbDateStaff.setSelectedIndex(0);
+        cbPositionStaff.setSelectedIndex(0);
+        txtIDStaff.requestFocus();
+    }
+
+    private void fillTableStaff() {
+        tableModelStaff.setRowCount(0);
+        try {
+            String keyword = txtFindStaff.getText();
+            List<Staff> list = staff_DAO.selectByKeyword(keyword);
+            for (Staff sta : list) {
+                Object[] row = {
+                    sta.getID_Staff(),
+                    sta.getFirst_Name() + " " + sta.getMiddle_Name() + " " + sta.getLast_Name(),
+                    sta.getEmail(),
+                    sta.getPhone_Number(),
+                    sta.getAddress_Staff(),
+                    sta.isGender() ? "Male" : "Female",
+                    sta.isStatus_Staff() ? "ON" : "OFF",
+                    sta.getPosition(),
+                    sta.getYear_Of_Birth() + "-" + sta.getMonth_Of_Birth() + "-" + sta.getDate_Of_Birth(),
+                    sta.getStart_Date(),
+                    sta.getNote(),};
+                tableModelStaff.addRow(row);
+            }
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+        }
+    }
+
+    private void fillFindResetPassStaff() {
+        tableModelResetPassStaff.setRowCount(0);
+        try {
+            String keyword = txtIDResetPassStaff.getText();
+            List<Staff> list = staff_DAO.selectByKeyword(keyword);
+            int i = 1;
+            for (Staff staff : list) {
+                String hashedPassword = staff.getPassword_Staff();
+                String hiddenPassword = "*".repeat(hashedPassword.length());
+                Object[] row = {i++, staff.getID_Staff(), staff.getFirst_Name() + " " + staff.getMiddle_Name()
+                    + " " + staff.getLast_Name(), hiddenPassword};
+                tableModelResetPassStaff.addRow(row);
+            }
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+        }
+    }
+
+    private void setFormStaff(Staff staff) {
+        txtIDStaff.setText(staff.getID_Staff());
+        txtFirstNameStaff.setText(staff.getFirst_Name());
+        txtMidNameStaff.setText(staff.getMiddle_Name());
+        txtLastNameStaff.setText(staff.getLast_Name());
+        txtEmailStaff.setText(staff.getEmail());
+        txtPhoneStaff.setText(staff.getPhone_Number());
+        txtAddressStaff.setText(staff.getAddress_Staff());
+        txtNoteStaff.setText(staff.getNote());
+        (staff.isGender() ? rdMaleStaff : rdFemaleStaff).setSelected(true);
+        (staff.isStatus_Staff() ? rdONStaff : rdOFFStaff).setSelected(true);
+        cbMonthStaff.setSelectedItem(staff.getMonth_Of_Birth());
+        cbYearStaff.setSelectedItem(staff.getYear_Of_Birth());
+        cbDateStaff.setSelectedItem(staff.getDate_Of_Birth());
+        cbPositionStaff.setSelectedItem(staff.getPosition());
+        txtStartDateStaff.setText(String.valueOf(staff.getStart_Date()));
+        lbAvatarStaff.setIcon(XImage.read(staff.getAvatar()));
+    }
+
+    private void clickTableStaff() {
+        int index = tableStaff.getSelectedRow();
+        String ID_Staff = tableStaff.getValueAt(index, 0).toString();
+        Staff staff = staff_DAO.selectById(ID_Staff);
+        this.setFormStaff(staff);
+        tabStaff.setSelectedIndex(0);
+    }
+
+    private Staff getFormStaff() {
+        Staff staff = new Staff();
+        staff.setID_Staff(txtIDStaff.getText());
+        staff.setFirst_Name(txtFirstNameStaff.getText());
+        staff.setMiddle_Name(txtMidNameStaff.getText());
+        staff.setLast_Name(txtLastNameStaff.getText());
+        staff.setEmail(txtEmailStaff.getText());
+        staff.setPhone_Number(txtPhoneStaff.getText());
+        staff.setAddress_Staff(txtAddressStaff.getText());
+        staff.setNote(txtNoteStaff.getText());
+        staff.setDate_Of_Birth((int) cbDateStaff.getSelectedItem());
+        staff.setMonth_Of_Birth((int) cbMonthStaff.getSelectedItem());
+        staff.setYear_Of_Birth((int) cbYearStaff.getSelectedItem());
+        staff.setPosition((String) cbPositionStaff.getSelectedItem());
+        staff.setGender(rdMale.isSelected() ? true : false);
+        staff.setStatus_Staff(rdONStaff.isSelected() ? true : false);
+        staff.setAvatar(lbAvatarStaff.getToolTipText());
+        return staff;
+    }
+
+    private void chooseImageStaff() {
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            XImage.save(file);
+            ImageIcon icon = XImage.read(file.getName());
+            lbAvatarStaff.setIcon(icon);
+            lbAvatarStaff.setToolTipText(file.getName());
+        }
+    }
+
+    private void addStaff() {
+        JTextComponent textComponent[] = {txtIDStaff, txtFirstNameStaff,
+            txtLastNameStaff, txtEmailStaff, txtPhoneStaff, txtAddressStaff};
+        if (!IsValidForm.checkNull(textComponent)) {
+            return;
+        } else if (!IsValidForm.isValidEmail(txtEmailStaff.getText())) {
+            Message.alert(this, "Email is not valid !");
+            txtEmailStaff.requestFocus();
+            return;
+        } else if (!IsValidForm.isValidPhoneNumber(txtPhoneStaff.getText())) {
+            Message.alert(this, "Phone number is not valid !");
+            txtPhoneStaff.requestFocus();
+            return;
+        } else if (lbAvatarStaff.getToolTipText() == null) {
+            Message.alert(this, "Please choose a representative photo !");
+            return;
+        } else if (staff_DAO.checkCountIDStaff(txtIDStaff.getText()) == false) {
+            txtIDStaff.requestFocus();
+            Message.alert(this, "Employee code already in use !");
+            return;
+        }
+        Staff staff = getFormStaff();
+        try {
+            staff_DAO.insert(staff);
+            this.fillTableStaff();
+            this.resetFormStaff();
+            Message.alert(this, "Staff added successfully !");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateStaff() {
+        JTextComponent textComponent[] = {txtIDStaff, txtFirstNameStaff,
+            txtLastNameStaff, txtEmailStaff, txtPhoneStaff, txtAddressStaff};
+        if (!IsValidForm.checkNull(textComponent)) {
+            return;
+        } else if (!IsValidForm.isValidEmail(txtEmailStaff.getText())) {
+            Message.alert(this, "Email is not valid !");
+            txtEmailStaff.requestFocus();
+            return;
+        } else if (!IsValidForm.isValidPhoneNumber(txtPhoneStaff.getText())) {
+            Message.alert(this, "Phone number is not valid !");
+            txtPhoneStaff.requestFocus();
+            return;
+        }
+
+        if (Message.confirm(this, "You want to change information?")) {
+            Staff staff = getFormStaff();
+            staff_DAO.update(staff);
+            this.fillFindTableTeacher();
+            Message.alert(this, "Edited information successfully !");
+            this.resetFormStaff();
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -1979,29 +2792,41 @@ public class Menu_Admin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAccept;
+    private javax.swing.JButton btnAddStaff;
     private javax.swing.JButton btnAddTeacher;
     private javax.swing.JButton btnExit;
+    private javax.swing.JButton btnExitResetPassStaff;
     private javax.swing.JButton btnExitResetPassTeacher;
     private javax.swing.JButton btnRefresh;
+    private javax.swing.JButton btnResetFormStaff;
     private javax.swing.JButton btnResetFormTeacher;
+    private javax.swing.JButton btnResetPassStaff;
     private javax.swing.JButton btnResetPassTeacher;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btnUpdateStaff;
     private javax.swing.JButton btnUpdateTeacher;
+    private javax.swing.JButton btnUploadImgStaff;
     private javax.swing.JButton btnUploadImgTeacher;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
+    private javax.swing.ButtonGroup buttonGroup4;
+    private javax.swing.ButtonGroup buttonGroup5;
     private javax.swing.JPanel cardDoimk;
     private javax.swing.JPanel cardDoimk1;
     private javax.swing.JPanel cardInformation;
     private javax.swing.JPanel cardLich;
+    private javax.swing.JPanel cardListStaff;
     private javax.swing.JPanel cardListTeacher;
-    private javax.swing.JPanel cardNhapdiem;
     private javax.swing.JPanel cardTrangChu;
     private javax.swing.JPanel cardhelp;
+    private javax.swing.JComboBox<String> cbDateStaff;
     private javax.swing.JComboBox<String> cbDateTeacher;
     private javax.swing.JComboBox<String> cbLevelTeacher;
+    private javax.swing.JComboBox<String> cbMonthStaff;
     private javax.swing.JComboBox<String> cbMonthTeacher;
+    private javax.swing.JComboBox<String> cbPositionStaff;
+    private javax.swing.JComboBox<String> cbYearStaff;
     private javax.swing.JComboBox<String> cbYearTeacher;
     private javax.swing.JLabel haha;
     private javax.swing.JLabel jLabel1;
@@ -2035,9 +2860,24 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel49;
+    private javax.swing.JLabel jLabel50;
+    private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
+    private javax.swing.JLabel jLabel53;
+    private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -2046,6 +2886,9 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JLayeredPane jLayeredPane3;
     private javax.swing.JLayeredPane jLayeredPane4;
     private javax.swing.JLayeredPane jLayeredPane5;
+    private javax.swing.JLayeredPane jLayeredPane6;
+    private javax.swing.JLayeredPane jLayeredPane7;
+    private javax.swing.JLayeredPane jLayeredPane8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -2053,16 +2896,22 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JPanel jplMain;
     private javax.swing.JPanel jplSlideMenu;
     private javax.swing.JPanel jplTitle;
     private javax.swing.JPanel jpllMenuBar;
+    private javax.swing.JLabel lbAvatarStaff;
     private javax.swing.JLabel lbAvatarTeacher;
+    private javax.swing.JLabel lbNameAdmin;
     private javax.swing.JLabel lbShowCurrentPass;
     private javax.swing.JLabel lbShowEnterPass;
     private javax.swing.JLabel lbShowNewPass;
+    private javax.swing.JLabel lbStaff;
     private javax.swing.JLabel lbTeacher;
     private javax.swing.JLabel lblCloseMenu;
     private javax.swing.JLabel lblOpenMenu;
@@ -2071,39 +2920,56 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JLabel lbldoimk;
     private javax.swing.JLabel lblhotro;
     private javax.swing.JLabel lbllich1;
-    private javax.swing.JLabel lblsuadiem;
     private javax.swing.JLabel lblthoat;
     private javax.swing.JRadioButton rdFemale;
+    private javax.swing.JRadioButton rdFemaleStaff;
     private javax.swing.JRadioButton rdFemaleTeacher;
     private javax.swing.JRadioButton rdMale;
+    private javax.swing.JRadioButton rdMaleStaff;
     private javax.swing.JRadioButton rdMaleTeacher;
+    private javax.swing.JRadioButton rdOFFStaff;
     private javax.swing.JRadioButton rdOFFTeacher;
+    private javax.swing.JRadioButton rdONStaff;
     private javax.swing.JRadioButton rdONTeacher;
     private javax.swing.JTabbedPane tabAccount;
+    private javax.swing.JTabbedPane tabStaff;
     private javax.swing.JTabbedPane tabTeacher;
+    private javax.swing.JTable tableResetPassStaff;
     private javax.swing.JTable tableResetPassTeacher;
+    private javax.swing.JTable tableStaff;
     private javax.swing.JTable tableTeacher;
     private javax.swing.JTextField txtAddress;
+    private javax.swing.JTextField txtAddressStaff;
     private javax.swing.JTextField txtAddressTeacher;
     private javax.swing.JPasswordField txtCurrentPass;
     private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtEmailStaff;
     private javax.swing.JTextField txtEmailTeacher;
     private javax.swing.JPasswordField txtEnterPass;
+    private javax.swing.JTextField txtFindStaff;
     private javax.swing.JTextField txtFindTeacher;
     private javax.swing.JTextField txtFirstName;
+    private javax.swing.JTextField txtFirstNameStaff;
     private javax.swing.JTextField txtFirstNameTeacher;
     private javax.swing.JTextField txtID;
+    private javax.swing.JTextField txtIDResetPassStaff;
     private javax.swing.JTextField txtIDResetPassTeacher;
+    private javax.swing.JTextField txtIDStaff;
     private javax.swing.JTextField txtIDTeacher;
     private javax.swing.JTextField txtLastName;
+    private javax.swing.JTextField txtLastNameStaff;
     private javax.swing.JTextField txtLastNameTeacher;
     private javax.swing.JTextField txtMidName;
+    private javax.swing.JTextField txtMidNameStaff;
     private javax.swing.JTextField txtMidNameTeacher;
     private javax.swing.JPasswordField txtNewPass;
     private javax.swing.JTextArea txtNote;
+    private javax.swing.JTextArea txtNoteStaff;
     private javax.swing.JTextArea txtNoteTeacher;
     private javax.swing.JTextField txtPhone;
+    private javax.swing.JTextField txtPhoneStaff;
     private javax.swing.JTextField txtPhoneTeacher;
+    private javax.swing.JTextField txtStartDateStaff;
     private javax.swing.JTextField txtStartDateTeacher;
     // End of variables declaration//GEN-END:variables
 }

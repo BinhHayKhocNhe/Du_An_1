@@ -11,8 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -20,19 +18,36 @@ import java.util.logging.Logger;
  */
 public class StaffDAO implements myInterFace<Staff, String> {
 
+    private final String INSERT_SQL = "INSERT INTO Staff (ID_Staff, Password_Staff, First_Name, Middle_Name, Last_Name, "
+            + "Email, Phone_Number, Gender, Status_Staff, Position, Address_Staff, Avatar, "
+            + "Date_Of_Birth, Month_Of_Birth, Year_Of_Birth, Note) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE Staff SET First_Name = ?, Middle_Name = ?, Last_Name = ?, Email = ?, "
+            + "Phone_Number = ?, Gender = ?, Status_Staff = ?, Position = ?, Address_Staff = ?, Avatar = ?,"
+            + "Date_Of_Birth = ?, Month_Of_Birth = ?, Year_Of_Birth = ?, Note = ? WHERE ID_Staff = ?;";
+
     @Override
     public void insert(Staff entity) {
-
+        String defaultPassword = "12345678";
+        JDBCHelper.executeUpdate(INSERT_SQL, entity.getID_Staff(), defaultPassword, entity.getFirst_Name(),
+                entity.getMiddle_Name(), entity.getLast_Name(), entity.getEmail(), entity.getPhone_Number(),
+                entity.isGender(), entity.isStatus_Staff(), entity.getPosition(), entity.getAddress_Staff(),
+                entity.getAvatar(), entity.getDate_Of_Birth(), entity.getMonth_Of_Birth(), entity.getYear_Of_Birth(),
+                entity.getNote());
     }
 
     @Override
     public void update(Staff entity) {
-
+        JDBCHelper.executeUpdate(UPDATE_SQL, entity.getFirst_Name(),
+                entity.getMiddle_Name(), entity.getLast_Name(), entity.getEmail(), entity.getPhone_Number(),
+                entity.isGender(), entity.isStatus_Staff(), entity.getPosition(), entity.getAddress_Staff(),
+                entity.getAvatar(), entity.getDate_Of_Birth(), entity.getMonth_Of_Birth(), entity.getYear_Of_Birth(),
+                entity.getNote(), entity.getID_Staff());
     }
 
     @Override
     public void delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return;
     }
 
     @Override
@@ -54,7 +69,7 @@ public class StaffDAO implements myInterFace<Staff, String> {
 
     @Override
     public void find(Staff entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return;
     }
 
     @Override
@@ -66,7 +81,7 @@ public class StaffDAO implements myInterFace<Staff, String> {
 
     @Override
     public List<Staff> selectAll() {
-        String sql = "select * from Staff ";
+        String sql = "select * from Staff";
         return selectBySql(sql);
     }
 
@@ -80,6 +95,7 @@ public class StaffDAO implements myInterFace<Staff, String> {
                 while (rs.next()) {
                     Staff entity = new Staff();
                     entity.setID_Staff(rs.getString("ID_Staff"));
+                    entity.setPassword_Staff(rs.getString("Password_Staff"));
                     entity.setFirst_Name(rs.getString("First_Name"));
                     entity.setMiddle_Name(rs.getString("Middle_Name"));
                     entity.setLast_Name(rs.getString("Last_Name"));
@@ -95,7 +111,6 @@ public class StaffDAO implements myInterFace<Staff, String> {
                     entity.setMonth_Of_Birth(rs.getInt("Month_Of_Birth"));
                     entity.setDate_Of_Birth(rs.getInt("Date_Of_Birth"));
                     entity.setPhone_Number(rs.getString("Phone_Number"));
-
                     list.add(entity);
                 }
             } finally {
@@ -142,5 +157,31 @@ public class StaffDAO implements myInterFace<Staff, String> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void adminResetPassStaff(String ID) {
+        final String sql = "UPDATE Staff SET Password_Staff = '12345678' WHERE ID_Staff = ?;";
+        try {
+            JDBCHelper.executeUpdate(sql, ID);
+            Message.alert(null, "Reset password successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean checkCountIDStaff(String id) {
+        try {
+            final String sql = "SELECT COUNT(ID_Staff) FROM Staff WHERE ID_Staff = ?;";
+            ResultSet rs = JDBCHelper.executeQuery(sql, id);
+            while (rs.next()) {
+                int count = rs.getInt(1);
+                if (count == 0) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return false;
     }
 }

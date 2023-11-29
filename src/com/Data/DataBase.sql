@@ -23,7 +23,6 @@ VALUES
 ('admin4', 'admin123', 'Emily', '', 'Brown', 'emily.b@example.com', '9988776655', 0, '101 Cedar Lane, Hamletville', 'Administrator 4'),
 ('admin5', 'adminpass123', 'Daniel', '', 'Lee', 'daniel.lee@example.com', '1122334455', 1, '202 Maple Drive, Township', 'Administrator 5');
 
-
 CREATE TABLE Staff (
 ID_Staff NVARCHAR(50) NOT NULL,
 Password_Staff NVARCHAR(50) NOT NULL,
