@@ -6,12 +6,14 @@
 package com.Main;
 
 import javax.swing.JOptionPane;
-import com.DAO.HocSinhDao;
+import com.DAO.StudentDAO;
 import com.Entity.Student;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+
 public class Menu extends javax.swing.JFrame {
 
+    StudentDAO studentDAO = new StudentDAO();
     int x = 210;    //chieu rong
     int y = 600;    //chieu cao
 
@@ -23,7 +25,7 @@ public class Menu extends javax.swing.JFrame {
         cardTrangChu.setVisible(true);
         cardTaiKhoan.setVisible(false);
         jplSlideMenu.setSize(210, 600);
-        
+
         loadDataToTable();
     }
 
@@ -76,10 +78,9 @@ public class Menu extends javax.swing.JFrame {
         cardhelp.setVisible(false);
 
     }
-    
-   private void loadDataToTable() {
-   List<Student> studentList = HocSinhDao.getAllStudents();
 
+    private void loadDataToTable() {
+        List<Student> studentList = studentDAO.selectAll();
         DefaultTableModel model = new DefaultTableModel();
         tbl_list_hocsinh.setModel(model);
 
@@ -100,18 +101,18 @@ public class Menu extends javax.swing.JFrame {
         // Add data to the table model
         for (Student student : studentList) {
             Object[] rowData = {
-                    student.getID_Student(),
-                    student.getFirst_Name(),
-                    student.getMiddle_Name(),
-                    student.getLast_Name(),
-                    student.isGender(),
-                    student.getAddress_Student(),
-                    student.isStatus_Student(),
-                    student.getAvatar(),
-                    student.getDate_Of_Birth(),
-                    student.getMonth_Of_Birth(),
-                    student.getYear_Of_Birth(),
-                    student.getNote()
+                student.getID_Student(),
+                student.getFirst_Name(),
+                student.getMiddle_Name(),
+                student.getLast_Name(),
+                student.isGender(),
+                student.getAddress_Student(),
+                student.isStatus_Student(),
+                student.getAvatar(),
+                student.getDate_Of_Birth(),
+                student.getMonth_Of_Birth(),
+                student.getYear_Of_Birth(),
+                student.getNote()
             };
             model.addRow(rowData);
         }
@@ -1315,20 +1316,20 @@ public class Menu extends javax.swing.JFrame {
     private void lblTrangChuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTrangChuMouseClicked
         closecard();
         cardTrangChu.setVisible(true);
-     
+
 
     }//GEN-LAST:event_lblTrangChuMouseClicked
 
     private void lblTaiKhoanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTaiKhoanMouseClicked
-      closecard();
+        closecard();
         cardTaiKhoan.setVisible(true);
-      
+
     }//GEN-LAST:event_lblTaiKhoanMouseClicked
 
     private void lblstudenlistMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblstudenlistMouseClicked
-       closecard();
+        closecard();
         cardListhocsinh.setVisible(true);
-      
+
     }//GEN-LAST:event_lblstudenlistMouseClicked
 
     private void cardListhocsinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cardListhocsinhMouseClicked
@@ -1336,9 +1337,9 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_cardListhocsinhMouseClicked
 
     private void lblsuadiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsuadiemMouseClicked
-       closecard();
+        closecard();
         cardNhapdiem.setVisible(true);
- 
+
     }//GEN-LAST:event_lblsuadiemMouseClicked
 
     private void lblhotroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblhotroMouseClicked
@@ -1354,16 +1355,16 @@ public class Menu extends javax.swing.JFrame {
             System.exit(0);
         } else {
             System.out.println(".");
-           
+
         }
 
         System.exit(0);
     }//GEN-LAST:event_lblthoatMouseClicked
 
     private void lbllich1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbllich1MouseClicked
-         closecard();
+        closecard();
         cardLich.setVisible(true);
-     
+
     }//GEN-LAST:event_lbllich1MouseClicked
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -1383,31 +1384,31 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        
+
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        
+
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
-     
+
     }//GEN-LAST:event_btnAcceptActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-    
+
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void lbShowCurrentPassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbShowCurrentPassMouseClicked
-        
+
     }//GEN-LAST:event_lbShowCurrentPassMouseClicked
 
     private void lbShowEnterPassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbShowEnterPassMouseClicked
-       
+
     }//GEN-LAST:event_lbShowEnterPassMouseClicked
 
     private void lbShowNewPassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbShowNewPassMouseClicked
-      
+
     }//GEN-LAST:event_lbShowNewPassMouseClicked
 
     /**
