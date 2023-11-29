@@ -343,13 +343,12 @@ public class Login extends javax.swing.JFrame {
         return admin;
     }
 
-
-        private Staff getFormStaff() {
-            Staff staff = new Staff();
-            staff.setID_Staff(txtUsername.getText());
-            staff.setPassword_Staff(String.valueOf(txtPass.getPassword()));
-            return staff;
-        }
+    private Staff getFormStaff() {
+        Staff staff = new Staff();
+        staff.setID_Staff(txtUsername.getText());
+        staff.setPassword_Staff(String.valueOf(txtPass.getPassword()));
+        return staff;
+    }
 
     private void checkLogin() {
         if (cbRole.getSelectedIndex() == 0) {
@@ -362,15 +361,14 @@ public class Login extends javax.swing.JFrame {
             Menu_Admin show = new Menu_Admin();
             show.setVisible(true);
             this.dispose();
-        } 
-        else if (cbRole.getSelectedIndex() == 2) {
+        } else if (cbRole.getSelectedIndex() == 2) {
             Staff staff = getFormStaff();
             if (!staffDAO.checkID(staff)) {
                 Message.alert(this, "Account name or password is incorrect !");
                 return;
             }
             Authentication.staff = getFormStaff();
-            System.out.println(""+Authentication.staff.getID_Staff());
+            System.out.println("" + Authentication.staff.getID_Staff());
             Form_Staff form_Staff = new Form_Staff();
             form_Staff.setVisible(true);
             this.dispose();

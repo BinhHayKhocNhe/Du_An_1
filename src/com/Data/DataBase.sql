@@ -16,7 +16,6 @@ CONSTRAINT PK_ID_Admin PRIMARY KEY(ID_Administrator)
 );
 
 
-
 INSERT INTO Administrators (ID_Administrator, Password_Administrator, First_Name, Middle_Name, Last_Name, Email, Phone_Number, Gender, Address, Note)
 VALUES 
 ('admin1', 'securepass1', 'John', '', 'Doe', 'john.d@example.com', '123456789', 1, '123 Main Street, Cityville', 'Administrator 1'),
@@ -156,6 +155,7 @@ Middle_Name NVARCHAR(20),
 Last_Name NVARCHAR(20) NOT NULL,
 Gender BIT NOT NULL,
 Address_Student NVARCHAR(255) NOT NULL,
+ID_Class NVARCHAR(20) NOT NULL,
 Status_Student BIT NOT NULL,
 Avatar NVARCHAR(50) NOT NULL,
 Date_Of_Birth INT NOT NULL,
@@ -164,39 +164,44 @@ Year_Of_Birth INT NOT NULL,
 Note NVARCHAR(255),
 CONSTRAINT PK_ID_Student PRIMARY KEY(ID_Student)
 );
-INSERT INTO Student (ID_Student, First_Name, Middle_Name, Last_Name, Gender, Address_Student, Status_Student, Avatar, Date_Of_Birth, Month_Of_Birth, Year_Of_Birth, Note)
+
+
+
+
+select * from Student
+INSERT INTO Student (ID_Student, First_Name, Middle_Name, Last_Name, Gender, Address_Student, Class, Status_Student, Avatar, Date_Of_Birth, Month_Of_Birth, Year_Of_Birth, Note)
 VALUES
-('STU001', 'Emma', '', 'Johnson', 0, '123 Main Street, City', 1, 'avatar1.jpg', 5, 3, 2019, 'Active and engaged learner.'),
-('STU002', 'Liam', 'A.', 'Smith', 1, '456 Oak Avenue, Town', 1, 'avatar2.jpg', 8, 6, 2020, 'Enthusiastic about mathematics.'),
-('STU003', 'Olivia', '', 'Williams', 0, '789 Pine Street, Village', 1, 'avatar3.jpg', 2, 9, 2018, 'Loves reading and storytelling.'),
-('STU004', 'Noah', 'R.', 'Davis', 1, '101 Education Lane, City', 1, 'avatar4.jpg', 10, 12, 2019, 'Active in sports and physical activities.'),
-('STU005', 'Sophia', '', 'Brown', 0, '200 Teaching Street, Town', 1, 'avatar5.jpg', 7, 5, 2021, 'Passionate about arts and crafts.'),
-('STU006', 'Jackson', '', 'Jones', 1, '456 Educators Avenue, City', 1, 'avatar6.jpg', 3, 8, 2022, 'Interested in science experiments.'),
-('STU007', 'Ava', 'R.', 'White', 0, '789 Learning Lane, Town', 1, 'avatar7.jpg', 12, 11, 2020, 'Active participant in school events.'),
-('STU008', 'Liam', 'J.', 'Taylor', 1, '101 University Street, Village', 1, 'avatar8.jpg', 6, 2, 2018, 'Enjoys collaborative learning.'),
-('STU009', 'Emma', '', 'Miller', 0, '222 Teach Lane, City', 1, 'avatar9.jpg', 9, 4, 2021, 'Keen interest in history and social studies.'),
-('STU010', 'Mia', 'R.', 'Garcia', 0, '333 School Lane, Town', 1, 'avatar10.jpg', 11, 7, 2019, 'Enthusiastic about environmental issues.'),
-('STU011', 'Ethan', 'S.', 'Martinez', 1, '444 College Street, Village', 1, 'avatar11.jpg', 4, 10, 2022, 'Actively participates in school clubs.'),
-('STU012', 'Isabella', '', 'Hernandez', 0, '555 Teaching Street, City', 1, 'avatar12.jpg', 1, 1, 2018, 'Creative writing enthusiast.'),
-('STU013', 'Lucas', 'M.', 'Davis', 1, '666 Educate Lane, Town', 1, 'avatar13.jpg', 7, 3, 2020, 'Passionate about music and instruments.'),
-('STU014', 'Aiden', 'J.', 'Lopez', 1, '777 Office Lane, Village', 1, 'avatar14.jpg', 5, 6, 2021, 'Active in school theater productions.'),
-('STU015', 'Scarlett', '', 'Perez', 0, '888 Teaching Street, City', 1, 'avatar15.jpg', 10, 9, 2019, 'Interested in mathematics competitions.'),
-('STU016', 'Noah', 'D.', 'Scott', 1, '999 Service Lane, Town', 1, 'avatar16.jpg', 2, 12, 2020, 'Enjoys coding and computer science.'),
-('STU017', 'Ava', 'C.', 'Ward', 0, '000 Maintenance Street, Village', 1, 'avatar17.jpg', 8, 1, 2022, 'Active in community service projects.'),
-('STU018', 'Ethan', 'J.', 'Baker', 1, '111 Executive Lane, City', 1, 'avatar18.jpg', 3, 4, 2021, 'Keen interest in astronomy.'),
-('STU019', 'Madison', 'D.', 'Gomez', 0, '222 Restaurant Street, Town', 1, 'avatar19.jpg', 6, 7, 2018, 'Participates in school sports teams.'),
-('STU020', 'Chloe', '', 'Russell', 0, '333 Tech Lane, Village', 1, 'avatar20.jpg', 9, 10, 2023, 'Actively involved in student government.'),
+('STU001', 'Emma', '', 'Johnson', 0, '123 Main Street, City','C001', 1, 'avatar1.jpg', 5, 3, 2019, 'Active and engaged learner.'),
+('STU002', 'Liam', 'A.', 'Smith', 1, '456 Oak Avenue, Town','C001', 1, 'avatar2.jpg', 8, 6, 2020, 'Enthusiastic about mathematics.'),
+('STU003', 'Olivia', '', 'Williams', 0, '789 Pine Street, Village','C001',1, 'avatar3.jpg', 2, 9, 2018, 'Loves reading and storytelling.'),
+('STU004', 'Noah', 'R.', 'Davis', 1, '101 Education Lane, City','C001', 1, 'avatar4.jpg', 10, 12, 2019, 'Active in sports and physical activities.'),
+('STU005', 'Sophia', '', 'Brown', 0, '200 Teaching Street, Town','C001', 1, 'avatar5.jpg', 7, 5, 2021, 'Passionate about arts and crafts.'),
+('STU006', 'Jackson', '', 'Jones', 1, '456 Educators Avenue, City','C001', 1, 'avatar6.jpg', 3, 8, 2022, 'Interested in science experiments.'),
+('STU007', 'Ava', 'R.', 'White', 0, '789 Learning Lane, Town','C001', 1,'avatar7.jpg', 12, 11, 2020, 'Active participant in school events.'),
+('STU008', 'Liam', 'J.', 'Taylor', 1, '101 University Street, Village','C001', 1, 'avatar8.jpg', 6, 2, 2018, 'Enjoys collaborative learning.'),
+('STU009', 'Emma', '', 'Miller', 0, '222 Teach Lane, City', 'C001',1, 'avatar9.jpg', 9, 4, 2021, 'Keen interest in history and social studies.'),
+('STU010', 'Mia', 'R.', 'Garcia', 0, '333 School Lane, Town', 'C001',1, 'avatar10.jpg', 11, 7, 2019, 'Enthusiastic about environmental issues.'),
+('STU011', 'Ethan', 'S.', 'Martinez', 1, '444 College Street, Village','C002', 1, 'avatar11.jpg', 4, 10, 2022, 'Actively participates in school clubs.'),
+('STU012', 'Isabella', '', 'Hernandez', 0, '555 Teaching Street, City','C002', 1, 'avatar12.jpg', 1, 1, 2018, 'Creative writing enthusiast.'),
+('STU013', 'Lucas', 'M.', 'Davis', 1, '666 Educate Lane, Town','C002', 1, 'avatar13.jpg', 7, 3, 2020, 'Passionate about music and instruments.'),
+('STU014', 'Aiden', 'J.', 'Lopez', 1, '777 Office Lane, Village', 'C002',1, 'avatar14.jpg', 5, 6, 2021, 'Active in school theater productions.'),
+('STU015', 'Scarlett', '', 'Perez', 0, '888 Teaching Street, City', 'C002',1, 'avatar15.jpg', 10, 9, 2019, 'Interested in mathematics competitions.'),
+('STU016', 'Noah', 'D.', 'Scott', 1, '999 Service Lane, Town', 'C002',1, 'avatar16.jpg', 2, 12, 2020, 'Enjoys coding and computer science.'),
+('STU017', 'Ava', 'C.', 'Ward', 0, '000 Maintenance Street, Village','C002', 1, 'avatar17.jpg', 8, 1, 2022, 'Active in community service projects.'),
+('STU018', 'Ethan', 'J.', 'Baker', 1, '111 Executive Lane, City','C002', 1, 'avatar18.jpg', 3, 4, 2021, 'Keen interest in astronomy.'),
+('STU019', 'Madison', 'D.', 'Gomez', 0, '222 Restaurant Street, Town','C002', 1, 'avatar19.jpg', 6, 7, 2018, 'Participates in school sports teams.'),
+('STU020', 'Chloe', '', 'Russell', 0, '333 Tech Lane, Village','C002', 1, 'avatar20.jpg', 9, 10, 2023, 'Actively involved in student government.'),
 -- Tiếp tục thêm dữ liệu cho 10 học sinh khác tương tự...
-('STU021', 'Evelyn', '', 'Cooper', 0, '444 Science Avenue, City', 1, 'avatar21.jpg', 5, 2, 2018, 'Enjoys science experiments and discoveries.'),
-('STU022', 'Owen', 'M.', 'Hill', 1, '555 Math Lane, Town', 1, 'avatar22.jpg', 8, 5, 2020, 'Actively participates in math competitions.'),
-('STU023', 'Hazel', '', 'Fisher', 0, '666 Arts Street, Village', 1, 'avatar23.jpg', 2, 8, 2019, 'Passionate about visual arts and painting.'),
-('STU024', 'Henry', 'J.', 'Morgan', 1, '777 Music Lane, City', 1, 'avatar24.jpg', 11, 11, 2022, 'Talented musician and member of the school band.'),
-('STU025', 'Mila', 'A.', 'Wells', 0, '888 Literature Avenue, Town', 1, 'avatar25.jpg', 7, 3, 2021, 'Frequent participant in literature and book clubs.'),
-('STU026', 'Mason', 'S.', 'Cook', 1, '999 Drama Lane, Village', 1, 'avatar26.jpg', 12, 6, 2018, 'Actively involved in drama and theatrical performances.'),
-('STU027', 'Ella', '', 'Chapman', 0, '000 History Street, City', 1, 'avatar27.jpg', 1, 9, 2019, 'Fascinated by historical events and research.'),
-('STU028', 'Carter', 'D.', 'Snyder', 1, '111 Technology Lane, Town', 1, 'avatar28.jpg', 4, 12, 2020, 'Passionate about technology and innovation.'),
-('STU029', 'Aria', 'L.', 'Elliott', 0, '222 Innovation Avenue, Village', 1, 'avatar29.jpg', 9, 1, 2022, 'Enthusiastic about STEM projects and experiments.'),
-('STU030', 'Leo', 'B.', 'Fleming', 1, '333 Engineering Lane, City', 1, 'avatar30.jpg', 6, 4, 2023, 'Aspiring engineer with a love for building and design.');
+('STU021', 'Evelyn', '', 'Cooper', 0, '444 Science Avenue, City', 'C003',1, 'avatar21.jpg', 5, 2, 2018, 'Enjoys science experiments and discoveries.'),
+('STU022', 'Owen', 'M.', 'Hill', 1, '555 Math Lane, Town','C003', 1, 'avatar22.jpg', 8, 5, 2020, 'Actively participates in math competitions.'),
+('STU023', 'Hazel', '', 'Fisher', 0, '666 Arts Street, Village','C003', 1, 'avatar23.jpg', 2, 8, 2019, 'Passionate about visual arts and painting.'),
+('STU024', 'Henry', 'J.', 'Morgan', 1, '777 Music Lane, City', 'C003',1, 'avatar24.jpg', 11, 11, 2022, 'Talented musician and member of the school band.'),
+('STU025', 'Mila', 'A.', 'Wells', 0, '888 Literature Avenue, Town','C003', 1, 'avatar25.jpg', 7, 3, 2021, 'Frequent participant in literature and book clubs.'),
+('STU026', 'Mason', 'S.', 'Cook', 1, '999 Drama Lane, Village','C003', 1, 'avatar26.jpg', 12, 6, 2018, 'Actively involved in drama and theatrical performances.'),
+('STU027', 'Ella', '', 'Chapman', 0, '000 History Street, City','C003', 1, 'avatar27.jpg', 1, 9, 2019, 'Fascinated by historical events and research.'),
+('STU028', 'Carter', 'D.', 'Snyder', 1, '111 Technology Lane, Town', 'C003',1, 'avatar28.jpg', 4, 12, 2020, 'Passionate about technology and innovation.'),
+('STU029', 'Aria', 'L.', 'Elliott', 0, '222 Innovation Avenue, Village', 'C003',1, 'avatar29.jpg', 9, 1, 2022, 'Enthusiastic about STEM projects and experiments.'),
+('STU030', 'Leo', 'B.', 'Fleming', 1, '333 Engineering Lane, City','C003', 1, 'avatar30.jpg', 6, 4, 2023, 'Aspiring engineer with a love for building and design.');
 
 CREATE TABLE Subject(
 ID_Subject NVARCHAR(50) NOT NULL,
@@ -237,25 +242,23 @@ CREATE TABLE Class(
 ID_Class NVARCHAR(50) NOT NULL,
 Class_Name NVARCHAR(50) NOT NULL,
 ID_Teacher NVARCHAR(50) NOT NULL,
-ID_Student NVARCHAR(50) NOT NULL,
 Quantity int NOT NULL,
 Note NVARCHAR(255),
 CONSTRAINT PK_ID_Class PRIMARY KEY(ID_Class),
-CONSTRAINT FK_Student FOREIGN KEY (ID_Student) REFERENCES Student(ID_Student),
 CONSTRAINT FK_Teacher FOREIGN KEY (ID_Teacher) REFERENCES Teacher(ID_Teacher)
 );
 -- Thêm dữ liệu vào bảng Class
-INSERT INTO Class (ID_Class, Class_Name, ID_Teacher, ID_Student, Quantity, Note) VALUES
-    ('C001', 'Class 1', 'TCH001', 'STU001', 25, 'Note for Class 1'),
-    ('C002', 'Class 2', 'TCH002', 'STU002', 30, 'Note for Class 2'),
-    ('C003', 'Class 3', 'TCH003', 'STU003', 20, 'Note for Class 3'),
-    ('C004', 'Class 4', 'TCH004', 'STU004', 25, 'Note for Class 4'),
-    ('C005', 'Class 5', 'TCH005', 'STU005', 30, 'Note for Class 5'),
-    ('C006', 'Class 6', 'TCH006', 'STU006', 20, 'Note for Class 6'),
-    ('C007', 'Class 7', 'TCH007', 'STU007', 25, 'Note for Class 7'),
-    ('C008', 'Class 8', 'TCH008', 'STU008', 30, 'Note for Class 8'),
-    ('C009', 'Class 9', 'TCH009', 'STU009', 20, 'Note for Class 9'),
-    ('C010', 'Class 10', 'TCH010', 'STU010', 25, 'Note for Class 10');
+INSERT INTO Class (ID_Class, Class_Name, ID_Teacher, Quantity, Note) VALUES
+    ('C001', 'Class 1', 'TCH001',  25, 'Note for Class 1'),
+    ('C002', 'Class 2', 'TCH002',  30, 'Note for Class 2'),
+    ('C003', 'Class 3', 'TCH003',  20, 'Note for Class 3'),
+    ('C004', 'Class 4', 'TCH004',  25, 'Note for Class 4'),
+    ('C005', 'Class 5', 'TCH005',  30, 'Note for Class 5'),
+    ('C006', 'Class 6', 'TCH006',  20, 'Note for Class 6'),
+    ('C007', 'Class 7', 'TCH007',  25, 'Note for Class 7'),
+    ('C008', 'Class 8', 'TCH008', 30, 'Note for Class 8'),
+    ('C009', 'Class 9', 'TCH009',  20, 'Note for Class 9'),
+    ('C010', 'Class 10', 'TCH010', 25, 'Note for Class 10');
 
 CREATE TABLE Schedule(
 ID_Course NVARCHAR(50) NOT NULL,
