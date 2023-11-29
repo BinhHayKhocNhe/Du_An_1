@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class Student {
 
-    private String ID_Student, First_Name, Middle_Name, Last_Name, Address_Student,
+    private String ID_Student, First_Name, Middle_Name, Last_Name, Address_Student, Class_Student,
             Avatar, Note;
     private boolean Gender, Status_Student;
     private int Date_Of_Birth, Month_Of_Birth, Year_Of_Birth;
@@ -109,12 +109,13 @@ public class Student {
         this.Year_Of_Birth = Year_Of_Birth;
     }
 
-    public Student(String ID_Student, String First_Name, String Middle_Name, String Last_Name, String Address_Student, String Avatar, String Note, boolean Gender, boolean Status_Student, int Date_Of_Birth, int Month_Of_Birth, int Year_Of_Birth) {
+    public Student(String ID_Student, String First_Name, String Middle_Name, String Last_Name, String Address_Student, String Class_Student, String Avatar, String Note, boolean Gender, boolean Status_Student, int Date_Of_Birth, int Month_Of_Birth, int Year_Of_Birth) {
         this.ID_Student = ID_Student;
         this.First_Name = First_Name;
         this.Middle_Name = Middle_Name;
         this.Last_Name = Last_Name;
         this.Address_Student = Address_Student;
+        this.Class_Student = Class_Student;
         this.Avatar = Avatar;
         this.Note = Note;
         this.Gender = Gender;
@@ -124,6 +125,13 @@ public class Student {
         this.Year_Of_Birth = Year_Of_Birth;
     }
 
+    public String getClass_Student() {
+        return Class_Student;
+    }
+
+    public void setClass_Student(String Class_Student) {
+        this.Class_Student = Class_Student;
+    }
     public Student() {
     }
 }

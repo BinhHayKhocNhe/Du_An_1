@@ -7,7 +7,7 @@ package com.Main;
 
 import javax.swing.JOptionPane;
 
-import com.DAO.HocSinhDao;
+
 import com.DAO.SQLException;
 import com.DAO.ClassDAO;
 import com.Entity.Class;
@@ -1496,57 +1496,57 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_lbShowNewPassMouseClicked
 
     private void btn_tim_hocsinhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tim_hocsinhActionPerformed
-String studentId = txt_id_hocsinh.getText();
-
-// Lấy danh sách học sinh từ DAO
-List<Student> studentList = HocSinhDao.getAllStudents();
-
-// Lấy danh sách lớp học từ DAO
-List<Class> classList = ClassDAO.getAllClasses();
-
-// Tạo danh sách dòng dữ liệu cho bảng
-DefaultTableModel tableModel = new DefaultTableModel();
-tableModel.addColumn("Student ID");
-tableModel.addColumn("Full Name");
-tableModel.addColumn("Gender");
-tableModel.addColumn("Address");
-tableModel.addColumn("Status");
-tableModel.addColumn("Class ID");
-tableModel.addColumn("Class Name");
-
-// Lọc danh sách học sinh và lớp học dựa trên ID học sinh
-for (Student student : studentList) {
-    if (student.getID_Student().equalsIgnoreCase(studentId)) {
-        String fullName = student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name();
-        String genderString = student.isGender() ? "Male" : "Female";
-        
-        // Dòng dữ liệu cho học sinh
-        Object[] rowData = {
-            student.getID_Student(),
-            fullName,
-            genderString,
-            student.getAddress_Student(),
-            student.isStatus_Student(),
-            "", // Dòng này để trống cho thông tin lớp học, bạn có thể cập nhật sau
-            ""  // Dòng này để trống cho thông tin tên lớp học, bạn có thể cập nhật sau
-        };
-        
-        // Thêm dòng dữ liệu học sinh vào bảng
-        tableModel.addRow(rowData);
-        
-        // Tìm lớp học tương ứng với ID học sinh
-        for (Class classEntity : classList) {
-            if (classEntity.getID_Student().equalsIgnoreCase(studentId)) {
-                // Cập nhật thông tin lớp học vào dòng dữ liệu đã tạo
-                tableModel.setValueAt(classEntity.getID_Class(), tableModel.getRowCount() - 1, 5);
-                tableModel.setValueAt(classEntity.getClass_Name(), tableModel.getRowCount() - 1, 6);
-            }
-        }
-    }
-}
-
-// Cập nhật bảng tbl_list_hocsinh bằng dữ liệu đã tạo
-tbl_list_hocsinh.setModel(tableModel);           
+//String studentId = txt_id_hocsinh.getText();
+//
+//// Lấy danh sách học sinh từ DAO
+//List<Student> studentList = HocSinhDao.getAllStudents();
+//
+//// Lấy danh sách lớp học từ DAO
+//List<Class> classList = ClassDAO.getAllClasses();
+//
+//// Tạo danh sách dòng dữ liệu cho bảng
+//DefaultTableModel tableModel = new DefaultTableModel();
+//tableModel.addColumn("Student ID");
+//tableModel.addColumn("Full Name");
+//tableModel.addColumn("Gender");
+//tableModel.addColumn("Address");
+//tableModel.addColumn("Status");
+//tableModel.addColumn("Class ID");
+//tableModel.addColumn("Class Name");
+//
+//// Lọc danh sách học sinh và lớp học dựa trên ID học sinh
+//for (Student student : studentList) {
+//    if (student.getID_Student().equalsIgnoreCase(studentId)) {
+//        String fullName = student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name();
+//        String genderString = student.isGender() ? "Male" : "Female";
+//        
+//        // Dòng dữ liệu cho học sinh
+//        Object[] rowData = {
+//            student.getID_Student(),
+//            fullName,
+//            genderString,
+//            student.getAddress_Student(),
+//            student.isStatus_Student(),
+//            "", // Dòng này để trống cho thông tin lớp học, bạn có thể cập nhật sau
+//            ""  // Dòng này để trống cho thông tin tên lớp học, bạn có thể cập nhật sau
+//        };
+//        
+//        // Thêm dòng dữ liệu học sinh vào bảng
+//        tableModel.addRow(rowData);
+//        
+//        // Tìm lớp học tương ứng với ID học sinh
+//        for (Class classEntity : classList) {
+//            if (classEntity.getID_Student().equalsIgnoreCase(studentId)) {
+//                // Cập nhật thông tin lớp học vào dòng dữ liệu đã tạo
+//                tableModel.setValueAt(classEntity.getID_Class(), tableModel.getRowCount() - 1, 5);
+//                tableModel.setValueAt(classEntity.getClass_Name(), tableModel.getRowCount() - 1, 6);
+//            }
+//        }
+//    }
+//}
+//
+//// Cập nhật bảng tbl_list_hocsinh bằng dữ liệu đã tạo
+//tbl_list_hocsinh.setModel(tableModel);           
 
     }//GEN-LAST:event_btn_tim_hocsinhActionPerformed
 
