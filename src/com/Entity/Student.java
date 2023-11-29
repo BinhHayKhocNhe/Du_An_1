@@ -1,6 +1,5 @@
 package com.Entity;
 
-import java.util.Date;
 
 /**
  *
