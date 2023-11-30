@@ -4,11 +4,17 @@
  */
 package com.Entity;
 
+import java.util.List;
+
 /**
  *
  * @author admin
  */
 public class Subject {
+
+    public static void add(List<Subject> su) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
     private String ID_Subject, Subject_Name, Note;
 
@@ -43,5 +49,9 @@ public class Subject {
     }
 
     public Subject() {
+    }
+
+    public String getName() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

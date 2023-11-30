@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.DAO;
 
 import com.Entity.Teacher;
@@ -32,7 +29,7 @@ public class Teacher_DAO implements myInterFace<Teacher, String> {
         String defaultPassword = "12345678";
         JDBCHelper.executeUpdate(INSERT_SQL, entity.getID_Teacher(), defaultPassword, entity.getFirst_Name(),
                 entity.getMiddle_Name(), entity.getLast_Name(), entity.getEmail(), entity.getPhone_Number(),
-                entity.isGender(), entity.isStatus_Teacher(), entity.getLevel_Teacher(), entity.getAddress_Staff(),
+                entity.isGender(), entity.isStatus_Teacher(), entity.getLevel_Teacher(), entity.getAddress_Teacher(),
                 entity.getAvatar(), entity.getDate_Of_Birth(), entity.getMonth_Of_Birth(), entity.getYear_Of_Birth(),
                 entity.getNote());
     }
@@ -41,7 +38,7 @@ public class Teacher_DAO implements myInterFace<Teacher, String> {
     public void update(Teacher entity) {
         JDBCHelper.executeUpdate(UPDATE_SQL, entity.getFirst_Name(),
                 entity.getMiddle_Name(), entity.getLast_Name(), entity.getEmail(), entity.getPhone_Number(),
-                entity.isGender(), entity.isStatus_Teacher(), entity.getLevel_Teacher(), entity.getAddress_Staff(),
+                entity.isGender(), entity.isStatus_Teacher(), entity.getLevel_Teacher(), entity.getAddress_Teacher(),
                 entity.getAvatar(), entity.getDate_Of_Birth(), entity.getMonth_Of_Birth(), entity.getYear_Of_Birth(),
                 entity.getNote(), entity.getID_Teacher());
     }
@@ -53,6 +50,18 @@ public class Teacher_DAO implements myInterFace<Teacher, String> {
 
     @Override
     public boolean checkID(Teacher entity) {
+       String sql = "Select count(ID_Teacher) from Teacher where ID_Teacher = ? and Password_Teacher = ? ";
+        ResultSet rs = JDBCHelper.executeQuery(sql, entity.getID_Teacher(), entity.getPassword_Teacher());
+        try {
+            while (rs.next()) {
+                int count = rs.getInt(1);
+                if (count > 0) {
+                    return true;
+                }
+            }
+        } catch (java.sql.SQLException ex) {
+            ex.printStackTrace();
+        }
         return false;
     }
 
@@ -120,6 +129,37 @@ public class Teacher_DAO implements myInterFace<Teacher, String> {
         try {
             JDBCHelper.executeUpdate(sql, ID);
             Message.alert(null, "Reset password successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+        public void changePassword(String ID, String currentPassword, String newPassword) {
+        final String checkCurrentPassword = "SELECT Password_Teacher FROM Teacher WHERE ID_Teacher = ?";
+        final String sql = "UPDATE Teacher SET Password_Teacher = ? WHERE ID_Teacher = ? and Password_Teacher=?";
+        try {
+            ResultSet resultSet = JDBCHelper.executeQuery(checkCurrentPassword, ID);
+
+            if (!resultSet.next()) {
+                Message.alert(null, "User not found!");
+                return;
+            }
+
+            String storedPassword = resultSet.getString("Password_Teacher");
+
+            if (!storedPassword.equals(currentPassword)) {
+                Message.alert(null, "Current password is incorrect!");
+                return;
+            }
+
+            if (currentPassword.equals(newPassword)) {
+                Message.alert(null, "The new password must not be the same as the current password!");
+                return;
+            }
+
+            JDBCHelper.executeUpdate(sql, newPassword, ID, currentPassword);
+            Message.alert(null, "Changed password successfully!");
+
+            resultSet.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

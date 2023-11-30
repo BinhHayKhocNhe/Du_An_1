@@ -1,32 +1,45 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.Main;
 
 import javax.swing.JOptionPane;
 
-
 import com.DAO.SQLException;
 import com.DAO.ClassDAO;
+import com.DAO.PointDAO;
 import com.Entity.Class;
-
+import com.DAO.ScheduleDAO;
 import com.DAO.StudentDAO;
+import com.DAO.Teacher_DAO;
+import com.Entity.Point;
+import com.Entity.Schedule;
+import com.Entity.Staff;
 
 import com.Entity.Student;
+import com.Entity.Teacher;
+import com.Utils.Authentication;
+import com.Utils.IsValidForm;
 import com.Utils.JDBCHelper;
+import com.Utils.Message;
+import com.Utils.XImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 public class Menu extends javax.swing.JFrame {
 
     StudentDAO studentDAO = new StudentDAO();
+    PointDAO pointDAO = new PointDAO();
+    ScheduleDAO scheduleDAO = new ScheduleDAO();
+    Teacher_DAO teacher_DAO = new Teacher_DAO();
     int x = 210;    //chieu rong
     int y = 600;    //chieu cao
+    DefaultTableModel hehe = new DefaultTableModel();
+    DefaultTableModel huhu = new DefaultTableModel();
 
     /**
      * Creates new form Menu
@@ -37,8 +50,15 @@ public class Menu extends javax.swing.JFrame {
         cardTaiKhoan.setVisible(false);
         jplSlideMenu.setSize(210, 600);
 //
-//        loadDataToTable();
-//        loadClassNamesToComboBox();
+        Tbl_list_HocSinh();
+        //        loadClassNamesToComboBox();
+        initTablePointt();
+        Tbl_diem();
+        initTableSche();
+        filldiem();
+        initComboBoxes();
+//        validateInput();
+        InforTeacher();
     }
 
     public void openMenu() {
@@ -91,112 +111,223 @@ public class Menu extends javax.swing.JFrame {
 
     }
 
-//    private void loadDataToTable() {
-//
-//        List<Student> studentList = HocSinhDao.getAllStudents();
-//        List<Class> classList = ClassDAO.getAllClasses();
-//
-//        List<Student> studentList = studentDAO.selectAll();
-//        DefaultTableModel model = new DefaultTableModel();
-//        tbl_list_hocsinh.setModel(model);
-//
-//
-//        DefaultTableModel studentModel = new DefaultTableModel();
-//        DefaultTableModel classModel = new DefaultTableModel();
-//
-//        studentModel.addColumn("Student ID");
-//        studentModel.addColumn("Full Name");
-//        studentModel.addColumn("Gender");
-//        studentModel.addColumn("Address");
-//        studentModel.addColumn("Status");
-//
-//        // Add data to the table model for Student
-//        for (Student student : studentList) {
-//            String fullName = student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name();
-//            String genderString = student.isGender() ? "Male" : "Female";
-//            Object[] rowData = {
-//                student.getID_Student(),
-//
-//                fullName,
-//                genderString,
-//                student.getAddress_Student(),
-//                student.isStatus_Student(), //             
-//
-//                student.getFirst_Name(),
-//                student.getMiddle_Name(),
-//                student.getLast_Name(),
-//                student.isGender(),
-//                student.getAddress_Student(),
-//                student.isStatus_Student(),
-//                student.getAvatar(),
-//                student.getDate_Of_Birth(),
-//                student.getMonth_Of_Birth(),
-//                student.getYear_Of_Birth(),
-//                student.getNote()
-//
-//            };
-//            studentModel.addRow(rowData);
-//        }
-//
-//        classModel.addColumn("Class ID");
-//        classModel.addColumn("Class Name");
-//
-//        for (Class classEntity : classList) {
-//            Object[] rowData = {
-//                classEntity.getID_Class(),
-//                classEntity.getClass_Name()
-//
-//            };
-//            classModel.addRow(rowData);
-//        }
-//
-//        DefaultTableModel mergedModel = mergeModels(studentModel, classModel);
-//
-//        tbl_list_hocsinh.setModel(mergedModel);
-//    }
-//
-//    private DefaultTableModel mergeModels(DefaultTableModel model1, DefaultTableModel model2) {
-//        DefaultTableModel mergedModel = new DefaultTableModel();
-//
-//        for (int i = 0; i < model1.getColumnCount(); i++) {
-//            mergedModel.addColumn(model1.getColumnName(i));
-//        }
-//
-//        for (int i = 0; i < model2.getColumnCount(); i++) {
-//            mergedModel.addColumn(model2.getColumnName(i));
-//        }
-//
-//        int rowCount = Math.max(model1.getRowCount(), model2.getRowCount());
-//        for (int i = 0; i < rowCount; i++) {
-//            Object[] rowData = new Object[model1.getColumnCount() + model2.getColumnCount()];
-//            for (int j = 0; j < model1.getColumnCount(); j++) {
-//                rowData[j] = (i < model1.getRowCount()) ? model1.getValueAt(i, j) : null;
-//            }
-//            for (int j = 0; j < model2.getColumnCount(); j++) {
-//                rowData[model1.getColumnCount() + j] = (i < model2.getRowCount()) ? model2.getValueAt(i, j) : null;
-//            }
-//            mergedModel.addRow(rowData);
-//        }
-//
-//        return mergedModel;
-//
-//    }
-//
-//    private void loadClassNamesToComboBox() {
-//
-//        List<Class> classes = ClassDAO.getAllClasses();
-//
-//        cmbclass.removeAllItems();
-//
-//        for (Class classEntity : classes) {
-//            cmbclass.addItem(classEntity.getClass_Name());
-//        }
-//    }
-//
-//
+    private void Tbl_list_HocSinh() {
+        List<Student> studentList = studentDAO.selectAll();
+        DefaultTableModel studentModel = new DefaultTableModel();
 
-  
- 
+        studentModel.addColumn("Student ID");
+        studentModel.addColumn("Full Name");
+        studentModel.addColumn("Gender");
+        studentModel.addColumn("Address");
+        studentModel.addColumn("Status");
+        studentModel.addColumn("ID_Class");
+//        studentModel.addColumn("Class_Name");
+        String keyword = txt_id_hocsinh.getText();
+
+        List<Student> list = studentDAO.selectByKeyword(keyword);
+
+//        String ketword2 = (String) cmb_list_class.getSelectedItem();
+//         List<Student> list2 = studentDAO.selectByKeyword2(ketword2);
+        // Add data to the table model for Student
+        for (Student student : list) {
+            String fullName = student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name();
+            String genderString = student.isGender() ? "Male" : "Female";
+            Object[] rowData = {
+                student.getID_Student(),
+                fullName,
+                genderString,
+                student.getAddress_Student(),
+                student.isStatus_Student(),
+                student.getID_Class(), //               student.getClass_Name(),
+            };
+            studentModel.addRow(rowData);
+        }
+
+        tbl_list_hocsinh.setModel(studentModel);
+
+    }
+
+    private void initTablePointt() {
+        String columns[] = {"Student ID", "Class ID", "Subject ID", "Teacher ID", "Year", "Point", "Course Name", "Note"};
+        hehe.setColumnIdentifiers(columns);
+        tbl_diem.setModel(hehe);
+    }
+
+    private void Tbl_diem() {
+//        String keyword = txt_tim_name.getText();
+//       List<Point> list = pointDAO.selectByKeyword(keyword);
+        hehe.setRowCount(0);
+        try {
+            List<Point> pointList = pointDAO.selectAll();
+            for (Point point : pointList) {
+                Object[] rowData = {
+                    point.getID_Student(),
+                    point.getID_Class(),
+                    point.getID_Subject(),
+                    point.getID_Teacher(),
+                    point.getYear(),
+                    point.getPoint(),
+                    point.getCourse_Name(),
+                    point.getNote()
+                };
+                hehe.addRow(rowData);
+
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    private void initTableSche() {
+        String abc[] = {"Course ID", "Teacher ID", "Student ID", "Class ID", "Subject ID", "School Day", "Schedule Date", "Course Name", "Note"};
+        huhu.setColumnIdentifiers(abc);
+        tbl_lich.setModel(huhu);
+    }
+
+    public void filldiem() {
+
+        huhu.setRowCount(0);
+
+        try {
+            List<Schedule> scheduleList = scheduleDAO.selectAll();
+            for (Schedule schedule : scheduleList) {
+                Object[] rowData = {
+                    schedule.getID_Course(),
+                    schedule.getID_Teacher(),
+                    schedule.getID_Student(),
+                    schedule.getID_Class(),
+                    schedule.getID_Subject(),
+                    schedule.getSchoolDay(),
+                    schedule.getScheduleDate(),
+                    schedule.getCourseName(),
+                    schedule.getNote()
+                };
+                huhu.addRow(rowData);
+
+            }
+        } catch (Exception e) {
+
+        }
+
+    }
+
+    private void initComboBoxes() {
+        // Xóa tất cả mục hiện có
+        cmb_id_teacher.removeAllItems();
+        cmb_list_class.removeAllItems();
+        cmb_list_sb.removeAllItems();
+        cmb_list_hs1.removeAllItems();
+        cmbclass.removeAllItems();
+        cmb_list_mon.removeAllItems();
+        cmb_time.removeAllItems();
+        // Sau đó thêm dữ liệu mới
+        PointDAO pointDAO = new PointDAO();
+
+        List<String> studentIds = pointDAO.getUniqueStudentIDs();
+        for (String id : studentIds) {
+            cmb_list_hs1.addItem(id);
+        }
+
+        List<String> classIds = pointDAO.getUniqueClassIDs();
+        for (String id : classIds) {
+            cmb_list_class.addItem(id);
+        }
+
+        List<String> subjectIds = pointDAO.getUniqueSubjectIDs();
+        for (String id : subjectIds) {
+            cmb_list_sb.addItem(id);
+        }
+        List<String> TeacherIsd = pointDAO.getUniqueTeacherIDs();
+        for (String id : TeacherIsd) {
+            cmb_id_teacher.addItem(id);
+        }
+        List<String> classIsd = studentDAO.getidlclass();
+        for (String id : classIsd) {
+            cmbclass.addItem(id);
+        }
+        List<String> chIds = scheduleDAO.get_sub();
+        for (String id : chIds) {
+            cmb_list_mon.addItem(id);
+        }
+        List<String> Time = scheduleDAO.get_day();
+        for (String id : Time) {
+            cmb_time.addItem(id);
+        }
+    }
+
+    private boolean validateInput() {
+        // Kiểm tra các trường không được để trống
+        if (cmb_id_teacher.getSelectedItem() == null
+                || cmb_list_class.getSelectedItem() == null
+                || cmb_list_sb.getSelectedItem() == null
+                || cmb_id_teacher.getSelectedItem() == null // Thêm vào kiểm tra cho ID_Teacher
+                || txt_poin.getText().isEmpty()
+                || txt_year.getText().isEmpty()
+                //                || txtcr.getText().isEmpty()
+                || txt_note.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Tất cả các trường phải được điền.");
+            return false;
+        }
+
+        // Kiểm tra giá trị điểm
+        try {
+            float point = Float.parseFloat(txt_poin.getText());
+            if (point < 0 || point > 10) {
+                JOptionPane.showMessageDialog(null, "Điểm phải nằm trong khoảng từ 0 đến 10.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Điểm phải là một số hợp lệ.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void InforTeacher() {
+        Teacher teacher = teacher_DAO.selectById(Authentication.teacher.getID_Teacher());
+        setFormIforn(teacher);
+    }
+
+    private void setFormIforn(Teacher sta) {
+        txtID.setText(sta.getID_Teacher());
+        txtFirstName.setText(sta.getFirst_Name());
+        txtEmail.setText(sta.getEmail());
+        (sta.isGender() ? rdMale : rdFemale).setSelected(true);
+
+        txtMidName.setText(sta.getMiddle_Name());
+        txtLastName.setText(sta.getLast_Name());
+
+        txtNote.setText(sta.getNote());
+        txtPhone.setText(sta.getPhone_Number());
+        txtAddress.setText(sta.getAddress_Teacher());
+
+        Message.alert(this, "Hello " + sta.getFirst_Name() + " " + sta.getMiddle_Name() + " " + sta.getLast_Name());
+    }
+
+    private void resetFormChangePassWord() {
+        JTextField text[] = {txtCurrentPass, txtNewPass, txtEnterPass};
+        IsValidForm.refreshForm(text);
+//        jTabbedPane1.setSelectedIndex(0);
+    }
+
+    private void changePassword() {
+        teacher_DAO.changePassword(Authentication.teacher.getID_Teacher(),
+                String.valueOf(txtCurrentPass.getPassword()), String.valueOf(txtEnterPass.getPassword()));
+        this.resetFormChangePassWord();
+    }
+
+    private boolean checkNull() {
+        JPasswordField passwordField[] = {txtCurrentPass, txtNewPass};
+        if (!IsValidForm.checkNull(passwordField)) {
+            return false;
+        } else if (!Arrays.equals(txtNewPass.getPassword(), txtEnterPass.getPassword())) {
+            txtEnterPass.requestFocus();
+            Message.alert(this, "New password does not match when re-entered !");
+            return false;
+        }
+        return true;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -267,40 +398,37 @@ public class Menu extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txt_id_hocsinh = new javax.swing.JTextField();
         cmbclass = new javax.swing.JComboBox<>();
-        btn_tim_hocsinh = new javax.swing.JButton();
         cardNhapdiem = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbl_diem = new javax.swing.JTable();
         jLabel10 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        txt_tim_name = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        cmb_list_sb = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        cmb_list_class = new javax.swing.JComboBox<>();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txt_poin = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jComboBox4 = new javax.swing.JComboBox<>();
+        txt_year = new javax.swing.JTextField();
+        bnt_new = new javax.swing.JButton();
+        bnt_add = new javax.swing.JButton();
+        cmb_id_teacher = new javax.swing.JComboBox<>();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        txt_note = new javax.swing.JTextArea();
+        jLabel41 = new javax.swing.JLabel();
+        cmb_list_hs1 = new javax.swing.JComboBox<>();
+        txtcr = new javax.swing.JTextField();
+        jLabel42 = new javax.swing.JLabel();
         cardLich = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tbl_lich = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox6 = new javax.swing.JComboBox<>();
-        jComboBox7 = new javax.swing.JComboBox<>();
+        cmb_time = new javax.swing.JComboBox<>();
+        cmb_list_mon = new javax.swing.JComboBox<>();
         jButton10 = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jButton11 = new javax.swing.JButton();
@@ -547,7 +675,7 @@ public class Menu extends javax.swing.JFrame {
         cardTrangChuLayout.setHorizontalGroup(
             cardTrangChuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardTrangChuLayout.createSequentialGroup()
-                .addContainerGap(211, Short.MAX_VALUE)
+                .addContainerGap(212, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -692,7 +820,7 @@ public class Menu extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnRefresh))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jLayeredPane3Layout.setVerticalGroup(
             jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -857,7 +985,7 @@ public class Menu extends javax.swing.JFrame {
         cardTaiKhoanLayout.setHorizontalGroup(
             cardTaiKhoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardTaiKhoanLayout.createSequentialGroup()
-                .addContainerGap(218, Short.MAX_VALUE)
+                .addContainerGap(219, Short.MAX_VALUE)
                 .addComponent(tabAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 669, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(53, 53, 53))
         );
@@ -898,13 +1026,16 @@ public class Menu extends javax.swing.JFrame {
                 txt_id_hocsinhActionPerformed(evt);
             }
         });
+        txt_id_hocsinh.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_id_hocsinhKeyReleased(evt);
+            }
+        });
 
         cmbclass.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        btn_tim_hocsinh.setText("Find");
-        btn_tim_hocsinh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_tim_hocsinhActionPerformed(evt);
+        cmbclass.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cmbclassKeyReleased(evt);
             }
         });
 
@@ -913,7 +1044,7 @@ public class Menu extends javax.swing.JFrame {
         cardListhocsinhLayout.setHorizontalGroup(
             cardListhocsinhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cardListhocsinhLayout.createSequentialGroup()
-                .addContainerGap(308, Short.MAX_VALUE)
+                .addContainerGap(311, Short.MAX_VALUE)
                 .addGroup(cardListhocsinhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardListhocsinhLayout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -921,9 +1052,7 @@ public class Menu extends javax.swing.JFrame {
                         .addComponent(txt_id_hocsinh, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(cmbclass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(btn_tim_hocsinh)
-                        .addGap(42, 42, 42))
+                        .addGap(140, 140, 140))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardListhocsinhLayout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 622, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
@@ -935,11 +1064,10 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(cardListhocsinhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_id_hocsinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbclass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_tim_hocsinh)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         jplMain.add(cardListhocsinh, "card3");
@@ -949,7 +1077,7 @@ public class Menu extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel5.setText("Enter grades");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_diem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -962,178 +1090,176 @@ public class Menu extends javax.swing.JFrame {
                 "Sequence number", "ID Student", "Name", "Point"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbl_diem);
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel10.setText("Find");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txt_tim_name.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_tim_nameKeyReleased(evt);
+            }
+        });
 
         jLabel11.setText("ID Student");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmb_list_sb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel13.setText("Full name");
+        jLabel13.setText("Note");
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        jLabel14.setText("ID Class");
+
+        cmb_list_class.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel15.setText("ID_Subject");
+
+        jLabel16.setText("Poin");
+
+        txt_poin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                txt_poinActionPerformed(evt);
             }
         });
 
-        jLabel14.setText("Subject name");
+        jLabel17.setText("Year");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        bnt_new.setText("New");
 
-        jLabel15.setText("Gender");
-
-        jLabel16.setText("Note");
-
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        bnt_add.setText("Add");
+        bnt_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                bnt_addActionPerformed(evt);
             }
         });
 
-        jLabel17.setText("Pont");
+        cmb_id_teacher.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jButton1.setText("Find");
+        txt_note.setColumns(20);
+        txt_note.setRows(5);
+        jScrollPane6.setViewportView(txt_note);
 
-        jButton2.setText("Reload");
+        jLabel41.setText("ID Teacher");
 
-        jButton3.setText("Exit");
+        cmb_list_hs1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jButton4.setText("Cannel");
-
-        jButton5.setText("Save");
-
-        jButton6.setText("Add");
-
-        jButton7.setText("Add");
-
-        jButton8.setText("Save");
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabel42.setText("Course_Name");
 
         javax.swing.GroupLayout cardNhapdiemLayout = new javax.swing.GroupLayout(cardNhapdiem);
         cardNhapdiem.setLayout(cardNhapdiemLayout);
         cardNhapdiemLayout.setHorizontalGroup(
             cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardNhapdiemLayout.createSequentialGroup()
-                .addGap(0, 222, Short.MAX_VALUE)
+            .addGroup(cardNhapdiemLayout.createSequentialGroup()
+                .addContainerGap(211, Short.MAX_VALUE)
                 .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardNhapdiemLayout.createSequentialGroup()
-                        .addComponent(jButton7)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton8)
-                        .addGap(99, 99, 99)
-                        .addComponent(jButton6)
-                        .addGap(37, 37, 37)
-                        .addComponent(jButton5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4)
-                        .addGap(26, 26, 26)
-                        .addComponent(jButton3)
-                        .addGap(27, 27, 27))
+                        .addComponent(jLabel5)
+                        .addGap(378, 378, 378))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardNhapdiemLayout.createSequentialGroup()
-                        .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel14)
-                            .addComponent(jLabel15)
-                            .addComponent(jLabel16)
-                            .addComponent(jLabel17))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardNhapdiemLayout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardNhapdiemLayout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(18, 18, 18)
+                                .addComponent(txt_tim_name, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(84, 84, 84)))
+                        .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(cardNhapdiemLayout.createSequentialGroup()
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(24, 24, 24)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(cardNhapdiemLayout.createSequentialGroup()
-                                .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(cardNhapdiemLayout.createSequentialGroup()
-                                        .addGap(162, 162, 162)
-                                        .addComponent(jLabel5))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardNhapdiemLayout.createSequentialGroup()
-                                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel10)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2))
-                            .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())))
+                                .addComponent(jLabel13)
+                                .addGap(38, 38, 38)
+                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(cardNhapdiemLayout.createSequentialGroup()
+                                    .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel14)
+                                        .addComponent(jLabel15)
+                                        .addComponent(jLabel16))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txt_poin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cmb_list_class, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cmb_list_sb, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(cardNhapdiemLayout.createSequentialGroup()
+                                    .addGap(31, 31, 31)
+                                    .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(cardNhapdiemLayout.createSequentialGroup()
+                                            .addComponent(bnt_add)
+                                            .addGap(39, 39, 39)
+                                            .addComponent(bnt_new))
+                                        .addGroup(cardNhapdiemLayout.createSequentialGroup()
+                                            .addComponent(jLabel17)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(txt_year, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(cardNhapdiemLayout.createSequentialGroup()
+                                    .addComponent(jLabel42)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtcr, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(cardNhapdiemLayout.createSequentialGroup()
+                                    .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel41)
+                                        .addComponent(jLabel11))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(cmb_list_hs1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cmb_id_teacher, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(115, 115, 115))))
         );
         cardNhapdiemLayout.setVerticalGroup(
             cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cardNhapdiemLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_tim_name, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel41)
+                    .addComponent(cmb_id_teacher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(cardNhapdiemLayout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(6, 6, 6)
                         .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2)
-                            .addComponent(jLabel10)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardNhapdiemLayout.createSequentialGroup()
-                        .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmb_list_hs1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel11))
-                        .addGap(6, 6, 6)))
-                .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(cardNhapdiemLayout.createSequentialGroup()
-                        .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(cardNhapdiemLayout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addGap(18, 18, 18))
-                            .addGroup(cardNhapdiemLayout.createSequentialGroup()
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(20, 20, 20)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14))
-                        .addGap(18, 18, 18)
-                        .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmb_list_sb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel15))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel16))
-                        .addGap(18, 18, 18)
+                            .addComponent(jLabel14)
+                            .addComponent(cmb_list_class, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21)
                         .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton6)
-                        .addComponent(jButton5)
-                        .addComponent(jButton4)
-                        .addComponent(jButton3))
-                    .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton8)
-                        .addComponent(jButton7)))
-                .addContainerGap(251, Short.MAX_VALUE))
+                            .addComponent(jLabel16)
+                            .addComponent(txt_poin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel17)
+                            .addComponent(txt_year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(13, 13, 13)
+                        .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtcr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel42)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bnt_add)
+                    .addComponent(bnt_new))
+                .addGap(118, 118, 118))
         );
 
         jplMain.add(cardNhapdiem, "card3");
 
         cardLich.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_lich.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -1144,14 +1270,14 @@ public class Menu extends javax.swing.JFrame {
                 "Number", "Day", "Room", "Course", "Class", "Time", "Specifics"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        jScrollPane3.setViewportView(tbl_lich);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("Time");
 
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmb_time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmb_list_mon.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton10.setText("<");
 
@@ -1169,14 +1295,14 @@ public class Menu extends javax.swing.JFrame {
                     .addGroup(cardLichLayout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jComboBox6, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(cmb_time, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardLichLayout.createSequentialGroup()
-                .addGap(0, 226, Short.MAX_VALUE)
+                .addGap(0, 227, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 708, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardLichLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmb_list_mon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(jButton10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1190,12 +1316,12 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardLichLayout.createSequentialGroup()
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmb_time, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addGroup(cardLichLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmb_list_mon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton10)
                     .addComponent(jLabel9)
                     .addComponent(jButton11))
@@ -1262,7 +1388,7 @@ public class Menu extends javax.swing.JFrame {
                         .addGroup(cardhelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel38)
                             .addComponent(jLabel39))))
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardhelpLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel35)
@@ -1451,13 +1577,9 @@ public class Menu extends javax.swing.JFrame {
 
     }//GEN-LAST:event_lbllich1MouseClicked
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txt_poinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_poinActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_txt_poinActionPerformed
 
     private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
         // TODO add your handling code here:
@@ -1476,7 +1598,10 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
-
+        if (!checkNull()) {
+            return;
+        }
+        this.changePassword();
     }//GEN-LAST:event_btnAcceptActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
@@ -1495,60 +1620,44 @@ public class Menu extends javax.swing.JFrame {
 
     }//GEN-LAST:event_lbShowNewPassMouseClicked
 
-    private void btn_tim_hocsinhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tim_hocsinhActionPerformed
-//String studentId = txt_id_hocsinh.getText();
-//
-//// Lấy danh sách học sinh từ DAO
-//List<Student> studentList = HocSinhDao.getAllStudents();
-//
-//// Lấy danh sách lớp học từ DAO
-//List<Class> classList = ClassDAO.getAllClasses();
-//
-//// Tạo danh sách dòng dữ liệu cho bảng
-//DefaultTableModel tableModel = new DefaultTableModel();
-//tableModel.addColumn("Student ID");
-//tableModel.addColumn("Full Name");
-//tableModel.addColumn("Gender");
-//tableModel.addColumn("Address");
-//tableModel.addColumn("Status");
-//tableModel.addColumn("Class ID");
-//tableModel.addColumn("Class Name");
-//
-//// Lọc danh sách học sinh và lớp học dựa trên ID học sinh
-//for (Student student : studentList) {
-//    if (student.getID_Student().equalsIgnoreCase(studentId)) {
-//        String fullName = student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name();
-//        String genderString = student.isGender() ? "Male" : "Female";
-//        
-//        // Dòng dữ liệu cho học sinh
-//        Object[] rowData = {
-//            student.getID_Student(),
-//            fullName,
-//            genderString,
-//            student.getAddress_Student(),
-//            student.isStatus_Student(),
-//            "", // Dòng này để trống cho thông tin lớp học, bạn có thể cập nhật sau
-//            ""  // Dòng này để trống cho thông tin tên lớp học, bạn có thể cập nhật sau
-//        };
-//        
-//        // Thêm dòng dữ liệu học sinh vào bảng
-//        tableModel.addRow(rowData);
-//        
-//        // Tìm lớp học tương ứng với ID học sinh
-//        for (Class classEntity : classList) {
-//            if (classEntity.getID_Student().equalsIgnoreCase(studentId)) {
-//                // Cập nhật thông tin lớp học vào dòng dữ liệu đã tạo
-//                tableModel.setValueAt(classEntity.getID_Class(), tableModel.getRowCount() - 1, 5);
-//                tableModel.setValueAt(classEntity.getClass_Name(), tableModel.getRowCount() - 1, 6);
-//            }
-//        }
-//    }
-//}
-//
-//// Cập nhật bảng tbl_list_hocsinh bằng dữ liệu đã tạo
-//tbl_list_hocsinh.setModel(tableModel);           
+    private void bnt_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnt_addActionPerformed
+        if (!validateInput()) {
+            return;
+        }
 
-    }//GEN-LAST:event_btn_tim_hocsinhActionPerformed
+        Point point = new Point();
+        point.setID_Student(cmb_list_hs1.getSelectedItem().toString());
+        point.setID_Class(cmb_list_class.getSelectedItem().toString());
+        point.setID_Subject(cmb_list_sb.getSelectedItem().toString());
+        point.setID_Teacher(cmb_id_teacher.getSelectedItem().toString()); // Đặt ID_Teacher
+        point.setPoint(Float.parseFloat(txt_poin.getText()));
+        point.setYear(Integer.parseInt(txt_year.getText()));
+//        point.setCourse_Name(txtcr.getText());
+        point.setNote(txt_note.getText());
+        // Thiếu Course_Name
+        point.setCourse_Name(txtcr.getText());
+
+        try {
+            pointDAO.insert(point);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            // Xử lý ngoại lệ
+        }
+
+    }//GEN-LAST:event_bnt_addActionPerformed
+
+    private void txt_id_hocsinhKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_id_hocsinhKeyReleased
+        // TODO add your handling code here:
+        Tbl_list_HocSinh();
+    }//GEN-LAST:event_txt_id_hocsinhKeyReleased
+
+    private void txt_tim_nameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_tim_nameKeyReleased
+//        Tbl_diem();
+    }//GEN-LAST:event_txt_tim_nameKeyReleased
+
+    private void cmbclassKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbclassKeyReleased
+//        Tbl_list_HocSinh();
+    }//GEN-LAST:event_cmbclassKeyReleased
 
     /**
      * @param args the command line arguments
@@ -1589,11 +1698,12 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bnt_add;
+    private javax.swing.JButton bnt_new;
     private javax.swing.JButton btnAccept;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JButton btn_tim_hocsinh;
     private javax.swing.JPanel cardDoimk;
     private javax.swing.JPanel cardLich;
     private javax.swing.JPanel cardListhocsinh;
@@ -1601,25 +1711,17 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JPanel cardTaiKhoan;
     private javax.swing.JPanel cardTrangChu;
     private javax.swing.JPanel cardhelp;
+    private javax.swing.JComboBox<String> cmb_id_teacher;
+    private javax.swing.JComboBox<String> cmb_list_class;
+    private javax.swing.JComboBox<String> cmb_list_hs1;
+    private javax.swing.JComboBox<String> cmb_list_mon;
+    private javax.swing.JComboBox<String> cmb_list_sb;
+    private javax.swing.JComboBox<String> cmb_time;
     private javax.swing.JComboBox<String> cmbclass;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox6;
-    private javax.swing.JComboBox<String> jComboBox7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1655,6 +1757,8 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1670,13 +1774,8 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
@@ -1701,6 +1800,8 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JRadioButton rdFemale;
     private javax.swing.JRadioButton rdMale;
     private javax.swing.JTabbedPane tabAccount;
+    private javax.swing.JTable tbl_diem;
+    private javax.swing.JTable tbl_lich;
     private javax.swing.JTable tbl_list_hocsinh;
     private javax.swing.JTextField txtAddress;
     private javax.swing.JPasswordField txtCurrentPass;
@@ -1714,5 +1815,10 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTextArea txtNote;
     private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txt_id_hocsinh;
+    private javax.swing.JTextArea txt_note;
+    private javax.swing.JTextField txt_poin;
+    private javax.swing.JTextField txt_tim_name;
+    private javax.swing.JTextField txt_year;
+    private javax.swing.JTextField txtcr;
     // End of variables declaration//GEN-END:variables
 }

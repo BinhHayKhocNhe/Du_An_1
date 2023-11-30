@@ -148,24 +148,23 @@ VALUES
 ('GRD019', 'waitstaff', 'Madison', 'D.', 'Gomez', 'madison.g@email.com', '222111000', 1, '222 Support Lane, Town', 'Fashion Designer', 'Nurturing the child''s creativity in the field of fashion.'),
 ('GRD020', 'itsupport1', 'Evelyn', '', 'Russell', 'evelyn.r@email.com', '666000999', 0, '333 Guardian Avenue, Village', 'Scientist', 'Encouraging scientific curiosity and experimentation in the child.');
 
-CREATE TABLE Student(
-ID_Student NVARCHAR(50) NOT NULL,
-First_Name NVARCHAR(20) NOT NULL,
-Middle_Name NVARCHAR(20),
-Last_Name NVARCHAR(20) NOT NULL,
-Gender BIT NOT NULL,
-Address_Student NVARCHAR(255) NOT NULL,
-ID_Class NVARCHAR(20) NOT NULL,
-Status_Student BIT NOT NULL,
-Avatar NVARCHAR(50) NOT NULL,
-Date_Of_Birth INT NOT NULL,
-Month_Of_Birth INT NOT NULL,
-Year_Of_Birth INT NOT NULL,
-Note NVARCHAR(255),
-ALTER TABLE Student
-ADD CONSTRAINT FK_Class FOREIGN KEY (ID_Class) REFERENCES Class(ID_Class);
-CONSTRAINT PK_ID_Student PRIMARY KEY(ID_Student)
+CREATE TABLE Student (
+    ID_Student NVARCHAR(50) NOT NULL,
+    First_Name NVARCHAR(20) NOT NULL,
+    Middle_Name NVARCHAR(20),
+    Last_Name NVARCHAR(20) NOT NULL,
+    Gender BIT NOT NULL,
+    Address_Student NVARCHAR(255) NOT NULL,
+    ID_Class NVARCHAR(50) NOT NULL ,
+    Status_Student BIT NOT NULL,
+    Avatar NVARCHAR(50) NOT NULL,
+    Date_Of_Birth INT NOT NULL,
+    Month_Of_Birth INT NOT NULL,
+    Year_Of_Birth INT NOT NULL,
+    Note NVARCHAR(255),
+    CONSTRAINT FK_Class FOREIGN KEY (ID_Class) REFERENCES Class(ID_Class)
 );
+
 INSERT INTO Student (ID_Student, First_Name, Middle_Name, Last_Name, Gender, Address_Student, ID_Class, Status_Student, Avatar, Date_Of_Birth, Month_Of_Birth, Year_Of_Birth, Note)
 VALUES
 ('STU001', 'Emma', '', 'Johnson', 0, '123 Main Street, City','C001', 1, 'avatar1.jpg', 5, 3, 2019, 'Active and engaged learner.'),
@@ -235,14 +234,12 @@ VALUES
     ('C009', 'Fall', 'STU009', 'TCH009', 'C009', 2021, 'Note for Fall'),
     ('C010', 'Spring', 'STU010', 'TCH010', 'C010', 2024, 'Note for Spring');
 
-CREATE TABLE Class(
-ID_Class NVARCHAR(50) NOT NULL,
-Class_Name NVARCHAR(50) NOT NULL,
-ID_Teacher NVARCHAR(50) NOT NULL,
-Quantity int NOT NULL,
-Note NVARCHAR(255),
-CONSTRAINT PK_ID_Class PRIMARY KEY(ID_Class),
-CONSTRAINT FK_Teacher FOREIGN KEY (ID_Teacher) REFERENCES Teacher(ID_Teacher)
+CREATE TABLE Class (
+    ID_Class NVARCHAR(50) NOT NULL PRIMARY KEY,
+    Class_Name NVARCHAR(50) NOT NULL,
+    ID_Teacher NVARCHAR(50) NOT NULL,
+    Quantity INT NOT NULL,
+    Note NVARCHAR(255),
 );
 -- Thêm dữ liệu vào bảng Class
 INSERT INTO Class (ID_Class, Class_Name, ID_Teacher, Quantity, Note) VALUES
