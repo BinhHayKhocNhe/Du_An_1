@@ -36,6 +36,7 @@ public class Menu extends javax.swing.JFrame {
     PointDAO pointDAO = new PointDAO();
     ScheduleDAO scheduleDAO = new ScheduleDAO();
     Teacher_DAO teacher_DAO = new Teacher_DAO();
+    ClassDAO classDAO = new ClassDAO();
     int x = 210;    //chieu rong
     int y = 600;    //chieu cao
     DefaultTableModel hehe = new DefaultTableModel();
@@ -328,6 +329,109 @@ public class Menu extends javax.swing.JFrame {
         return true;
     }
 
+//    private void loadDataToTable() {
+//
+//        List<Student> studentList = HocSinhDao.getAllStudents();
+//        List<Class> classList = ClassDAO.getAllClasses();
+//
+//        List<Student> studentList = studentDAO.selectAll();
+//        DefaultTableModel model = new DefaultTableModel();
+//        tbl_list_hocsinh.setModel(model);
+//
+//
+//        DefaultTableModel studentModel = new DefaultTableModel();
+//        DefaultTableModel classModel = new DefaultTableModel();
+//
+//        studentModel.addColumn("Student ID");
+//        studentModel.addColumn("Full Name");
+//        studentModel.addColumn("Gender");
+//        studentModel.addColumn("Address");
+//        studentModel.addColumn("Status");
+//
+//        // Add data to the table model for Student
+//        for (Student student : studentList) {
+//            String fullName = student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name();
+//            String genderString = student.isGender() ? "Male" : "Female";
+//            Object[] rowData = {
+//                student.getID_Student(),
+//
+//                fullName,
+//                genderString,
+//                student.getAddress_Student(),
+//                student.isStatus_Student(), //             
+//
+//                student.getFirst_Name(),
+//                student.getMiddle_Name(),
+//                student.getLast_Name(),
+//                student.isGender(),
+//                student.getAddress_Student(),
+//                student.isStatus_Student(),
+//                student.getAvatar(),
+//                student.getDate_Of_Birth(),
+//                student.getMonth_Of_Birth(),
+//                student.getYear_Of_Birth(),
+//                student.getNote()
+//
+//            };
+//            studentModel.addRow(rowData);
+//        }
+//
+//        classModel.addColumn("Class ID");
+//        classModel.addColumn("Class Name");
+//
+//        for (Class classEntity : classList) {
+//            Object[] rowData = {
+//                classEntity.getID_Class(),
+//                classEntity.getClass_Name()
+//
+//            };
+//            classModel.addRow(rowData);
+//        }
+//
+//        DefaultTableModel mergedModel = mergeModels(studentModel, classModel);
+//
+//        tbl_list_hocsinh.setModel(mergedModel);
+//    }
+//
+//    private DefaultTableModel mergeModels(DefaultTableModel model1, DefaultTableModel model2) {
+//        DefaultTableModel mergedModel = new DefaultTableModel();
+//
+//        for (int i = 0; i < model1.getColumnCount(); i++) {
+//            mergedModel.addColumn(model1.getColumnName(i));
+//        }
+//
+//        for (int i = 0; i < model2.getColumnCount(); i++) {
+//            mergedModel.addColumn(model2.getColumnName(i));
+//        }
+//
+//        int rowCount = Math.max(model1.getRowCount(), model2.getRowCount());
+//        for (int i = 0; i < rowCount; i++) {
+//            Object[] rowData = new Object[model1.getColumnCount() + model2.getColumnCount()];
+//            for (int j = 0; j < model1.getColumnCount(); j++) {
+//                rowData[j] = (i < model1.getRowCount()) ? model1.getValueAt(i, j) : null;
+//            }
+//            for (int j = 0; j < model2.getColumnCount(); j++) {
+//                rowData[model1.getColumnCount() + j] = (i < model2.getRowCount()) ? model2.getValueAt(i, j) : null;
+//            }
+//            mergedModel.addRow(rowData);
+//        }
+//
+//        return mergedModel;
+//
+//    }
+//
+//    private void loadClassNamesToComboBox() {
+//
+//        List<Class> classes = ClassDAO.getAllClasses();
+//
+//        cmbclass.removeAllItems();
+//
+//        for (Class classEntity : classes) {
+//            cmbclass.addItem(classEntity.getClass_Name());
+//        }
+//    }
+//
+//
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -1658,6 +1762,114 @@ public class Menu extends javax.swing.JFrame {
     private void cmbclassKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbclassKeyReleased
 //        Tbl_list_HocSinh();
     }//GEN-LAST:event_cmbclassKeyReleased
+    private void btn_tim_hocsinhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tim_hocsinhActionPerformed
+
+        String studentId = txt_id_hocsinh.getText();
+
+// Lấy danh sách học sinh từ DAO
+        List<Student> studentList = studentDAO.selectAll();
+
+// Lấy danh sách lớp học từ DAO
+        List<Class> classList = classDAO.selectAll();
+
+// Tạo danh sách dòng dữ liệu cho bảng
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.addColumn("Student ID");
+        tableModel.addColumn("Full Name");
+        tableModel.addColumn("Gender");
+        tableModel.addColumn("Address");
+        tableModel.addColumn("Status");
+        tableModel.addColumn("Class ID");
+        tableModel.addColumn("Class Name");
+
+// Lọc danh sách học sinh và lớp học dựa trên ID học sinh
+        for (Student student : studentList) {
+            if (student.getID_Student().equalsIgnoreCase(studentId)) {
+                String fullName = student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name();
+                String genderString = student.isGender() ? "Male" : "Female";
+
+                // Dòng dữ liệu cho học sinh
+                Object[] rowData = {
+                    student.getID_Student(),
+                    fullName,
+                    genderString,
+                    student.getAddress_Student(),
+                    student.isStatus_Student(),
+                    "", // Dòng này để trống cho thông tin lớp học, bạn có thể cập nhật sau
+                    "" // Dòng này để trống cho thông tin tên lớp học, bạn có thể cập nhật sau
+                };
+
+                // Thêm dòng dữ liệu học sinh vào bảng
+                tableModel.addRow(rowData);
+
+                // Tìm lớp học tương ứng với ID học sinh
+                for (Class classEntity : classList) {
+                    if (classEntity.getID_Student().equalsIgnoreCase(studentId)) {
+                        // Cập nhật thông tin lớp học vào dòng dữ liệu đã tạo
+                        tableModel.setValueAt(classEntity.getID_Class(), tableModel.getRowCount() - 1, 5);
+                        tableModel.setValueAt(classEntity.getClass_Name(), tableModel.getRowCount() - 1, 6);
+                    }
+                }
+            }
+        }
+
+// Cập nhật bảng tbl_list_hocsinh bằng dữ liệu đã tạo
+        tbl_list_hocsinh.setModel(tableModel);
+
+//String studentId = txt_id_hocsinh.getText();
+//
+//// Lấy danh sách học sinh từ DAO
+//List<Student> studentList = HocSinhDao.getAllStudents();
+//
+//// Lấy danh sách lớp học từ DAO
+//List<Class> classList = ClassDAO.getAllClasses();
+//
+//// Tạo danh sách dòng dữ liệu cho bảng
+//DefaultTableModel tableModel = new DefaultTableModel();
+//tableModel.addColumn("Student ID");
+//tableModel.addColumn("Full Name");
+//tableModel.addColumn("Gender");
+//tableModel.addColumn("Address");
+//tableModel.addColumn("Status");
+//tableModel.addColumn("Class ID");
+//tableModel.addColumn("Class Name");
+//
+//// Lọc danh sách học sinh và lớp học dựa trên ID học sinh
+//for (Student student : studentList) {
+//    if (student.getID_Student().equalsIgnoreCase(studentId)) {
+//        String fullName = student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name();
+//        String genderString = student.isGender() ? "Male" : "Female";
+//        
+//        // Dòng dữ liệu cho học sinh
+//        Object[] rowData = {
+//            student.getID_Student(),
+//            fullName,
+//            genderString,
+//            student.getAddress_Student(),
+//            student.isStatus_Student(),
+//            "", // Dòng này để trống cho thông tin lớp học, bạn có thể cập nhật sau
+//            ""  // Dòng này để trống cho thông tin tên lớp học, bạn có thể cập nhật sau
+//        };
+//        
+//        // Thêm dòng dữ liệu học sinh vào bảng
+//        tableModel.addRow(rowData);
+//        
+//        // Tìm lớp học tương ứng với ID học sinh
+//        for (Class classEntity : classList) {
+//            if (classEntity.getID_Student().equalsIgnoreCase(studentId)) {
+//                // Cập nhật thông tin lớp học vào dòng dữ liệu đã tạo
+//                tableModel.setValueAt(classEntity.getID_Class(), tableModel.getRowCount() - 1, 5);
+//                tableModel.setValueAt(classEntity.getClass_Name(), tableModel.getRowCount() - 1, 6);
+//            }
+//        }
+//    }
+//}
+//
+//// Cập nhật bảng tbl_list_hocsinh bằng dữ liệu đã tạo
+//tbl_list_hocsinh.setModel(tableModel);           
+
+
+    }//GEN-LAST:event_btn_tim_hocsinhActionPerformed
 
     /**
      * @param args the command line arguments

@@ -6,10 +6,12 @@
 package com.Main;
 
 import com.DAO.Administrators_DAO;
+import com.DAO.Guardians_DAO;
 import com.DAO.StaffDAO;
 import com.DAO.StudentDAO;
 import com.DAO.Teacher_DAO;
 import com.Entity.Administrators;
+import com.Entity.Guardians;
 import com.Entity.Staff;
 import com.Entity.Student;
 import com.Entity.Teacher;
@@ -35,6 +37,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private Administrators_DAO adminDAO = new Administrators_DAO();
     private Teacher_DAO teacher_DAO = new Teacher_DAO();
     private StaffDAO staff_DAO = new StaffDAO();
+    private Guardians_DAO guardians_DAO = new Guardians_DAO();
     private DefaultTableModel tableModelTeacher = new DefaultTableModel();
     private DefaultTableModel tableModelResetPassTeacher = new DefaultTableModel();
     private DefaultTableModel tableModelStaff = new DefaultTableModel();
@@ -78,8 +81,10 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.fillFindResetPassStaff();
         this.initTableStudent();
         this.fillTableStudent();
+        this.fillTableParent();
+        this.fillTableResetPassParent();
         this.uploadComboboxStudent();
-
+        this.uploadComboboxParent();
     }
 
     private void openMenu() {
@@ -361,7 +366,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         txtAddressParent = new javax.swing.JTextField();
         jLayeredPane12 = new javax.swing.JLayeredPane();
         jScrollPane12 = new javax.swing.JScrollPane();
-        tableStaff1 = new javax.swing.JTable();
+        tableParent = new javax.swing.JTable();
         txtFindParent = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLayeredPane13 = new javax.swing.JLayeredPane();
@@ -2519,7 +2524,7 @@ public class Menu_Admin extends javax.swing.JFrame {
 
         tabParent.addTab("INFORMATION", jLayeredPane11);
 
-        tableStaff1.setModel(new javax.swing.table.DefaultTableModel(
+        tableParent.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -2530,12 +2535,12 @@ public class Menu_Admin extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tableStaff1.addMouseListener(new java.awt.event.MouseAdapter() {
+        tableParent.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableStaff1MouseClicked(evt);
+                tableParentMouseClicked(evt);
             }
         });
-        jScrollPane12.setViewportView(tableStaff1);
+        jScrollPane12.setViewportView(tableParent);
 
         txtFindParent.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -2556,9 +2561,9 @@ public class Menu_Admin extends javax.swing.JFrame {
             jLayeredPane12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 728, Short.MAX_VALUE)
             .addGroup(jLayeredPane12Layout.createSequentialGroup()
-                .addGap(261, 261, 261)
+                .addGap(238, 238, 238)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(txtFindParent, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -3037,27 +3042,31 @@ public class Menu_Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUploadImgStudentActionPerformed
 
     private void btnAddParentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddParentActionPerformed
-        // TODO add your handling code here:
+        this.addParent();
     }//GEN-LAST:event_btnAddParentActionPerformed
 
     private void btnUpdateParentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateParentActionPerformed
-        // TODO add your handling code here:
+        this.updateParent();
     }//GEN-LAST:event_btnUpdateParentActionPerformed
 
     private void btnResetFormParentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetFormParentActionPerformed
         this.resetFormParent();
     }//GEN-LAST:event_btnResetFormParentActionPerformed
 
-    private void tableStaff1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableStaff1MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tableStaff1MouseClicked
+    private void tableParentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableParentMouseClicked
+        tableParent.setEnabled(false);
+        if (evt.getClickCount() == 2) {
+            this.clickTableParent();
+            tableParent.setEnabled(true);
+        }
+    }//GEN-LAST:event_tableParentMouseClicked
 
     private void txtFindParentKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFindParentKeyReleased
-        // TODO add your handling code here:
+        this.fillTableParent();
     }//GEN-LAST:event_txtFindParentKeyReleased
 
     private void txtIDResetPassParentKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIDResetPassParentKeyReleased
-        // TODO add your handling code here:
+        this.fillTableResetPassParent();
     }//GEN-LAST:event_txtIDResetPassParentKeyReleased
 
     private void tableResetPassParentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableResetPassParentMouseClicked
@@ -3069,7 +3078,9 @@ public class Menu_Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnResetPassParentActionPerformed
 
     private void btnExitResetPassParentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitResetPassParentActionPerformed
-        // TODO add your handling code here:
+        if (Message.confirm(this, "Do you want exit ?")) {
+            this.setCardFalse();
+        }
     }//GEN-LAST:event_btnExitResetPassParentActionPerformed
 
     private void tabParentAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tabParentAncestorAdded
@@ -3077,7 +3088,14 @@ public class Menu_Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_tabParentAncestorAdded
 
     private void tabParentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabParentMouseClicked
-        // TODO add your handling code here:
+        int selectedIndex = tabParent.getSelectedIndex();
+        if (selectedIndex == 1) {
+            txtFindParent.setText("");
+            this.fillTableParent();
+        } else if (selectedIndex == 2) {
+            txtIDResetPassParent.setText("");
+            this.fillTableResetPassParent();
+        }
     }//GEN-LAST:event_tabParentMouseClicked
     private void setCardFalse() {
         cardTrangChu.setVisible(false);
@@ -3722,7 +3740,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     }
 
     private void resetFormParent() {
-        JTextComponent textComponent[] = {txtIDParent, txtFirstNameParent, txtLastNameParent, txtEmailParent,
+        JTextComponent textComponent[] = {txtIDParent, txtFirstNameParent,txtMidNameParent, txtLastNameParent, txtEmailParent,
             txtPhoneParent, txtAddressParent, txtNoteParent};
         IsValidForm.refreshForm(textComponent);
         rdMaleParent.setSelected(true);
@@ -3730,9 +3748,148 @@ public class Menu_Admin extends javax.swing.JFrame {
     }
 
     private void initTableParent() {
-        String columns[] = {"ID", "Fullname", "Address", "Class", "Gender", "Status", "Date of birth"};
-        tableModelStudent.setColumnIdentifiers(columns);
-        tableStudent.setModel(tableModelStudent);
+        String columns[] = {"ID", "Fullname", "Address", "Email", "Phone", "Gender", "Job", "Note"};
+        tableModelParent.setColumnIdentifiers(columns);
+        tableParent.setModel(tableModelParent);
+        String columnsResetPass[] = {"No.", "ID Guardians", "Fullname", "Password"};
+        tableModelResetPassParent.setColumnIdentifiers(columnsResetPass);
+        tableResetPassParent.setModel(tableModelResetPassParent);
+    }
+
+    private void uploadComboboxParent() {
+        DefaultComboBoxModel cbbox = new DefaultComboBoxModel();
+        String datas[] = {
+            "Engineer", "Doctor", "Police Officer", "Nurse", "Architect",
+            "Psychologist", "Counselor", "Social Worker", "Teacher", "Artist",
+            "Lawyer", "Entrepreneur", "Scientist", "Writer", "Chef",
+            "Athlete", "Engineer", "Executive", "Fashion Designer", "Scientist", "Other"
+        };
+        for (String data : datas) {
+            cbbox.addElement(data);
+        }
+        cbJobParent.setModel(cbbox);
+    }
+
+    private void setFormParent(Guardians guardians) {
+        txtIDParent.setText(guardians.getID_Guardians());
+        txtFirstNameParent.setText(guardians.getFirst_Name());
+        txtMidNameParent.setText(guardians.getMiddle_Name());
+        txtLastNameParent.setText(guardians.getLast_Name());
+        txtAddressParent.setText(guardians.getAddress_Guardians());
+        txtNoteParent.setText(guardians.getNote());
+        (guardians.isGender() ? rdMaleParent : rdFemaleParent).setSelected(true);
+        txtEmailParent.setText(guardians.getEmail());
+        txtPhoneParent.setText(guardians.getPhone_Number());
+        cbJobParent.setSelectedItem(guardians.getJob());
+    }
+
+    private Guardians getFormGuardians() {
+        Guardians guardians = new Guardians();
+        guardians.setID_Guardians(txtIDParent.getText());
+        guardians.setFirst_Name(txtFirstNameParent.getText());
+        guardians.setMiddle_Name(txtMidNameParent.getText());
+        guardians.setLast_Name(txtLastNameParent.getText());
+        guardians.setAddress_Guardians(txtAddressParent.getText());
+        guardians.setNote(txtNoteParent.getText());
+        guardians.setGender(rdMaleParent.isSelected() ? true : false);
+        guardians.setEmail(txtEmailParent.getText());
+        guardians.setPhone_Number(txtPhoneParent.getText());
+        guardians.setJob((String) cbJobParent.getSelectedItem());
+        return guardians;
+    }
+
+    private void clickTableParent() {
+        int index = tableParent.getSelectedRow();
+        String ID_Guardians = tableParent.getValueAt(index, 0).toString();
+        Guardians guardians = guardians_DAO.selectById(ID_Guardians);
+        this.setFormParent(guardians);
+        tabParent.setSelectedIndex(0);
+    }
+
+    private void fillTableParent() {
+        tableModelParent.setRowCount(0);
+        try {
+            String keyword = txtFindParent.getText();
+            List<Guardians> list = guardians_DAO.selectByKeyword(keyword);
+            for (Guardians guardians : list) {
+                Object[] row = {
+                    guardians.getID_Guardians(),
+                    guardians.getFirst_Name() + " " + guardians.getMiddle_Name() + " " + guardians.getLast_Name(),
+                    guardians.getAddress_Guardians(),
+                    guardians.getEmail(),
+                    guardians.getPhone_Number(),
+                    guardians.isGender() ? "Male" : "Female",
+                    guardians.getJob(),
+                    guardians.getNote()
+                };
+                tableModelParent.addRow(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void fillTableResetPassParent() {
+        tableModelResetPassParent.setRowCount(0);
+        try {
+            String keyword = txtIDResetPassParent.getText();
+            List<Guardians> list = guardians_DAO.selectByKeyword(keyword);
+            int i = 1;
+            for (Guardians guardians : list) {
+                String hashedPassword = guardians.getID_Guardians();
+                String hiddenPassword = "*".repeat(hashedPassword.length());
+                Object[] row = {
+                    i++,
+                    guardians.getID_Guardians(),
+                    guardians.getFirst_Name() + " " + guardians.getMiddle_Name() + " " + guardians.getLast_Name(), hiddenPassword};
+                tableModelResetPassParent.addRow(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addParent() {
+        JTextComponent textComponent[] = {txtIDParent, txtFirstNameParent,
+            txtLastNameParent, txtEmailParent, txtPhoneParent, txtAddressParent};
+        if (!IsValidForm.checkNull(textComponent)) {
+            return;
+        } else if (!IsValidForm.isValidEmail(txtEmailParent.getText())) {
+            Message.alert(this, "Email is not valid !");
+            txtEmailParent.requestFocus();
+            return;
+        } else if (!IsValidForm.isValidPhoneNumber(txtPhoneParent.getText())) {
+            Message.alert(this, "Phone number is not valid !");
+            txtPhoneParent.requestFocus();
+            return;
+        } else if (guardians_DAO.checkCountIDGuardians(txtIDParent.getText()) == false) {
+            txtIDParent.requestFocus();
+            Message.alert(this, "Guardians code already in use !");
+            return;
+        }
+        try {
+            Guardians guardians = getFormGuardians();
+            guardians_DAO.insert(guardians);
+            this.fillTableParent();
+            this.resetFormParent();
+            Message.alert(this, "Guardians added successfully !");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateParent() {
+        JTextComponent textComponent[] = {txtIDParent, txtFirstNameParent,
+            txtLastNameParent, txtEmailParent, txtPhoneParent, txtAddressParent};
+        if (!IsValidForm.checkNull(textComponent)) {
+            return;
+        } else if (Message.confirm(this, "You want to change information?")) {
+            Guardians guardians = getFormGuardians();
+            guardians_DAO.update(guardians);
+            this.fillTableStudent();
+            Message.alert(this, "Edited information successfully !");
+            this.resetFormParent();
+        }
     }
 
     /**
@@ -3986,11 +4143,11 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JTabbedPane tabStaff;
     private javax.swing.JTabbedPane tabStudent;
     private javax.swing.JTabbedPane tabTeacher;
+    private javax.swing.JTable tableParent;
     private javax.swing.JTable tableResetPassParent;
     private javax.swing.JTable tableResetPassStaff;
     private javax.swing.JTable tableResetPassTeacher;
     private javax.swing.JTable tableStaff;
-    private javax.swing.JTable tableStaff1;
     private javax.swing.JTable tableStudent;
     private javax.swing.JTable tableTeacher;
     private javax.swing.JTextField txtAddress;

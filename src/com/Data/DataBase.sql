@@ -14,7 +14,7 @@ Address NVARCHAR(255) NOT NULL,
 Note NVARCHAR(255),
 CONSTRAINT PK_ID_Admin PRIMARY KEY(ID_Administrator)
 );
- 
+
 
 INSERT INTO Administrators (ID_Administrator, Password_Administrator, First_Name, Middle_Name, Last_Name, Email, Phone_Number, Gender, Address, Note)
 VALUES 
@@ -125,6 +125,8 @@ Job NVARCHAR(50) NOT NULL,
 Note NVARCHAR(255),
 CONSTRAINT PK_ID_Guardians PRIMARY KEY(ID_Guardians)
 );
+SELECT DISTINCT Job
+FROM Guardians;
 INSERT INTO Guardians (ID_Guardians, Password_Guardians, First_Name, Middle_Name, Last_Name, Email, Phone_Number, Gender, Address_Guardians, Job, Note)
 VALUES 
 ('GRD001', 'guardian123', 'Michael', 'A.', 'Johnson', 'michael.j@email.com', '123456789', 1, '456 Guardian Street, City', 'Engineer', 'Active supporter of the child''s education.'),
@@ -163,7 +165,25 @@ CREATE TABLE Student (
     Year_Of_Birth INT NOT NULL,
     Note NVARCHAR(255),
     CONSTRAINT FK_Class FOREIGN KEY (ID_Class) REFERENCES Class(ID_Class)
+CREATE TABLE Student(
+ID_Student NVARCHAR(50) NOT NULL,
+First_Name NVARCHAR(20) NOT NULL,
+Middle_Name NVARCHAR(20),
+Last_Name NVARCHAR(20) NOT NULL,
+Gender BIT NOT NULL,
+Address_Student NVARCHAR(255) NOT NULL,
+ID_Class NVARCHAR(50) NOT NULL,
+Status_Student BIT NOT NULL,
+Avatar NVARCHAR(50) NOT NULL,
+Date_Of_Birth INT NOT NULL,
+Month_Of_Birth INT NOT NULL,
+Year_Of_Birth INT NOT NULL,
+Note NVARCHAR(255),
+CONSTRAINT PK_ID_Student PRIMARY KEY(ID_Student),
+CONSTRAINT FK_ID_StudentClass FOREIGN KEY (ID_Class) REFERENCES Class(ID_Class)
 );
+-- Thêm khóa ngoại
+
 
 INSERT INTO Student (ID_Student, First_Name, Middle_Name, Last_Name, Gender, Address_Student, ID_Class, Status_Student, Avatar, Date_Of_Birth, Month_Of_Birth, Year_Of_Birth, Note)
 VALUES
@@ -444,21 +464,7 @@ VALUES
 ('STU019', 'GRD009'),
 ('STU020', 'GRD010');
 
-CREATE TABLE Tuition(
-ID_Bill NVARCHAR(50) NOT NULL,
-Money FLOAT NOT NULL,
-Status BIT NOT NULL,
-ID_Staff NVARCHAR(50) NOT NULL,
-ID_Guardians NVARCHAR(50) NOT NULL,
-Year INT NOT NULL,
-ID_Course NVARCHAR(50) NOT NULL,
-Course_Name NVARCHAR(50) NOT NULL,
-Bill_Date DATETIME DEFAULT GETDATE(),
-Note NVARCHAR(255),
-CONSTRAINT PK_ID_Bill PRIMARY KEY(ID_Bill),
-CONSTRAINT FK_Tuition_Guardians FOREIGN KEY (ID_Guardians) REFERENCES Guardians(ID_Guardians),
-CONSTRAINT FK_Tuition_Staff FOREIGN KEY (ID_Staff) REFERENCES Staff(ID_Staff)
-);
+
 INSERT INTO Tuition (ID_Bill, Money, Status, ID_Staff, ID_Guardians, Year, ID_Course, Course_Name, Note)
 VALUES
 ('B001', 500, 1, 'EMP001', 'GRD001', 2023, 'C001', 'Spring', 'Tuition 1'),
