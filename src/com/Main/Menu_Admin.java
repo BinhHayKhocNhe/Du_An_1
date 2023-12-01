@@ -4202,7 +4202,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         txtLastNameTeacher.setText(teacher.getLast_Name());
         txtEmailTeacher.setText(teacher.getEmail());
         txtPhoneTeacher.setText(teacher.getPhone_Number());
-        txtAddressTeacher.setText(teacher.getAddress_Staff());
+        txtAddressTeacher.setText(teacher.getAddress_Teacher());
         txtNoteTeacher.setText(teacher.getNote());
         (teacher.isGender() ? rdMaleTeacher : rdFemaleTeacher).setSelected(true);
         (teacher.isStatus_Teacher() ? rdONTeacher : rdOFFTeacher).setSelected(true);
@@ -4295,7 +4295,7 @@ public class Menu_Admin extends javax.swing.JFrame {
             List<Teacher> list = teacher_DAO.selectByKeyword(txtFindTeacher.getText());
             for (Teacher teacher : list) {
                 Object rows[] = {teacher.getID_Teacher(), teacher.getMiddle_Name() + " " + teacher.getLast_Name() + " " + teacher.getFirst_Name(),
-                    teacher.getEmail(), teacher.getPhone_Number(), teacher.getAddress_Staff(),
+                    teacher.getEmail(), teacher.getPhone_Number(), teacher.getAddress_Teacher(),
                     teacher.isGender() ? "Male" : "Female", teacher.isStatus_Teacher() ? "ON" : "OFF",
                     teacher.getLevel_Teacher(), teacher.getYear_Of_Birth() + "-" + teacher.getMonth_Of_Birth() + "-" + teacher.getDate_Of_Birth(),
                     teacher.getStart_Date()};

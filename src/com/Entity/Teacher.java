@@ -2,18 +2,10 @@ package com.Entity;
 
 import java.util.Date;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-/**
- *
- * @author admin
- */
 public class Teacher {
 
     private String ID_Teacher, Password_Teacher, First_Name, Middle_Name, Last_Name,
-            Email, Phone_Number, Level_Teacher, Address_Staff, Avatar, Note;
+            Email, Phone_Number, Level_Teacher, Address_Teacher, Avatar, Note;
     private boolean Gender, Status_Teacher;
     private int Date_Of_Birth, Month_Of_Birth, Year_Of_Birth;
     private Date Start_Date;
@@ -21,7 +13,7 @@ public class Teacher {
     public Teacher() {
     }
 
-    public Teacher(String ID_Teacher, String Password_Teacher, String First_Name, String Middle_Name, String Last_Name, String Email, String Phone_Number, String Level_Teacher, String Address_Staff, String Avatar, String Note, boolean Gender, boolean Status_Teacher, int Date_Of_Birth, int Month_Of_Birth, int Year_Of_Birth, Date Start_Date) {
+    public Teacher(String ID_Teacher, String Password_Teacher, String First_Name, String Middle_Name, String Last_Name, String Email, String Phone_Number, String Level_Teacher, String Address_Teacher, String Avatar, String Note, boolean Gender, boolean Status_Teacher, int Date_Of_Birth, int Month_Of_Birth, int Year_Of_Birth, Date Start_Date) {
         this.ID_Teacher = ID_Teacher;
         this.First_Name = First_Name;
         this.Middle_Name = Middle_Name;
@@ -29,7 +21,7 @@ public class Teacher {
         this.Email = Email;
         this.Phone_Number = Phone_Number;
         this.Level_Teacher = Level_Teacher;
-        this.Address_Staff = Address_Staff;
+        this.Address_Teacher = Address_Teacher;
         this.Avatar = Avatar;
         this.Note = Note;
         this.Gender = Gender;
@@ -105,12 +97,12 @@ public class Teacher {
         this.Level_Teacher = Level_Teacher;
     }
 
-    public String getAddress_Staff() {
-        return Address_Staff;
+    public String getAddress_Teacher() {
+        return Address_Teacher;
     }
 
     public void setAddress_Staff(String Address_Staff) {
-        this.Address_Staff = Address_Staff;
+        this.Address_Teacher = Address_Teacher;
     }
 
     public String getAvatar() {

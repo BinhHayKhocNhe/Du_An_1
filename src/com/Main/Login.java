@@ -6,8 +6,10 @@ package com.Main;
 
 import com.DAO.Administrators_DAO;
 import com.DAO.StaffDAO;
+import com.DAO.Teacher_DAO;
 import com.Entity.Administrators;
 import com.Entity.Staff;
+import com.Entity.Teacher;
 import com.Utils.Authentication;
 import com.Utils.Message;
 import com.Utils.XImage;
@@ -22,6 +24,7 @@ public class Login extends javax.swing.JFrame {
 
     private Administrators_DAO adminDao = new Administrators_DAO();
     private StaffDAO staffDAO = new StaffDAO();
+    private Teacher_DAO teacher_DAO = new Teacher_DAO();
 
     /**
      * Creates new form Login
@@ -350,30 +353,52 @@ public class Login extends javax.swing.JFrame {
         return staff;
     }
 
+    private Teacher getfromteacher() {
+        Teacher teacher = new Teacher();
+        teacher.setID_Teacher(txtUsername.getText());
+        teacher.setPassword_Teacher(String.valueOf(txtPass.getPassword()));
+        return teacher;
+    }
+
     private void checkLogin() {
         if (cbRole.getSelectedIndex() == 0) {
+            // Xử lý đăng nhập cho vai trò "Administrators"
             Administrators admin = getForm();
             if (!adminDao.checkID(admin)) {
                 Message.alert(this, "Account name or password is incorrect !");
                 return;
             }
-            Authentication.admin = getForm();
+            Authentication.admin = admin;
             Menu_Admin show = new Menu_Admin();
             show.setVisible(true);
             this.dispose();
+        } else if (cbRole.getSelectedIndex() == 1) {
+            // Xử lý đăng nhập cho vai trò "Teacher"
+            Teacher teacher = getfromteacher();
+            if (!teacher_DAO.checkID(teacher)) {
+                Message.alert(this, "Account name or password is incorrect !");
+                return;
+            }
+            Authentication.teacher = teacher;
+//            System.out.println("" + Authentication.teacher.getID_Teacher());
+            Menu menu = new Menu();
+            menu.setVisible(true);
+            this.dispose();
         } else if (cbRole.getSelectedIndex() == 2) {
+            // Xử lý đăng nhập cho vai trò "Staff"
             Staff staff = getFormStaff();
             if (!staffDAO.checkID(staff)) {
                 Message.alert(this, "Account name or password is incorrect !");
                 return;
             }
+            Authentication.staff = staff;
+//            System.out.println("" + Authentication.staff.getID_Staff());
             Authentication.staff = getFormStaff();
 //            System.out.println("" + Authentication.staff.getLast_Name());
             Form_Staff form_Staff = new Form_Staff();
             form_Staff.setVisible(true);
             this.dispose();
         }
-
     }
 
     public static void main(String args[]) {

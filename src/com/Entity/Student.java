@@ -108,7 +108,7 @@ public class Student {
         this.Year_Of_Birth = Year_Of_Birth;
     }
 
-    public Student(String ID_Student, String First_Name, String Middle_Name, String Last_Name, String Address_Student, String ID_Class, String Avatar, String Note, boolean Gender, boolean Status_Student, int Date_Of_Birth, int Month_Of_Birth, int Year_Of_Birth) {
+    public Student(String ID_Student,String Class_Name, String First_Name, String Middle_Name, String Last_Name, String Address_Student, String ID_Class, String Avatar, String Note, boolean Gender, boolean Status_Student, int Date_Of_Birth, int Month_Of_Birth, int Year_Of_Birth) {
         this.ID_Student = ID_Student;
         this.First_Name = First_Name;
         this.Middle_Name = Middle_Name;
@@ -122,6 +122,7 @@ public class Student {
         this.Date_Of_Birth = Date_Of_Birth;
         this.Month_Of_Birth = Month_Of_Birth;
         this.Year_Of_Birth = Year_Of_Birth;
+//        this.Class_Name = Class_Name;
     }
 
     public String getID_Class() {
@@ -131,6 +132,13 @@ public class Student {
     public void setID_Class(String ID_Class) {
         this.ID_Class = ID_Class;
     }
+//    public String getClass_Name() {
+//        return Class_Name;
+//    }
+//
+//    public void setClass_Name(String ID_Class) {
+//        this.Class_Name = Class_Name;
+//    }
 
     public Student() {
     }
