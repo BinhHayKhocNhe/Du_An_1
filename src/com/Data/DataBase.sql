@@ -219,25 +219,34 @@ INSERT INTO Subject (ID_Subject, Subject_Name, Note) VALUES
 CREATE TABLE Course(
 ID_Course NVARCHAR(50) NOT NULL,
 Course_Name NVARCHAR(50) NOT NULL,
-ID_Student NVARCHAR(50) NOT NULL,
-ID_Teacher NVARCHAR(50) NOT NULL,
-ID_Class NVARCHAR(50) NOT NULL,
 Year int NOT NULL,
 Note NVARCHAR(255),
 CONSTRAINT PK_ID_Course PRIMARY KEY(ID_Course)
 );
-INSERT INTO Course (ID_Course, Course_Name, ID_Student, ID_Teacher, ID_Class, Year, Note)
+CREATE TABLE Course_Relationship(
+ID_Course NVARCHAR(50) NOT NULL,
+ID_Class NVARCHAR(50) NOT NULL,
+ID_Student NVARCHAR(50) NOT NULL,
+ID_Teacher NVARCHAR(50) NOT NULL,
+CONSTRAINT FK_Course_Teacher FOREIGN KEY (ID_Teacher) REFERENCES Teacher(ID_Teacher),
+CONSTRAINT FK_Course_Class FOREIGN KEY (ID_Class) REFERENCES Class(ID_Class),
+CONSTRAINT FK_Course_Student FOREIGN KEY (ID_Student) REFERENCES Student(ID_Student),
+CONSTRAINT FK_Course FOREIGN KEY (ID_Course) REFERENCES Course(ID_Course)
+);
+ALTER TABLE Course_Relationship
+ADD CONSTRAINT UQ_Course_Relationship UNIQUE (ID_Student,ID_Course, ID_Class, ID_Teacher );
+INSERT INTO Course (ID_Course, Course_Name, Year, Note)
 VALUES 
-    ('C001', 'Spring', 'STU001', 'TCH001', 'C001', 2023, 'Note for Spring'),
-    ('C002', 'Summer', 'STU002', 'TCH002', 'C002', 2023, 'Note for Summer'),
-    ('C003', 'Fall', 'STU003', 'TCH003', 'C003', 2023, 'Note for Fall'),
-    ('C004', 'Spring', 'STU004', 'TCH004', 'C004', 2022, 'Note for Spring'),
-    ('C005', 'Summer', 'STU005', 'TCH005', 'C005', 2022, 'Note for Summer'),
-    ('C006', 'Fall', 'STU006', 'TCH006', 'C006', 2022, 'Note for Fall'),
-    ('C007', 'Spring', 'STU007', 'TCH007', 'C007', 2021, 'Note for Spring'),
-    ('C008', 'Summer', 'STU008', 'TCH008', 'C008', 2021, 'Note for Summer'),
-    ('C009', 'Fall', 'STU009', 'TCH009', 'C009', 2021, 'Note for Fall'),
-    ('C010', 'Spring', 'STU010', 'TCH010', 'C010', 2024, 'Note for Spring');
+    ('C001', 'Spring', 2023, 'Note for Spring'),
+    ('C002', 'Summer',  2023, 'Note for Summer'),
+    ('C003', 'Fall',  2023, 'Note for Fall'),
+    ('C004', 'Spring',  2022, 'Note for Spring'),
+    ('C005', 'Summer',  2022, 'Note for Summer'),
+    ('C006', 'Fall', 2022, 'Note for Fall'),
+    ('C007', 'Spring',  2021, 'Note for Spring'),
+    ('C008', 'Summer',  2021, 'Note for Summer'),
+    ('C009', 'Fall', 2021, 'Note for Fall'),
+    ('C010', 'Spring',  2024, 'Note for Spring');
 
 CREATE TABLE Class(
 ID_Class NVARCHAR(50) NOT NULL,
@@ -260,6 +269,14 @@ INSERT INTO Class (ID_Class, Class_Name, ID_Teacher, Quantity, Note) VALUES
     ('C008', 'Class 8', 'TCH008', 30, 'Note for Class 8'),
     ('C009', 'Class 9', 'TCH009',  20, 'Note for Class 9'),
     ('C010', 'Class 10', 'TCH010', 25, 'Note for Class 10');
+INSERT INTO Course_Relationship (ID_Course, ID_Class, ID_Student, ID_Teacher)
+VALUES 
+    ('C001', 'C001', 'STU001', 'TCH001'),
+    ('C002', 'C002', 'STU002', 'TCH002'),
+    ('C003', 'C003', 'STU003', 'TCH003'),
+	('C004', 'C007', 'STU004', 'TCH004'),
+    ('C005', 'C004', 'STU005', 'TCH005'),
+    ('C006', 'C005', 'STU006', 'TCH006');
 
 CREATE TABLE Schedule(
 ID_Course NVARCHAR(50) NOT NULL,
@@ -428,6 +445,10 @@ ID_Guardians NVARCHAR(50) NOT NULL,
 CONSTRAINT FK_Relationship_Student FOREIGN KEY (ID_Student) REFERENCES Student(ID_Student),
 CONSTRAINT FK_Relationship_Guardians FOREIGN KEY (ID_Guardians) REFERENCES Guardians(ID_Guardians)
 );
+ALTER TABLE Guardian_Student_Relationship
+ADD CONSTRAINT UQ_Student_Guardians UNIQUE (ID_Student, ID_Guardians);
+select * from Guardian_Student_Relationship
+DELETE FROM Guardian_Student_Relationship WHERE ID_Student = 'STU003' AND ID_Guardians = 'GRD001'
 INSERT INTO Guardian_Student_Relationship (ID_Student, ID_Guardians)
 VALUES
 ('STU001', 'GRD001'),

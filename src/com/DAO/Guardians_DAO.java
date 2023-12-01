@@ -6,6 +6,7 @@ package com.DAO;
 
 import com.Entity.Guardians;
 import com.Utils.JDBCHelper;
+import com.Utils.Message;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class Guardians_DAO implements myInterFace<Guardians, String> {
             + "Last_Name, Email, Phone_Number, Gender, Address_Guardians, Job, Note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE Guardians SET First_Name = ?, Middle_Name = ?, Last_Name = ?, Email = ?, "
             + "Phone_Number = ?, Gender = ?, Address_Guardians = ?, Job = ?, Note = ? WHERE ID_Guardians = ?";
-    private final String SELECT_ALL_SQL = "SELECT * FROM Guardians";
+    private final String SELECT_ALL_SQL = "SELECT * FROM Guardians;";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Guardians where ID_Guardians = ?;";
 
     @Override
@@ -122,5 +123,15 @@ public class Guardians_DAO implements myInterFace<Guardians, String> {
             e.getMessage();
         }
         return false;
+    }
+
+    public void adminResetPassParent(String ID) {
+        final String sql = "UPDATE Guardians SET Password_Guardians = '12345678' WHERE ID_Guardians = ?;";
+        try {
+            JDBCHelper.executeUpdate(sql, ID);
+            Message.alert(null, "Reset password successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

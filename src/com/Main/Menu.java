@@ -8,7 +8,6 @@ package com.Main;
 import javax.swing.JOptionPane;
 
 
-import com.DAO.SQLException;
 import com.DAO.ClassDAO;
 import com.Entity.Class;
 
