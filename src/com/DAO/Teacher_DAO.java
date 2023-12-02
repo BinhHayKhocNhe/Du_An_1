@@ -1,4 +1,3 @@
-
 package com.DAO;
 
 import com.Entity.Teacher;
@@ -50,7 +49,7 @@ public class Teacher_DAO implements myInterFace<Teacher, String> {
 
     @Override
     public boolean checkID(Teacher entity) {
-       String sql = "Select count(ID_Teacher) from Teacher where ID_Teacher = ? and Password_Teacher = ? ";
+        String sql = "Select count(ID_Teacher) from Teacher where ID_Teacher = ? and Password_Teacher = ? ";
         ResultSet rs = JDBCHelper.executeQuery(sql, entity.getID_Teacher(), entity.getPassword_Teacher());
         try {
             while (rs.next()) {
@@ -133,7 +132,8 @@ public class Teacher_DAO implements myInterFace<Teacher, String> {
             e.printStackTrace();
         }
     }
-        public void changePassword(String ID, String currentPassword, String newPassword) {
+
+    public void changePassword(String ID, String currentPassword, String newPassword) {
         final String checkCurrentPassword = "SELECT Password_Teacher FROM Teacher WHERE ID_Teacher = ?";
         final String sql = "UPDATE Teacher SET Password_Teacher = ? WHERE ID_Teacher = ? and Password_Teacher=?";
         try {

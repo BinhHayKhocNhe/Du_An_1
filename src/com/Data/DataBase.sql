@@ -150,21 +150,6 @@ VALUES
 ('GRD019', 'waitstaff', 'Madison', 'D.', 'Gomez', 'madison.g@email.com', '222111000', 1, '222 Support Lane, Town', 'Fashion Designer', 'Nurturing the child''s creativity in the field of fashion.'),
 ('GRD020', 'itsupport1', 'Evelyn', '', 'Russell', 'evelyn.r@email.com', '666000999', 0, '333 Guardian Avenue, Village', 'Scientist', 'Encouraging scientific curiosity and experimentation in the child.');
 
-CREATE TABLE Student (
-    ID_Student NVARCHAR(50) NOT NULL,
-    First_Name NVARCHAR(20) NOT NULL,
-    Middle_Name NVARCHAR(20),
-    Last_Name NVARCHAR(20) NOT NULL,
-    Gender BIT NOT NULL,
-    Address_Student NVARCHAR(255) NOT NULL,
-    ID_Class NVARCHAR(50) NOT NULL ,
-    Status_Student BIT NOT NULL,
-    Avatar NVARCHAR(50) NOT NULL,
-    Date_Of_Birth INT NOT NULL,
-    Month_Of_Birth INT NOT NULL,
-    Year_Of_Birth INT NOT NULL,
-    Note NVARCHAR(255),
-    CONSTRAINT FK_Class FOREIGN KEY (ID_Class) REFERENCES Class(ID_Class)
 CREATE TABLE Student(
 ID_Student NVARCHAR(50) NOT NULL,
 First_Name NVARCHAR(20) NOT NULL,

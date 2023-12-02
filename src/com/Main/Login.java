@@ -362,7 +362,6 @@ public class Login extends javax.swing.JFrame {
 
     private void checkLogin() {
         if (cbRole.getSelectedIndex() == 0) {
-            // Xử lý đăng nhập cho vai trò "Administrators"
             Administrators admin = getForm();
             if (!adminDao.checkID(admin)) {
                 Message.alert(this, "Account name or password is incorrect !");
@@ -380,21 +379,19 @@ public class Login extends javax.swing.JFrame {
                 return;
             }
             Authentication.teacher = teacher;
-//            System.out.println("" + Authentication.teacher.getID_Teacher());
+            System.out.println("" + Authentication.teacher.getID_Teacher());
             Menu menu = new Menu();
             menu.setVisible(true);
             this.dispose();
         } else if (cbRole.getSelectedIndex() == 2) {
-            // Xử lý đăng nhập cho vai trò "Staff"
+
             Staff staff = getFormStaff();
             if (!staffDAO.checkID(staff)) {
                 Message.alert(this, "Account name or password is incorrect !");
                 return;
             }
             Authentication.staff = staff;
-//            System.out.println("" + Authentication.staff.getID_Staff());
             Authentication.staff = getFormStaff();
-//            System.out.println("" + Authentication.staff.getLast_Name());
             Form_Staff form_Staff = new Form_Staff();
             form_Staff.setVisible(true);
             this.dispose();

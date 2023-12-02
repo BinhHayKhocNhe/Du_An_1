@@ -461,7 +461,7 @@ public class Form_Staff extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         lblLog_out = new javax.swing.JLabel();
         lblHelp = new javax.swing.JLabel();
-        lblsuadiem = new javax.swing.JLabel();
+        Student = new javax.swing.JLabel();
         lblSche = new javax.swing.JLabel();
         jpllMenuBar = new javax.swing.JPanel();
         lblOpenMenu = new javax.swing.JLabel();
@@ -469,9 +469,10 @@ public class Form_Staff extends javax.swing.JFrame {
         jplMain = new javax.swing.JPanel();
         cardHome1 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        txtGioiThieu = new javax.swing.JTextPane();
         jLabel1 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
         cardHome = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
@@ -779,21 +780,21 @@ public class Form_Staff extends javax.swing.JFrame {
         });
         jplSlideMenu.add(lblHelp, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 500, 120, 30));
 
-        lblsuadiem.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        lblsuadiem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblsuadiem.setText("Point");
-        lblsuadiem.addMouseListener(new java.awt.event.MouseAdapter() {
+        Student.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        Student.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Student.setText("Student");
+        Student.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblsuadiemMouseClicked(evt);
+                StudentMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lblsuadiemMouseEntered(evt);
+                StudentMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                lblsuadiemMouseExited(evt);
+                StudentMouseExited(evt);
             }
         });
-        jplSlideMenu.add(lblsuadiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 300, 120, 30));
+        jplSlideMenu.add(Student, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 300, 120, 30));
 
         lblSche.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         lblSche.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -876,20 +877,15 @@ public class Form_Staff extends javax.swing.JFrame {
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/education.png"))); // NOI18N
 
-        txtGioiThieu.setEditable(false);
-        txtGioiThieu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        txtGioiThieu.setText("Polypro là dự án mẫu. Mục tiêu chính là huấn luyện sinh viên qui trình thực hiện dự án.\n\nMục tiêu của dự án này là để rèn luyện kỹ năng IO (CDIO) tức không yêu cầu sinh viên phải thu thập phân tích mà chỉ  thực hiện và vận hành một phần mềm chuẩn bị cho các dự án sau này. Các kỹ năng CD (trong CDIO) sẽ được huấn luyện ở dự án 1 và dự án 2.\n\nYêu cầu về môi trường:\n1. Hệ điều hành bất kỳ\n2. JDK 1.8 trở lên\n3. SQL Server 2008 trở lên");
-        txtGioiThieu.setPreferredSize(new java.awt.Dimension(512, 175));
-        txtGioiThieu.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txtGioiThieuMouseClicked(evt);
-            }
-        });
-
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel1.setText("INTRODUCE");
 
         jSeparator2.setForeground(new java.awt.Color(0, 0, 0));
+
+        jTextPane1.setEditable(false);
+        jTextPane1.setBackground(new java.awt.Color(204, 204, 204));
+        jTextPane1.setText("Congratulations on successfully logging in! \nYou have officially become a part of our academic community. Get ready for dynamic learning journeys, where new knowledge awaits, and personal development takes center stage.\nDive into the exciting classes, participate in activities, and share your thoughts. We believe each step you take will bring you closer to great achievements.\nCheers to starting your new learning journey with excitement!\n\nEnvironmental requirements:\n1. Any operating system\n2. JDK 1.8 or higher\n3. SQL Server 2008 or later");
+        jScrollPane3.setViewportView(jTextPane1);
 
         javax.swing.GroupLayout cardHome1Layout = new javax.swing.GroupLayout(cardHome1);
         cardHome1.setLayout(cardHome1Layout);
@@ -898,11 +894,11 @@ public class Form_Staff extends javax.swing.JFrame {
             .addGroup(cardHome1Layout.createSequentialGroup()
                 .addGap(198, 198, 198)
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtGioiThieu, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardHome1Layout.createSequentialGroup()
-                .addGap(520, 520, 520)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(cardHome1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -916,12 +912,12 @@ public class Form_Staff extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addGap(0, 0, 0)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(103, 103, 103)
-                        .addComponent(txtGioiThieu, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(85, 85, 85)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(cardHome1Layout.createSequentialGroup()
                         .addGap(58, 58, 58)
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(123, Short.MAX_VALUE))
+                .addContainerGap(133, Short.MAX_VALUE))
         );
 
         jplMain.add(cardHome1, "card3");
@@ -2222,10 +2218,10 @@ public class Form_Staff extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cardStaffMouseClicked
 
-    private void lblsuadiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsuadiemMouseClicked
+    private void StudentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StudentMouseClicked
         CardFalse();
         cardAddStudent.setVisible(true);
-    }//GEN-LAST:event_lblsuadiemMouseClicked
+    }//GEN-LAST:event_StudentMouseClicked
 
     private void lblHelpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHelpMouseClicked
         CardFalse();
@@ -2293,11 +2289,11 @@ public class Form_Staff extends javax.swing.JFrame {
         lblSta_Li.setForeground(Color.RED);
     }//GEN-LAST:event_lblSta_LiMouseEntered
 
-    private void lblsuadiemMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsuadiemMouseEntered
+    private void StudentMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StudentMouseEntered
         // TODO add your handling code here:
         this.setCursor(new Cursor(HAND_CURSOR));
-        lblsuadiem.setForeground(Color.RED);
-    }//GEN-LAST:event_lblsuadiemMouseEntered
+        Student.setForeground(Color.RED);
+    }//GEN-LAST:event_StudentMouseEntered
 
     private void lblScheMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblScheMouseEntered
         // TODO add your handling code here:
@@ -2335,11 +2331,11 @@ public class Form_Staff extends javax.swing.JFrame {
         lblSta_Li.setForeground(Color.BLACK);
     }//GEN-LAST:event_lblSta_LiMouseExited
 
-    private void lblsuadiemMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblsuadiemMouseExited
+    private void StudentMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StudentMouseExited
         // TODO add your handling code here:
         this.setCursor(new Cursor(DEFAULT_CURSOR));
-        lblsuadiem.setForeground(Color.BLACK);
-    }//GEN-LAST:event_lblsuadiemMouseExited
+        Student.setForeground(Color.BLACK);
+    }//GEN-LAST:event_StudentMouseExited
 
     private void lblScheMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblScheMouseExited
         // TODO add your handling code here:
@@ -2402,11 +2398,6 @@ public class Form_Staff extends javax.swing.JFrame {
     private void cardHome1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cardHome1MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_cardHome1MouseClicked
-
-    private void txtGioiThieuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtGioiThieuMouseClicked
-        // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_txtGioiThieuMouseClicked
 
     private void rdoOn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoOn1ActionPerformed
         // TODO add your handling code here:
@@ -2568,6 +2559,7 @@ public class Form_Staff extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane INFORMATION;
+    private javax.swing.JLabel Student;
     private javax.swing.JButton btnAccept;
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnAdd1;
@@ -2670,6 +2662,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
@@ -2678,6 +2671,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JPanel jplMain;
     private javax.swing.JPanel jplSlideMenu;
     private javax.swing.JPanel jplTitle;
@@ -2697,7 +2691,6 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JLabel lblOpenMenu;
     private javax.swing.JLabel lblSche;
     private javax.swing.JLabel lblSta_Li;
-    private javax.swing.JLabel lblsuadiem;
     private javax.swing.JRadioButton rdoFemale;
     private javax.swing.JRadioButton rdoFemale1;
     private javax.swing.JRadioButton rdoFemale_Student;
@@ -2724,7 +2717,6 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JTextField txtF_Name_Student;
     private javax.swing.JTextField txtFind;
     private javax.swing.JTextField txtFind_Stu;
-    private javax.swing.JTextPane txtGioiThieu;
     private javax.swing.JTextField txtID_Class_Student;
     private javax.swing.JTextField txtID_Student;
     private javax.swing.JTextField txtId_Staff;
