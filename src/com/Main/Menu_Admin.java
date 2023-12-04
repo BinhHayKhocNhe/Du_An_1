@@ -6,6 +6,7 @@
 package com.Main;
 
 import com.DAO.Administrators_DAO;
+import com.DAO.Course_Relationship_DAO;
 import com.DAO.CoursesDAO;
 import com.DAO.Guardian_Student_RelationshipDAO;
 import com.DAO.Guardians_DAO;
@@ -13,6 +14,7 @@ import com.DAO.StaffDAO;
 import com.DAO.StudentDAO;
 import com.DAO.Teacher_DAO;
 import com.Entity.Administrators;
+import com.Entity.Course_Relationship;
 import com.Entity.Courses;
 import com.Entity.Guardian_Student_Relationship;
 import com.Entity.Guardians;
@@ -55,6 +57,8 @@ public class Menu_Admin extends javax.swing.JFrame {
     private Guardian_Student_RelationshipDAO guardian_Student_RelationshipDAO = new Guardian_Student_RelationshipDAO();
     private DefaultTableModel tableModelCourse = new DefaultTableModel();
     private CoursesDAO coursesDAO = new CoursesDAO();
+    private DefaultTableModel tableModelCourse_Information = new DefaultTableModel();
+    private Course_Relationship_DAO course_Relationship_DAO = new Course_Relationship_DAO();
 
     /**
      * Creates new form Menu
@@ -84,6 +88,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.initTableParent();
         this.initTableRelationship();
         this.initTableCourse();
+        this.initTableCourseInformation();
         this.setFormAdmin();
         this.fillFindResetPassTeacher();
         this.fillFindTableTeacher();
@@ -98,6 +103,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.uploadComboboxCourse();
         this.fillTableRelationship();
         this.fillTableCourse();
+        this.fillTableCourseInformation();
     }
 
     private void openMenu() {
@@ -422,22 +428,21 @@ public class Menu_Admin extends javax.swing.JFrame {
         jLabel78 = new javax.swing.JLabel();
         txtYearCourse = new javax.swing.JTextField();
         jLayeredPane16 = new javax.swing.JLayeredPane();
-        txtFindTeacher1 = new javax.swing.JTextField();
+        txtCourseInformation = new javax.swing.JTextField();
         jLabel93 = new javax.swing.JLabel();
         jScrollPane19 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tableCourse_Relationship = new javax.swing.JTable();
         jLabel100 = new javax.swing.JLabel();
-        txtFindTeacher2 = new javax.swing.JTextField();
+        txtFindCourseInformation = new javax.swing.JTextField();
         jLabel101 = new javax.swing.JLabel();
-        txtFindTeacher3 = new javax.swing.JTextField();
+        txtTeacherInformation = new javax.swing.JTextField();
         jLabel102 = new javax.swing.JLabel();
-        txtFindTeacher4 = new javax.swing.JTextField();
+        txtClassInformation = new javax.swing.JTextField();
         jLabel103 = new javax.swing.JLabel();
-        txtFindTeacher5 = new javax.swing.JTextField();
-        btnAddTeacher2 = new javax.swing.JButton();
-        btnUpdateTeacher2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        btnResetFormTeacher2 = new javax.swing.JButton();
+        txtStudentInformation = new javax.swing.JTextField();
+        btnAddCourse_Relationship = new javax.swing.JButton();
+        btnDeleteCourse_Relationship = new javax.swing.JButton();
+        btnResetFormCourseInformation = new javax.swing.JButton();
         jLayeredPane17 = new javax.swing.JLayeredPane();
         jLabel94 = new javax.swing.JLabel();
         txtIDResetPassTeacher1 = new javax.swing.JTextField();
@@ -3091,21 +3096,21 @@ public class Menu_Admin extends javax.swing.JFrame {
                     .addComponent(btnResetFormCourse)
                     .addComponent(btnUpdateTeacher1)
                     .addComponent(btnAddCourse))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
 
         tabTeacher1.addTab("COURSE", jLayeredPane15);
 
-        txtFindTeacher1.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCourseInformation.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtFindTeacher1KeyReleased(evt);
+                txtCourseInformationKeyReleased(evt);
             }
         });
 
         jLabel93.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel93.setText("ID Course:");
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tableCourse_Relationship.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -3116,90 +3121,90 @@ public class Menu_Admin extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane19.setViewportView(jTable3);
+        tableCourse_Relationship.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableCourse_RelationshipMouseClicked(evt);
+            }
+        });
+        jScrollPane19.setViewportView(tableCourse_Relationship);
 
         jLabel100.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel100.setText("ID Student:");
 
-        txtFindTeacher2.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtFindCourseInformation.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtFindTeacher2KeyReleased(evt);
+                txtFindCourseInformationKeyReleased(evt);
             }
         });
 
         jLabel101.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel101.setText("ID Teacher:");
 
-        txtFindTeacher3.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtTeacherInformation.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtFindTeacher3KeyReleased(evt);
+                txtTeacherInformationKeyReleased(evt);
             }
         });
 
         jLabel102.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel102.setText("ID Class:");
 
-        txtFindTeacher4.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtClassInformation.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtFindTeacher4KeyReleased(evt);
+                txtClassInformationKeyReleased(evt);
             }
         });
 
         jLabel103.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel103.setText("Find:");
 
-        txtFindTeacher5.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtStudentInformation.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtFindTeacher5KeyReleased(evt);
+                txtStudentInformationKeyReleased(evt);
             }
         });
 
-        btnAddTeacher2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnAddTeacher2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Add.png"))); // NOI18N
-        btnAddTeacher2.setText("ADD");
-        btnAddTeacher2.addActionListener(new java.awt.event.ActionListener() {
+        btnAddCourse_Relationship.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnAddCourse_Relationship.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Add.png"))); // NOI18N
+        btnAddCourse_Relationship.setText("ADD");
+        btnAddCourse_Relationship.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddTeacher2ActionPerformed(evt);
+                btnAddCourse_RelationshipActionPerformed(evt);
             }
         });
 
-        btnUpdateTeacher2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnUpdateTeacher2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/edit-24px.png"))); // NOI18N
-        btnUpdateTeacher2.setText("UPDATE");
-        btnUpdateTeacher2.addActionListener(new java.awt.event.ActionListener() {
+        btnDeleteCourse_Relationship.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnDeleteCourse_Relationship.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Trash.png"))); // NOI18N
+        btnDeleteCourse_Relationship.setText("DELETE");
+        btnDeleteCourse_Relationship.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateTeacher2ActionPerformed(evt);
+                btnDeleteCourse_RelationshipActionPerformed(evt);
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Trash.png"))); // NOI18N
-        jButton3.setText("DELETE");
-
-        btnResetFormTeacher2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnResetFormTeacher2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Refresh.png"))); // NOI18N
-        btnResetFormTeacher2.setText("REFRESH");
-        btnResetFormTeacher2.addActionListener(new java.awt.event.ActionListener() {
+        btnResetFormCourseInformation.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnResetFormCourseInformation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Refresh.png"))); // NOI18N
+        btnResetFormCourseInformation.setText("REFRESH");
+        btnResetFormCourseInformation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnResetFormTeacher2ActionPerformed(evt);
+                btnResetFormCourseInformationActionPerformed(evt);
             }
         });
 
-        jLayeredPane16.setLayer(txtFindTeacher1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane16.setLayer(txtCourseInformation, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane16.setLayer(jLabel93, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane16.setLayer(jScrollPane19, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane16.setLayer(jLabel100, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane16.setLayer(txtFindTeacher2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane16.setLayer(txtFindCourseInformation, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane16.setLayer(jLabel101, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane16.setLayer(txtFindTeacher3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane16.setLayer(txtTeacherInformation, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane16.setLayer(jLabel102, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane16.setLayer(txtFindTeacher4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane16.setLayer(txtClassInformation, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane16.setLayer(jLabel103, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane16.setLayer(txtFindTeacher5, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane16.setLayer(btnAddTeacher2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane16.setLayer(btnUpdateTeacher2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane16.setLayer(jButton3, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane16.setLayer(btnResetFormTeacher2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane16.setLayer(txtStudentInformation, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane16.setLayer(btnAddCourse_Relationship, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane16.setLayer(btnDeleteCourse_Relationship, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane16.setLayer(btnResetFormCourseInformation, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane16Layout = new javax.swing.GroupLayout(jLayeredPane16);
         jLayeredPane16.setLayout(jLayeredPane16Layout);
@@ -3208,23 +3213,22 @@ public class Menu_Admin extends javax.swing.JFrame {
             .addGroup(jLayeredPane16Layout.createSequentialGroup()
                 .addGroup(jLayeredPane16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jLayeredPane16Layout.createSequentialGroup()
-                        .addGap(172, 172, 172)
-                        .addComponent(btnAddTeacher2)
+                        .addGap(300, 300, 300)
+                        .addComponent(btnAddCourse_Relationship)
                         .addGap(18, 18, 18)
-                        .addComponent(btnUpdateTeacher2)
+                        .addComponent(btnDeleteCourse_Relationship)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnResetFormTeacher2))
+                        .addComponent(btnResetFormCourseInformation))
                     .addGroup(jLayeredPane16Layout.createSequentialGroup()
                         .addGap(129, 129, 129)
                         .addGroup(jLayeredPane16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane19, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jLayeredPane16Layout.createSequentialGroup()
                                 .addGroup(jLayeredPane16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jLayeredPane16Layout.createSequentialGroup()
                                         .addComponent(jLabel103)
                                         .addGap(32, 32, 32)
-                                        .addComponent(txtFindTeacher2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtFindCourseInformation, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(16, 16, 16))
                                     .addGroup(jLayeredPane16Layout.createSequentialGroup()
                                         .addGroup(jLayeredPane16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3232,16 +3236,16 @@ public class Menu_Admin extends javax.swing.JFrame {
                                             .addComponent(jLabel93))
                                         .addGap(18, 18, 18)
                                         .addGroup(jLayeredPane16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(txtFindTeacher5)
-                                            .addComponent(txtFindTeacher1, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE))
-                                        .addGap(45, 45, 45)
+                                            .addComponent(txtStudentInformation)
+                                            .addComponent(txtCourseInformation, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(jLayeredPane16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel101)
-                                            .addComponent(jLabel102))))
+                                            .addComponent(jLabel102))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGroup(jLayeredPane16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtFindTeacher4, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtFindTeacher3, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jScrollPane19, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(txtClassInformation, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtTeacherInformation, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(157, Short.MAX_VALUE))
         );
         jLayeredPane16Layout.setVerticalGroup(
@@ -3249,28 +3253,27 @@ public class Menu_Admin extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane16Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(jLayeredPane16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFindTeacher1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCourseInformation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel93)
                     .addComponent(jLabel101)
-                    .addComponent(txtFindTeacher3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTeacherInformation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jLayeredPane16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel100)
                     .addComponent(jLabel102)
-                    .addComponent(txtFindTeacher4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFindTeacher5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtClassInformation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtStudentInformation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addGroup(jLayeredPane16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFindTeacher2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFindCourseInformation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel103))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane19, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jLayeredPane16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAddTeacher2)
-                    .addComponent(btnUpdateTeacher2)
-                    .addComponent(jButton3)
-                    .addComponent(btnResetFormTeacher2))
+                    .addComponent(btnAddCourse_Relationship)
+                    .addComponent(btnDeleteCourse_Relationship)
+                    .addComponent(btnResetFormCourseInformation))
                 .addContainerGap(78, Short.MAX_VALUE))
         );
 
@@ -3921,9 +3924,9 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.setTimeSlide();
     }//GEN-LAST:event_jLabel11MouseClicked
 
-    private void txtFindTeacher1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFindTeacher1KeyReleased
+    private void txtCourseInformationKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCourseInformationKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtFindTeacher1KeyReleased
+    }//GEN-LAST:event_txtCourseInformationKeyReleased
 
     private void tabTeacher1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tabTeacher1AncestorAdded
         // TODO add your handling code here:
@@ -3957,33 +3960,29 @@ public class Menu_Admin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIDResetPassTeacher1KeyReleased
 
-    private void txtFindTeacher2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFindTeacher2KeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFindTeacher2KeyReleased
+    private void txtFindCourseInformationKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFindCourseInformationKeyReleased
+        this.fillTableCourseInformation();
+    }//GEN-LAST:event_txtFindCourseInformationKeyReleased
 
-    private void txtFindTeacher3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFindTeacher3KeyReleased
+    private void txtTeacherInformationKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTeacherInformationKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtFindTeacher3KeyReleased
+    }//GEN-LAST:event_txtTeacherInformationKeyReleased
 
-    private void txtFindTeacher4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFindTeacher4KeyReleased
+    private void txtClassInformationKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtClassInformationKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtFindTeacher4KeyReleased
+    }//GEN-LAST:event_txtClassInformationKeyReleased
 
-    private void txtFindTeacher5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFindTeacher5KeyReleased
+    private void txtStudentInformationKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStudentInformationKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtFindTeacher5KeyReleased
+    }//GEN-LAST:event_txtStudentInformationKeyReleased
 
-    private void btnAddTeacher2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTeacher2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddTeacher2ActionPerformed
+    private void btnAddCourse_RelationshipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCourse_RelationshipActionPerformed
+        this.addCourseRelationship();
+    }//GEN-LAST:event_btnAddCourse_RelationshipActionPerformed
 
-    private void btnUpdateTeacher2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateTeacher2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnUpdateTeacher2ActionPerformed
-
-    private void btnResetFormTeacher2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetFormTeacher2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnResetFormTeacher2ActionPerformed
+    private void btnResetFormCourseInformationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetFormCourseInformationActionPerformed
+        this.resetFormCourseInformation();
+    }//GEN-LAST:event_btnResetFormCourseInformationActionPerformed
 
     private void tableCourseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCourseMouseClicked
         tableCourse.setEnabled(false);
@@ -3996,6 +3995,18 @@ public class Menu_Admin extends javax.swing.JFrame {
     private void txtFindCourseKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFindCourseKeyReleased
         this.fillTableCourse();
     }//GEN-LAST:event_txtFindCourseKeyReleased
+
+    private void tableCourse_RelationshipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCourse_RelationshipMouseClicked
+        tableCourse_Relationship.setEnabled(false);
+        if (evt.getClickCount() == 2) {
+            this.clickTableCourseInformation();
+            tableCourse_Relationship.setEnabled(true);
+        }
+    }//GEN-LAST:event_tableCourse_RelationshipMouseClicked
+
+    private void btnDeleteCourse_RelationshipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteCourse_RelationshipActionPerformed
+        this.deleteCourseRelationship();
+    }//GEN-LAST:event_btnDeleteCourse_RelationshipActionPerformed
     private void setCardFalse() {
         cardTrangChu.setVisible(false);
         cardInformation.setVisible(false);
@@ -5030,6 +5041,106 @@ public class Menu_Admin extends javax.swing.JFrame {
         }
     }
 
+    private void initTableCourseInformation() {
+        String columns[] = {"No.", "ID Course", "ID Class", "ID Teacher", "ID Student"};
+        tableModelCourse_Information.setColumnIdentifiers(columns);
+        tableCourse_Relationship.setModel(tableModelCourse_Information);
+    }
+
+    private void setFormCourseInformation(Course_Relationship courses) {
+        txtCourseInformation.setText(courses.getID_Course());
+        txtStudentInformation.setText(courses.getID_Student());
+        txtTeacherInformation.setText(courses.getID_Teacher());
+        txtClassInformation.setText(courses.getID_Class());
+    }
+
+    private void clickTableCourseInformation() {
+        int index = tableCourse_Relationship.getSelectedRow();
+        String ID_Course = tableCourse_Relationship.getValueAt(index, 1).toString();
+        String ID_Class = tableCourse_Relationship.getValueAt(index, 2).toString();
+        String ID_Teacher = tableCourse_Relationship.getValueAt(index, 3).toString();
+        String ID_Student = tableCourse_Relationship.getValueAt(index, 4).toString();
+        Course_Relationship courses = course_Relationship_DAO.selectByIdCourse_Relationship(ID_Course,
+                ID_Class, ID_Student, ID_Teacher);
+        this.setFormCourseInformation(courses);
+    }
+
+    private void fillTableCourseInformation() {
+        tableModelCourse_Information.setRowCount(0);
+        try {
+            String keyword = txtFindCourseInformation.getText();
+            List<Course_Relationship> list = course_Relationship_DAO.selectByKeyword(keyword);
+            int i = 1;
+            for (Course_Relationship courses : list) {
+                Object[] row = {
+                    i++,
+                    courses.getID_Course(), courses.getID_Class(), courses.getID_Teacher(), courses.getID_Student()};
+                tableModelCourse_Information.addRow(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void resetFormCourseInformation() {
+        JTextComponent textComponent[] = {txtCourseInformation, txtTeacherInformation,
+            txtStudentInformation, txtClassInformation, txtFindCourseInformation};
+        IsValidForm.refreshForm(textComponent);
+        txtCourseInformation.requestFocus();
+        fillTableCourseInformation();
+    }
+
+    private Course_Relationship getFormCourse_Relationship() {
+        Course_Relationship courses = new Course_Relationship();
+        courses.setID_Course(txtCourseInformation.getText());
+        courses.setID_Class(txtClassInformation.getText());
+        courses.setID_Teacher(txtTeacherInformation.getText());
+        courses.setID_Student(txtStudentInformation.getText());
+        return courses;
+    }
+
+    private void addCourseRelationship() {
+        Course_Relationship course = getFormCourse_Relationship();
+        JTextComponent textComponent[] = {txtCourseInformation, txtTeacherInformation,
+            txtStudentInformation, txtClassInformation};
+        if (!IsValidForm.checkNull(textComponent)) {
+            return;
+        } else if (course_Relationship_DAO.checkID(course) == true) {
+            Message.alert(this, "This course code already has matching information !");
+            txtCourseInformation.requestFocus();
+            return;
+        }
+        try {
+            course_Relationship_DAO.insert(course);
+            this.fillTableCourseInformation();
+            this.resetFormCourseInformation();
+            Message.alert(this, "More course information successfully !");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteCourseRelationship() {
+        JTextComponent textComponent[] = {txtCourseInformation, txtTeacherInformation,
+            txtStudentInformation, txtClassInformation};
+        Course_Relationship course = getFormCourse_Relationship();
+        if (!IsValidForm.checkNull(textComponent)) {
+            return;
+        } else if (course_Relationship_DAO.checkID(course) == false) {
+            Message.alert(this, "Information for this course is not available! !");
+            txtCourseInformation.requestFocus();
+            return;
+        }
+        try {
+            course_Relationship_DAO.deleteCourse_Relationship(course);
+            this.fillTableCourseInformation();
+            this.resetFormCourseInformation();
+            Message.alert(this, "Successfully deleted course information !");
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -5083,11 +5194,12 @@ public class Menu_Admin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAccept;
     private javax.swing.JButton btnAddCourse;
+    private javax.swing.JButton btnAddCourse_Relationship;
     private javax.swing.JButton btnAddParent;
     private javax.swing.JButton btnAddStaff;
     private javax.swing.JButton btnAddStudent;
     private javax.swing.JButton btnAddTeacher;
-    private javax.swing.JButton btnAddTeacher2;
+    private javax.swing.JButton btnDeleteCourse_Relationship;
     private javax.swing.JButton btnDeleteRelationship;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnExitResetPassParent;
@@ -5096,12 +5208,12 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JButton btnExitResetPassTeacher1;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnResetFormCourse;
+    private javax.swing.JButton btnResetFormCourseInformation;
     private javax.swing.JButton btnResetFormParent;
     private javax.swing.JButton btnResetFormReletionship;
     private javax.swing.JButton btnResetFormStaff;
     private javax.swing.JButton btnResetFormStudent;
     private javax.swing.JButton btnResetFormTeacher;
-    private javax.swing.JButton btnResetFormTeacher2;
     private javax.swing.JButton btnResetPassParent;
     private javax.swing.JButton btnResetPassStaff;
     private javax.swing.JButton btnResetPassTeacher;
@@ -5112,7 +5224,6 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JButton btnUpdateStudent;
     private javax.swing.JButton btnUpdateTeacher;
     private javax.swing.JButton btnUpdateTeacher1;
-    private javax.swing.JButton btnUpdateTeacher2;
     private javax.swing.JButton btnUploadImgStaff;
     private javax.swing.JButton btnUploadImgStudent;
     private javax.swing.JButton btnUploadImgTeacher;
@@ -5147,7 +5258,6 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbYearStudent;
     private javax.swing.JComboBox<String> cbYearTeacher;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel100;
@@ -5281,7 +5391,6 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
@@ -5334,6 +5443,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JTabbedPane tabTeacher;
     private javax.swing.JTabbedPane tabTeacher1;
     private javax.swing.JTable tableCourse;
+    private javax.swing.JTable tableCourse_Relationship;
     private javax.swing.JTable tableParent;
     private javax.swing.JTable tableRelationship;
     private javax.swing.JTable tableResetPassParent;
@@ -5347,7 +5457,9 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JTextField txtAddressStaff;
     private javax.swing.JTextField txtAddressStudent;
     private javax.swing.JTextField txtAddressTeacher;
+    private javax.swing.JTextField txtClassInformation;
     private javax.swing.JTextField txtClassStudent;
+    private javax.swing.JTextField txtCourseInformation;
     private javax.swing.JPasswordField txtCurrentPass;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEmailParent;
@@ -5355,16 +5467,12 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JTextField txtEmailTeacher;
     private javax.swing.JPasswordField txtEnterPass;
     private javax.swing.JTextField txtFindCourse;
+    private javax.swing.JTextField txtFindCourseInformation;
     private javax.swing.JTextField txtFindParent;
     private javax.swing.JTextField txtFindRelationship;
     private javax.swing.JTextField txtFindStaff;
     private javax.swing.JTextField txtFindStudent;
     private javax.swing.JTextField txtFindTeacher;
-    private javax.swing.JTextField txtFindTeacher1;
-    private javax.swing.JTextField txtFindTeacher2;
-    private javax.swing.JTextField txtFindTeacher3;
-    private javax.swing.JTextField txtFindTeacher4;
-    private javax.swing.JTextField txtFindTeacher5;
     private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtFirstNameParent;
     private javax.swing.JTextField txtFirstNameStaff;
@@ -5405,6 +5513,8 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JTextField txtRelationshipStudent;
     private javax.swing.JTextField txtStartDateStaff;
     private javax.swing.JTextField txtStartDateTeacher;
+    private javax.swing.JTextField txtStudentInformation;
+    private javax.swing.JTextField txtTeacherInformation;
     private javax.swing.JTextField txtYearCourse;
     // End of variables declaration//GEN-END:variables
 }

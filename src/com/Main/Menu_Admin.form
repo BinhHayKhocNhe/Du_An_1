@@ -4127,7 +4127,7 @@
                                       <Component id="btnUpdateTeacher1" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="btnAddCourse" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace pref="44" max="32767" attributes="0"/>
+                                  <EmptySpace pref="68" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -4322,25 +4322,24 @@
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="172" max="-2" attributes="0"/>
-                                          <Component id="btnAddTeacher2" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="300" max="-2" attributes="0"/>
+                                          <Component id="btnAddCourse_Relationship" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="btnUpdateTeacher2" min="-2" max="-2" attributes="0"/>
+                                          <Component id="btnDeleteCourse_Relationship" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="jButton3" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="btnResetFormTeacher2" min="-2" max="-2" attributes="0"/>
+                                          <Component id="btnResetFormCourseInformation" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="-2" pref="129" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="jScrollPane19" alignment="0" min="-2" pref="535" max="-2" attributes="0"/>
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Group type="103" groupAlignment="1" attributes="0">
                                                       <Group type="102" alignment="1" attributes="0">
                                                           <Component id="jLabel103" min="-2" max="-2" attributes="0"/>
                                                           <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                                                          <Component id="txtFindTeacher2" min="-2" pref="160" max="-2" attributes="0"/>
-                                                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                                                          <Component id="txtFindCourseInformation" min="-2" pref="160" max="-2" attributes="0"/>
+                                                          <EmptySpace min="16" pref="16" max="-2" attributes="0"/>
                                                       </Group>
                                                       <Group type="102" alignment="1" attributes="0">
                                                           <Group type="103" groupAlignment="0" attributes="0">
@@ -4349,22 +4348,22 @@
                                                           </Group>
                                                           <EmptySpace type="separate" max="-2" attributes="0"/>
                                                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                                              <Component id="txtFindTeacher5" max="32767" attributes="0"/>
-                                                              <Component id="txtFindTeacher1" pref="159" max="32767" attributes="0"/>
+                                                              <Component id="txtStudentInformation" max="32767" attributes="0"/>
+                                                              <Component id="txtCourseInformation" pref="159" max="32767" attributes="0"/>
                                                           </Group>
-                                                          <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                                                          <EmptySpace max="32767" attributes="0"/>
                                                           <Group type="103" groupAlignment="0" attributes="0">
-                                                              <Component id="jLabel101" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                              <Component id="jLabel102" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                              <Component id="jLabel101" min="-2" max="-2" attributes="0"/>
+                                                              <Component id="jLabel102" min="-2" max="-2" attributes="0"/>
                                                           </Group>
+                                                          <EmptySpace max="32767" attributes="0"/>
                                                       </Group>
                                                   </Group>
                                                   <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="txtFindTeacher4" min="-2" pref="159" max="-2" attributes="0"/>
-                                                      <Component id="txtFindTeacher3" min="-2" pref="159" max="-2" attributes="0"/>
+                                                      <Component id="txtClassInformation" min="-2" pref="159" max="-2" attributes="0"/>
+                                                      <Component id="txtTeacherInformation" alignment="0" min="-2" pref="159" max="-2" attributes="0"/>
                                                   </Group>
                                               </Group>
-                                              <Component id="jScrollPane19" alignment="0" min="-2" pref="535" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -4377,31 +4376,30 @@
                               <Group type="102" alignment="1" attributes="0">
                                   <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="txtFindTeacher1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtCourseInformation" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel93" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel101" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtFindTeacher3" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtTeacherInformation" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel100" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel102" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtFindTeacher4" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtFindTeacher5" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtClassInformation" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtStudentInformation" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="txtFindTeacher2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtFindCourseInformation" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel103" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jScrollPane19" min="-2" pref="218" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="btnAddTeacher2" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="btnUpdateTeacher2" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="btnResetFormTeacher2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnAddCourse_Relationship" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnDeleteCourse_Relationship" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnResetFormCourseInformation" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace pref="78" max="32767" attributes="0"/>
                               </Group>
@@ -4409,9 +4407,9 @@
                         </DimensionLayout>
                       </Layout>
                       <SubComponents>
-                        <Component class="javax.swing.JTextField" name="txtFindTeacher1">
+                        <Component class="javax.swing.JTextField" name="txtCourseInformation">
                           <Events>
-                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtFindTeacher1KeyReleased"/>
+                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCourseInformationKeyReleased"/>
                           </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel93">
@@ -4429,7 +4427,7 @@
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                           <SubComponents>
-                            <Component class="javax.swing.JTable" name="jTable3">
+                            <Component class="javax.swing.JTable" name="tableCourse_Relationship">
                               <Properties>
                                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                                   <Table columnCount="4" rowCount="4">
@@ -4440,6 +4438,9 @@
                                   </Table>
                                 </Property>
                               </Properties>
+                              <Events>
+                                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableCourse_RelationshipMouseClicked"/>
+                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -4451,9 +4452,9 @@
                             <Property name="text" type="java.lang.String" value="ID Student:"/>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JTextField" name="txtFindTeacher2">
+                        <Component class="javax.swing.JTextField" name="txtFindCourseInformation">
                           <Events>
-                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtFindTeacher2KeyReleased"/>
+                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtFindCourseInformationKeyReleased"/>
                           </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel101">
@@ -4464,9 +4465,9 @@
                             <Property name="text" type="java.lang.String" value="ID Teacher:"/>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JTextField" name="txtFindTeacher3">
+                        <Component class="javax.swing.JTextField" name="txtTeacherInformation">
                           <Events>
-                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtFindTeacher3KeyReleased"/>
+                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtTeacherInformationKeyReleased"/>
                           </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel102">
@@ -4477,9 +4478,9 @@
                             <Property name="text" type="java.lang.String" value="ID Class:"/>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JTextField" name="txtFindTeacher4">
+                        <Component class="javax.swing.JTextField" name="txtClassInformation">
                           <Events>
-                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtFindTeacher4KeyReleased"/>
+                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtClassInformationKeyReleased"/>
                           </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel103">
@@ -4490,12 +4491,12 @@
                             <Property name="text" type="java.lang.String" value="Find:"/>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JTextField" name="txtFindTeacher5">
+                        <Component class="javax.swing.JTextField" name="txtStudentInformation">
                           <Events>
-                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtFindTeacher5KeyReleased"/>
+                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtStudentInformationKeyReleased"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnAddTeacher2">
+                        <Component class="javax.swing.JButton" name="btnAddCourse_Relationship">
                           <Properties>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Segoe UI" size="14" style="0"/>
@@ -4506,24 +4507,10 @@
                             <Property name="text" type="java.lang.String" value="ADD"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddTeacher2ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddCourse_RelationshipActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnUpdateTeacher2">
-                          <Properties>
-                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                              <Font name="Segoe UI" size="14" style="0"/>
-                            </Property>
-                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/com/Icon/edit-24px.png"/>
-                            </Property>
-                            <Property name="text" type="java.lang.String" value="UPDATE"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateTeacher2ActionPerformed"/>
-                          </Events>
-                        </Component>
-                        <Component class="javax.swing.JButton" name="jButton3">
+                        <Component class="javax.swing.JButton" name="btnDeleteCourse_Relationship">
                           <Properties>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Segoe UI" size="14" style="0"/>
@@ -4533,8 +4520,11 @@
                             </Property>
                             <Property name="text" type="java.lang.String" value="DELETE"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteCourse_RelationshipActionPerformed"/>
+                          </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnResetFormTeacher2">
+                        <Component class="javax.swing.JButton" name="btnResetFormCourseInformation">
                           <Properties>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Segoe UI" size="14" style="0"/>
@@ -4545,7 +4535,7 @@
                             <Property name="text" type="java.lang.String" value="REFRESH"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnResetFormTeacher2ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnResetFormCourseInformationActionPerformed"/>
                           </Events>
                         </Component>
                       </SubComponents>
