@@ -5,10 +5,12 @@
  */
 package com.Main;
 
+import com.DAO.ClassDAO;
 import com.DAO.StaffDAO;
 import com.DAO.StudentDAO;
 import com.Entity.Staff;
 import com.Entity.Student;
+import com.Entity.Class;
 import com.Entity.Teacher;
 import com.Utils.Authentication;
 import com.Utils.IsValidForm;
@@ -42,6 +44,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private String pathOfSelectedImage = null;
     StaffDAO daoStaff = new StaffDAO();
     StudentDAO daostu = new StudentDAO();
+    ClassDAO classDAO = new ClassDAO();
 
     /**
      * Creates new form Menu
@@ -55,16 +58,18 @@ public class Form_Staff extends javax.swing.JFrame {
         this.setTitle("Group 5 - Viet Duc School");
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        this.uploadCombobox();
+        uploadCombobox();
         fillTable();
         setTableStudent();
         InforStaff();
         setButton();
+        uploadcboIDClass();
+        setRdo();
     }
 
     private void CardFalse() {
         cardHome.setVisible(false);
-        cardThemSau.setVisible(false);
+        cardStaff_Salary.setVisible(false);
         cardInfor.setVisible(false);
         cardSchedule.setVisible(false);
         cardStaff.setVisible(false);
@@ -392,7 +397,7 @@ public class Form_Staff extends javax.swing.JFrame {
         student.setNote(txtNote_Student.getText());
         student.setGender(rdoMale_Student.isSelected() ? true : false);
         student.setStatus_Student(rdoStatus_Student_On.isSelected() ? true : false);
-        student.setID_Class(txtID_Class_Student.getText());
+        student.setID_Class((String) cboID_Class_Student.getSelectedItem());
         return student;
     }
 
@@ -435,6 +440,52 @@ public class Form_Staff extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+    // set Combo Box ID class cho form student
+
+    private void uploadcboIDClass() {
+        DefaultComboBoxModel cbo = new DefaultComboBoxModel<>();
+        List<Class> IDClass_Student = classDAO.selectAll();
+        for (Class class1 : IDClass_Student) {
+            cbo.addElement(class1.getID_Class());
+        }
+        cboID_Class_Student.setModel(cbo);
+    }
+// Click table hiện student lên form
+
+    private void ClicktableStudent() {
+        int row = tblList_stu.getSelectedRow();
+        String ID_student = (String) tblList_stu.getValueAt(row, 0);
+        Student student = daostu.selectById(ID_student);
+        setFormStudent(student);
+        INFORSTUDENT.setSelectedIndex(0);
+    }
+
+    private void setFormStudent(Student stu) {
+        txtID_Student.setText(stu.getID_Student());
+        txtF_Name_Student.setText(stu.getFirst_Name());
+        txtM_Name_Student.setText(stu.getMiddle_Name());
+        txtL_Name_Student.setText(stu.getLast_Name());
+        txtAdd_Student.setText(stu.getAddress_Student());
+        (stu.isGender() ? rdoMale_Student : rdoFemale_Student).setSelected(true);
+        (stu.isStatus_Student() ? rdoStatus_Student_On : rdoStatus_Student_Off).setSelected(true);
+        lblAvatar2.setIcon(XImage.read(stu.getAvatar()));
+        cboDay2.setSelectedItem(stu.getDate_Of_Birth());
+        cboMonth2.setSelectedItem(stu.getMonth_Of_Birth());
+        cboYear2.setSelectedItem(stu.getYear_Of_Birth());
+        cboID_Class_Student.setSelectedItem(stu.getID_Class());
+        txtNote_Student.setText(stu.getNote());
+
+    }
+// setSelected(True) cho các rdos
+
+    private void setRdo() {
+        rdoMale.setSelected(true);
+        rdoMale1.setSelected(true);
+        rdoMale_Student.setSelected(true);
+        rdoOn.setSelected(true);
+        rdoOn1.setSelected(true);
+        rdoStatus_Student_On.setSelected(true);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -463,6 +514,7 @@ public class Form_Staff extends javax.swing.JFrame {
         lblHelp = new javax.swing.JLabel();
         Student = new javax.swing.JLabel();
         lblSche = new javax.swing.JLabel();
+        lblSche1 = new javax.swing.JLabel();
         jpllMenuBar = new javax.swing.JPanel();
         lblOpenMenu = new javax.swing.JLabel();
         jplTitle = new javax.swing.JPanel();
@@ -582,7 +634,7 @@ public class Form_Staff extends javax.swing.JFrame {
         cardAddStudent = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jSeparator6 = new javax.swing.JSeparator();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
+        INFORSTUDENT = new javax.swing.JTabbedPane();
         jPanel5 = new javax.swing.JPanel();
         jLabel46 = new javax.swing.JLabel();
         txtID_Student = new javax.swing.JTextField();
@@ -612,7 +664,8 @@ public class Form_Staff extends javax.swing.JFrame {
         btnAdd2 = new javax.swing.JButton();
         rdoStatus_Student_On = new javax.swing.JRadioButton();
         rdoStatus_Student_Off = new javax.swing.JRadioButton();
-        txtID_Class_Student = new javax.swing.JTextField();
+        cboID_Class_Student = new javax.swing.JComboBox<>();
+        jLabel57 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblList_stu = new javax.swing.JTable();
@@ -620,10 +673,12 @@ public class Form_Staff extends javax.swing.JFrame {
         txtFind_Stu = new javax.swing.JTextField();
         cardSchedule = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
+        jSeparator7 = new javax.swing.JSeparator();
         cardhelp = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        cardThemSau = new javax.swing.JPanel();
+        cardStaff_Salary = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
+        jSeparator8 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -798,7 +853,7 @@ public class Form_Staff extends javax.swing.JFrame {
 
         lblSche.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         lblSche.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSche.setText(" Schedule");
+        lblSche.setText("Salary");
         lblSche.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblScheMouseClicked(evt);
@@ -810,7 +865,23 @@ public class Form_Staff extends javax.swing.JFrame {
                 lblScheMouseExited(evt);
             }
         });
-        jplSlideMenu.add(lblSche, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 350, 120, 30));
+        jplSlideMenu.add(lblSche, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 400, 120, 30));
+
+        lblSche1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lblSche1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblSche1.setText(" Schedule");
+        lblSche1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblSche1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblSche1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblSche1MouseExited(evt);
+            }
+        });
+        jplSlideMenu.add(lblSche1, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 350, 120, 30));
 
         jPanel1.add(jplSlideMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 0, 600));
 
@@ -1733,8 +1804,8 @@ public class Form_Staff extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel5.setText(" STUDENT");
 
-        jTabbedPane2.setBackground(new java.awt.Color(255, 255, 255));
-        jTabbedPane2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(51, 51, 51), new java.awt.Color(102, 102, 102)));
+        INFORSTUDENT.setBackground(new java.awt.Color(255, 255, 255));
+        INFORSTUDENT.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(51, 51, 51), new java.awt.Color(102, 102, 102)));
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -1865,13 +1936,59 @@ public class Form_Staff extends javax.swing.JFrame {
             }
         });
 
+        cboID_Class_Student.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel57.setText("ID Class");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel51, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNote_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel54, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                    .addComponent(jLabel53, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                    .addComponent(jLabel52, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel55, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel56, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel57, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel5Layout.createSequentialGroup()
+                                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(rdoMale_Student, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(rdoStatus_Student_On, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(rdoStatus_Student_Off, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(rdoFemale_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(cboMonth2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cboDay2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cboYear2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cboID_Class_Student, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                        .addComponent(btnUpload2)
+                                        .addGap(85, 85, 85))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                        .addComponent(lblAvatar2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(66, 66, 66))))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(105, 105, 105)
+                                .addComponent(btnNew2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnAdd2)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
@@ -1894,73 +2011,33 @@ public class Form_Staff extends javax.swing.JFrame {
                                 .addComponent(jLabel50, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtAdd_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(103, 103, 103)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rdoStatus_Student_On, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(rdoStatus_Student_Off, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel5Layout.createSequentialGroup()
-                                        .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(rdoMale_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(jPanel5Layout.createSequentialGroup()
-                                            .addComponent(jLabel55)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(cboMonth2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel5Layout.createSequentialGroup()
-                                            .addComponent(jLabel54, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(cboYear2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel5Layout.createSequentialGroup()
-                                            .addComponent(jLabel56)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(txtID_Class_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(cboDay2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblAvatar2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(rdoFemale_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel51, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(btnNew2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnAdd2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnUpload2)
-                                .addGap(24, 24, 24))
-                            .addComponent(txtNote_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(77, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblAvatar2, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(lblAvatar2, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel51, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnUpload2)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel46, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtID_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rdoStatus_Student_Off, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rdoStatus_Student_On, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(rdoStatus_Student_On, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rdoStatus_Student_Off, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel47, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtF_Name_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rdoFemale_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rdoMale_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(rdoMale_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rdoFemale_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel48, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1979,28 +2056,23 @@ public class Form_Staff extends javax.swing.JFrame {
                             .addComponent(txtAdd_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel56, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cboDay2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addComponent(txtNote_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel51, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNote_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addComponent(txtID_Class_Student, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnUpload2))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnNew2)
-                            .addComponent(btnAdd2))))
-                .addContainerGap(27, Short.MAX_VALUE))
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel57, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cboID_Class_Student, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnAdd2)
+                                    .addComponent(btnNew2))))))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("INFORMATION STUDENT", jPanel5);
+        INFORSTUDENT.addTab("INFORMATION STUDENT", jPanel5);
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -2015,6 +2087,11 @@ public class Form_Staff extends javax.swing.JFrame {
                 "ID Student", "Full Name", "Gender", "Status", "Birth Day", "Note"
             }
         ));
+        tblList_stu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblList_stuMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblList_stu);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -2058,7 +2135,7 @@ public class Form_Staff extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("LIST STUDENT", jPanel6);
+        INFORSTUDENT.addTab("LIST STUDENT", jPanel6);
 
         javax.swing.GroupLayout cardAddStudentLayout = new javax.swing.GroupLayout(cardAddStudent);
         cardAddStudent.setLayout(cardAddStudentLayout);
@@ -2072,7 +2149,7 @@ public class Form_Staff extends javax.swing.JFrame {
                 .addGap(375, 375, 375))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardAddStudentLayout.createSequentialGroup()
                 .addGap(215, 215, 215)
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(INFORSTUDENT, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
         cardAddStudentLayout.setVerticalGroup(
@@ -2082,7 +2159,7 @@ public class Form_Staff extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(INFORSTUDENT, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(68, 68, 68))
         );
 
@@ -2100,7 +2177,9 @@ public class Form_Staff extends javax.swing.JFrame {
             cardScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cardScheduleLayout.createSequentialGroup()
                 .addGap(520, 520, 520)
-                .addComponent(jLabel6)
+                .addGroup(cardScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator7))
                 .addContainerGap(490, Short.MAX_VALUE))
         );
         cardScheduleLayout.setVerticalGroup(
@@ -2108,7 +2187,9 @@ public class Form_Staff extends javax.swing.JFrame {
             .addGroup(cardScheduleLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(jLabel6)
-                .addContainerGap(521, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(501, Short.MAX_VALUE))
         );
 
         jplMain.add(cardSchedule, "card3");
@@ -2133,35 +2214,39 @@ public class Form_Staff extends javax.swing.JFrame {
             .addGroup(cardhelpLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(jLabel7)
-                .addContainerGap(521, Short.MAX_VALUE))
+                .addContainerGap(511, Short.MAX_VALUE))
         );
 
         jplMain.add(cardhelp, "card3");
 
-        cardThemSau.setBackground(new java.awt.Color(255, 255, 255));
-        cardThemSau.setPreferredSize(new java.awt.Dimension(1100, 540));
+        cardStaff_Salary.setBackground(new java.awt.Color(255, 255, 255));
+        cardStaff_Salary.setPreferredSize(new java.awt.Dimension(1100, 540));
 
         jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel12.setText("Có Gì Thiếu");
+        jLabel12.setText("Salary");
 
-        javax.swing.GroupLayout cardThemSauLayout = new javax.swing.GroupLayout(cardThemSau);
-        cardThemSau.setLayout(cardThemSauLayout);
-        cardThemSauLayout.setHorizontalGroup(
-            cardThemSauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(cardThemSauLayout.createSequentialGroup()
+        javax.swing.GroupLayout cardStaff_SalaryLayout = new javax.swing.GroupLayout(cardStaff_Salary);
+        cardStaff_Salary.setLayout(cardStaff_SalaryLayout);
+        cardStaff_SalaryLayout.setHorizontalGroup(
+            cardStaff_SalaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cardStaff_SalaryLayout.createSequentialGroup()
                 .addGap(520, 520, 520)
-                .addComponent(jLabel12)
-                .addContainerGap(454, Short.MAX_VALUE))
+                .addGroup(cardStaff_SalaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator8))
+                .addContainerGap(517, Short.MAX_VALUE))
         );
-        cardThemSauLayout.setVerticalGroup(
-            cardThemSauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(cardThemSauLayout.createSequentialGroup()
+        cardStaff_SalaryLayout.setVerticalGroup(
+            cardStaff_SalaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cardStaff_SalaryLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(513, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(493, Short.MAX_VALUE))
         );
 
-        jplMain.add(cardThemSau, "card2");
+        jplMain.add(cardStaff_Salary, "card2");
 
         jPanel1.add(jplMain, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, -1, -1));
 
@@ -2199,7 +2284,7 @@ public class Form_Staff extends javax.swing.JFrame {
 
     private void lblHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHomeMouseClicked
         CardFalse();
-        cardHome.setVisible(true);
+        cardHome1.setVisible(true);
     }//GEN-LAST:event_lblHomeMouseClicked
 
     private void lblAccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAccMouseClicked
@@ -2239,7 +2324,7 @@ public class Form_Staff extends javax.swing.JFrame {
 
     private void lblScheMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblScheMouseClicked
         CardFalse();
-        cardStaff.setVisible(true);
+        cardStaff_Salary.setVisible(true);
     }//GEN-LAST:event_lblScheMouseClicked
 
     private void lblCloseMenuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCloseMenuMouseEntered
@@ -2521,6 +2606,27 @@ public class Form_Staff extends javax.swing.JFrame {
         addStudent();
     }//GEN-LAST:event_btnAdd2ActionPerformed
 
+    private void tblList_stuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblList_stuMouseClicked
+        // TODO add your handling code here:
+        tblList_stu.setEnabled(false);
+        if (evt.getClickCount() == 2) {
+            ClicktableStudent();
+            tblList_stu.setEnabled(true);
+        }
+    }//GEN-LAST:event_tblList_stuMouseClicked
+
+    private void lblSche1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSche1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblSche1MouseClicked
+
+    private void lblSche1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSche1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblSche1MouseEntered
+
+    private void lblSche1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSche1MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblSche1MouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -2559,6 +2665,7 @@ public class Form_Staff extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane INFORMATION;
+    private javax.swing.JTabbedPane INFORSTUDENT;
     private javax.swing.JLabel Student;
     private javax.swing.JButton btnAccept;
     private javax.swing.JButton btnAdd;
@@ -2585,11 +2692,12 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JPanel cardInfor;
     private javax.swing.JPanel cardSchedule;
     private javax.swing.JPanel cardStaff;
-    private javax.swing.JPanel cardThemSau;
+    private javax.swing.JPanel cardStaff_Salary;
     private javax.swing.JPanel cardhelp;
     private javax.swing.JComboBox<String> cboDay;
     private javax.swing.JComboBox<String> cboDay1;
     private javax.swing.JComboBox<String> cboDay2;
+    private javax.swing.JComboBox<String> cboID_Class_Student;
     private javax.swing.JComboBox<String> cboMonth;
     private javax.swing.JComboBox<String> cboMonth1;
     private javax.swing.JComboBox<String> cboMonth2;
@@ -2648,6 +2756,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel55;
     private javax.swing.JLabel jLabel56;
+    private javax.swing.JLabel jLabel57;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -2669,8 +2778,9 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JSeparator jSeparator8;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JPanel jplMain;
     private javax.swing.JPanel jplSlideMenu;
@@ -2690,6 +2800,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JLabel lblNameBig;
     private javax.swing.JLabel lblOpenMenu;
     private javax.swing.JLabel lblSche;
+    private javax.swing.JLabel lblSche1;
     private javax.swing.JLabel lblSta_Li;
     private javax.swing.JRadioButton rdoFemale;
     private javax.swing.JRadioButton rdoFemale1;
@@ -2717,7 +2828,6 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JTextField txtF_Name_Student;
     private javax.swing.JTextField txtFind;
     private javax.swing.JTextField txtFind_Stu;
-    private javax.swing.JTextField txtID_Class_Student;
     private javax.swing.JTextField txtID_Student;
     private javax.swing.JTextField txtId_Staff;
     private javax.swing.JTextField txtId_Staff1;

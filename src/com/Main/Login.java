@@ -164,12 +164,12 @@ public class Login extends javax.swing.JFrame {
 
         txtUsername.setForeground(new java.awt.Color(255, 255, 255));
         txtUsername.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txtUsername.setText("admin1");
+        txtUsername.setText("EMP001");
         txtUsername.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(255, 255, 255), null));
 
         txtPass.setForeground(new java.awt.Color(255, 255, 255));
         txtPass.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txtPass.setText("securepass1");
+        txtPass.setText("password123");
         txtPass.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.white, null));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -384,7 +384,6 @@ public class Login extends javax.swing.JFrame {
             menu.setVisible(true);
             this.dispose();
         } else if (cbRole.getSelectedIndex() == 2) {
-
             Staff staff = getFormStaff();
             if (!staffDAO.checkID(staff)) {
                 Message.alert(this, "Account name or password is incorrect !");

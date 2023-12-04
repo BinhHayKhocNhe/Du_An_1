@@ -299,12 +299,31 @@
                   <Font name="Times New Roman" size="14" style="0"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value=" Schedule"/>
+                <Property name="text" type="java.lang.String" value="Salary"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblScheMouseClicked"/>
                 <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblScheMouseEntered"/>
                 <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblScheMouseExited"/>
+              </Events>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                  <AbsoluteConstraints x="45" y="400" width="120" height="30"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblSche1">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Times New Roman" size="14" style="0"/>
+                </Property>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value=" Schedule"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblSche1MouseClicked"/>
+                <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblSche1MouseEntered"/>
+                <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblSche1MouseExited"/>
               </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -2007,7 +2026,7 @@
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="-2" pref="215" max="-2" attributes="0"/>
-                          <Component id="jTabbedPane2" min="-2" pref="870" max="-2" attributes="0"/>
+                          <Component id="INFORSTUDENT" min="-2" pref="870" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -2019,7 +2038,7 @@
                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                           <Component id="jSeparator6" min="-2" pref="11" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jTabbedPane2" min="-2" pref="414" max="-2" attributes="0"/>
+                          <Component id="INFORSTUDENT" min="-2" pref="414" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -2036,7 +2055,7 @@
                 </Component>
                 <Component class="javax.swing.JSeparator" name="jSeparator6">
                 </Component>
-                <Container class="javax.swing.JTabbedPane" name="jTabbedPane2">
+                <Container class="javax.swing.JTabbedPane" name="INFORSTUDENT">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -2072,8 +2091,62 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jLabel51" min="-2" pref="100" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="txtNote_Student" min="-2" pref="200" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="102" attributes="0">
+                                                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                                      <Component id="jLabel54" alignment="0" pref="100" max="32767" attributes="0"/>
+                                                      <Component id="jLabel53" alignment="0" pref="100" max="32767" attributes="0"/>
+                                                      <Component id="jLabel52" alignment="0" max="32767" attributes="0"/>
+                                                      <Component id="jLabel55" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="jLabel56" alignment="0" max="32767" attributes="0"/>
+                                                      <Component id="jLabel57" alignment="1" max="32767" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Group type="102" attributes="0">
+                                                          <Group type="103" groupAlignment="0" attributes="0">
+                                                              <Component id="rdoMale_Student" alignment="1" min="-2" pref="70" max="-2" attributes="0"/>
+                                                              <Component id="rdoStatus_Student_On" alignment="1" min="-2" pref="70" max="-2" attributes="0"/>
+                                                          </Group>
+                                                          <EmptySpace max="-2" attributes="0"/>
+                                                          <Group type="103" groupAlignment="0" attributes="0">
+                                                              <Component id="rdoStatus_Student_Off" min="-2" pref="70" max="-2" attributes="0"/>
+                                                              <Component id="rdoFemale_Student" min="-2" pref="70" max="-2" attributes="0"/>
+                                                          </Group>
+                                                      </Group>
+                                                      <Component id="cboMonth2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="cboDay2" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="cboYear2" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="cboID_Class_Student" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace pref="56" max="32767" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Group type="102" alignment="1" attributes="0">
+                                                          <Component id="btnUpload2" min="-2" max="-2" attributes="0"/>
+                                                          <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
+                                                      </Group>
+                                                      <Group type="102" alignment="1" attributes="0">
+                                                          <Component id="lblAvatar2" min="-2" pref="150" max="-2" attributes="0"/>
+                                                          <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
+                                                      </Group>
+                                                  </Group>
+                                              </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <EmptySpace min="-2" pref="105" max="-2" attributes="0"/>
+                                                  <Component id="btnNew2" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="btnAdd2" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                      </Group>
+                                      <Group type="102" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Component id="jLabel46" min="-2" pref="100" max="-2" attributes="0"/>
@@ -2101,68 +2174,9 @@
                                                   <Component id="txtAdd_Student" min="-2" pref="200" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
-                                          <EmptySpace min="-2" pref="103" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" attributes="0">
-                                                  <Component id="jLabel52" min="-2" pref="100" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="rdoStatus_Student_On" min="-2" pref="100" max="-2" attributes="0"/>
-                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                  <Component id="rdoStatus_Student_Off" min="-2" pref="100" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Group type="102" alignment="0" attributes="0">
-                                                          <Component id="jLabel53" min="-2" pref="100" max="-2" attributes="0"/>
-                                                          <EmptySpace max="-2" attributes="0"/>
-                                                          <Component id="rdoMale_Student" min="-2" pref="100" max="-2" attributes="0"/>
-                                                      </Group>
-                                                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                                          <Group type="102" attributes="0">
-                                                              <Component id="jLabel55" min="-2" max="-2" attributes="0"/>
-                                                              <EmptySpace max="32767" attributes="0"/>
-                                                              <Component id="cboMonth2" min="-2" max="-2" attributes="0"/>
-                                                          </Group>
-                                                          <Group type="102" attributes="0">
-                                                              <Component id="jLabel54" min="-2" pref="100" max="-2" attributes="0"/>
-                                                              <EmptySpace max="-2" attributes="0"/>
-                                                              <Component id="cboYear2" min="-2" max="-2" attributes="0"/>
-                                                          </Group>
-                                                          <Group type="102" alignment="1" attributes="0">
-                                                              <Component id="jLabel56" min="-2" max="-2" attributes="0"/>
-                                                              <EmptySpace max="32767" attributes="0"/>
-                                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                                  <Component id="txtID_Class_Student" min="-2" pref="71" max="-2" attributes="0"/>
-                                                                  <Component id="cboDay2" min="-2" max="-2" attributes="0"/>
-                                                              </Group>
-                                                          </Group>
-                                                      </Group>
-                                                  </Group>
-                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="lblAvatar2" min="-2" pref="150" max="-2" attributes="0"/>
-                                                      <Component id="rdoFemale_Student" min="-2" pref="100" max="-2" attributes="0"/>
-                                                  </Group>
-                                              </Group>
-                                          </Group>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jLabel51" min="-2" pref="100" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" attributes="0">
-                                                  <Component id="btnNew2" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="btnAdd2" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace max="32767" attributes="0"/>
-                                                  <Component id="btnUpload2" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Component id="txtNote_Student" min="-2" pref="200" max="-2" attributes="0"/>
-                                          </Group>
+                                          <EmptySpace max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
-                                  <EmptySpace pref="77" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -2170,23 +2184,30 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="lblAvatar2" min="-2" pref="199" max="-2" attributes="0"/>
-                                      <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="lblAvatar2" min="-2" pref="199" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="jLabel51" min="-2" pref="30" max="-2" attributes="0"/>
+                                              <Component id="btnUpload2" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
                                           <Group type="103" groupAlignment="3" attributes="0">
                                               <Component id="jLabel46" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                               <Component id="txtID_Student" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                               <Component id="jLabel52" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                                              <Component id="rdoStatus_Student_Off" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                               <Component id="rdoStatus_Student_On" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                                              <Component id="rdoStatus_Student_Off" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="3" attributes="0">
                                               <Component id="jLabel47" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                               <Component id="txtF_Name_Student" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                               <Component id="jLabel53" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                                              <Component id="rdoFemale_Student" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                               <Component id="rdoMale_Student" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                                              <Component id="rdoFemale_Student" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="3" attributes="0">
@@ -2209,35 +2230,27 @@
                                               <Component id="jLabel56" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                               <Component id="cboDay2" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                           </Group>
-                                          <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Group type="102" attributes="0">
+                                                  <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                                                  <Component id="txtNote_Student" min="-2" pref="112" max="-2" attributes="0"/>
+                                              </Group>
                                               <Group type="102" attributes="0">
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="jLabel51" min="-2" pref="30" max="-2" attributes="0"/>
-                                                      <Component id="txtNote_Student" min="-2" pref="112" max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="3" attributes="0">
+                                                      <Component id="jLabel57" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                                                      <Component id="cboID_Class_Student" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace max="32767" attributes="0"/>
+                                                  <Group type="103" groupAlignment="3" attributes="0">
+                                                      <Component id="btnAdd2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="btnNew2" alignment="3" min="-2" max="-2" attributes="0"/>
                                                   </Group>
                                               </Group>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-                                                  <Component id="txtID_Class_Student" min="-2" max="-2" attributes="0"/>
-                                              </Group>
                                           </Group>
                                       </Group>
                                   </Group>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="btnUpload2" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="btnNew2" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="btnAdd2" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                  </Group>
-                                  <EmptySpace pref="27" max="32767" attributes="0"/>
+                                  <EmptySpace pref="56" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -2456,7 +2469,25 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoStatus_Student_OffActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JTextField" name="txtID_Class_Student">
+                        <Component class="javax.swing.JComboBox" name="cboID_Class_Student">
+                          <Properties>
+                            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                              <StringArray count="4">
+                                <StringItem index="0" value="Item 1"/>
+                                <StringItem index="1" value="Item 2"/>
+                                <StringItem index="2" value="Item 3"/>
+                                <StringItem index="3" value="Item 4"/>
+                              </StringArray>
+                            </Property>
+                          </Properties>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                          </AuxValues>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="jLabel57">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="ID Class"/>
+                          </Properties>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -2564,6 +2595,9 @@
                                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                                 </Property>
                               </Properties>
+                              <Events>
+                                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblList_stuMouseClicked"/>
+                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -2607,7 +2641,10 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="520" max="-2" attributes="0"/>
-                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jLabel6" max="32767" attributes="0"/>
+                              <Component id="jSeparator7" max="32767" attributes="0"/>
+                          </Group>
                           <EmptySpace pref="490" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -2617,7 +2654,9 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                           <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="521" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                          <Component id="jSeparator7" min="-2" pref="10" max="-2" attributes="0"/>
+                          <EmptySpace pref="501" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2630,6 +2669,8 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Schedule"/>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JSeparator" name="jSeparator7">
                 </Component>
               </SubComponents>
             </Container>
@@ -2663,7 +2704,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                           <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="521" max="32767" attributes="0"/>
+                          <EmptySpace pref="511" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2679,7 +2720,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JPanel" name="cardThemSau">
+            <Container class="javax.swing.JPanel" name="cardStaff_Salary">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -2699,8 +2740,11 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="520" max="-2" attributes="0"/>
-                          <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="454" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jLabel12" max="32767" attributes="0"/>
+                              <Component id="jSeparator8" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="517" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2709,7 +2753,9 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                           <Component id="jLabel12" min="-2" pref="37" max="-2" attributes="0"/>
-                          <EmptySpace pref="513" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                          <Component id="jSeparator8" min="-2" pref="10" max="-2" attributes="0"/>
+                          <EmptySpace pref="493" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2720,8 +2766,10 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Times New Roman" size="24" style="1"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="C&#xf3; G&#xec; Thi&#x1ebf;u"/>
+                    <Property name="text" type="java.lang.String" value="Salary"/>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JSeparator" name="jSeparator8">
                 </Component>
               </SubComponents>
             </Container>

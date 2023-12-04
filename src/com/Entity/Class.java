@@ -7,7 +7,6 @@ public class Class {
     private String ID_Class;
     private String Class_Name;
     private String ID_Teacher;
-    private String ID_Student;
     private int Quantity;
     private String Note;
 
@@ -35,14 +34,6 @@ public class Class {
         this.ID_Teacher = ID_Teacher;
     }
 
-    public String getID_Student() {
-        return ID_Student;
-    }
-
-    public void setID_Student(String ID_Student) {
-        this.ID_Student = ID_Student;
-    }
-
     public int getQuantity() {
         return Quantity;
     }
@@ -59,11 +50,10 @@ public class Class {
         this.Note = Note;
     }
 
-    public Class(String ID_Class, String Class_Name, String ID_Teacher, String ID_Student, int Quantity, String Note) {
+    public Class(String ID_Class, String Class_Name, String ID_Teacher, int Quantity, String Note) {
         this.ID_Class = ID_Class;
         this.Class_Name = Class_Name;
         this.ID_Teacher = ID_Teacher;
-        this.ID_Student = ID_Student;
         this.Quantity = Quantity;
         this.Note = Note;
     }

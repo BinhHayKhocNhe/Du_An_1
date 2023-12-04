@@ -55,7 +55,6 @@ public class ClassDAO implements myInterFace<Class, String>{
                         rs.getString("ID_Class"),
                         rs.getString("Class_Name"),
                         rs.getString("ID_Teacher"),
-                        rs.getString("ID_Student"),
                         rs.getInt("Quantity"),
                         rs.getString("Note")
                 );
