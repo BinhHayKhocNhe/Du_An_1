@@ -1,8 +1,6 @@
-
 package com.Entity;
 
 public class Class {
-
 
     private String ID_Class;
     private String Class_Name;
@@ -61,5 +59,3 @@ public class Class {
     public Class() {
     }
 }
-
-

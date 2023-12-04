@@ -166,6 +166,11 @@ public class Login extends javax.swing.JFrame {
         txtUsername.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtUsername.setText("EMP002");
         txtUsername.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(255, 255, 255), null));
+        txtUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsernameActionPerformed(evt);
+            }
+        });
 
         txtPass.setForeground(new java.awt.Color(255, 255, 255));
         txtPass.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -321,6 +326,10 @@ public class Login extends javax.swing.JFrame {
     private void cbRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbRoleActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbRoleActionPerformed
+
+    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUsernameActionPerformed
     private boolean checkNull() {
         if (txtUsername.getText().isEmpty()) {
             Message.alert(this, "Please enter complete information !");

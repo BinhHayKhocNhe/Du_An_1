@@ -181,26 +181,27 @@ public class StaffDAO implements myInterFace<Staff, String> {
         }
         return false;
     }
-public String ReturnPosition(String ID) {
-    final String sql = "SELECT Position FROM Staff WHERE ID_Staff = ?";
-    String position = null;
-    
-    try {
-        // Truyền tham số vào câu SQL
-        ResultSet rs = JDBCHelper.executeQuery(sql, ID);
 
-        // Kiểm tra xem có dữ liệu không
-        if (rs.next()) {
-            // Di chuyển con trỏ đến dòng đầu tiên và lấy giá trị từ cột "Position"
-            position = rs.getString("Position");
+    public String ReturnPosition(String ID) {
+        final String sql = "SELECT Position FROM Staff WHERE ID_Staff = ?";
+        String position = null;
+
+        try {
+            // Truyền tham số vào câu SQL
+            ResultSet rs = JDBCHelper.executeQuery(sql, ID);
+
+            // Kiểm tra xem có dữ liệu không
+            if (rs.next()) {
+                // Di chuyển con trỏ đến dòng đầu tiên và lấy giá trị từ cột "Position"
+                position = rs.getString("Position");
+            }
+
+            // Đóng ResultSet
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        // Đóng ResultSet
-        rs.close();
-    } catch (Exception e) {
-        e.printStackTrace();
+        return position;
     }
-    
-    return position;
-}
 }
