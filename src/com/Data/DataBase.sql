@@ -275,7 +275,7 @@ VALUES
 	('C004', 'C007', 'STU004', 'TCH004'),
     ('C005', 'C004', 'STU005', 'TCH005'),
     ('C006', 'C005', 'STU006', 'TCH006');
-
+	select * from Course_Relationship
 CREATE TABLE Schedule(
 ID_Course NVARCHAR(50) NOT NULL,
 ID_Teacher NVARCHAR(50) NOT NULL,
