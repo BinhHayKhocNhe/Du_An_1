@@ -3,6 +3,7 @@ package com.DAO;
 import com.Entity.Student;
 import com.Utils.JDBCHelper;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -106,9 +107,11 @@ public class StudentDAO implements myInterFace<Student, String> {
         String sql = "SELECT * FROM Student WHERE ID_Student LIKE ? OR Last_Name LIKE ?;";
         return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
     }
-public List<String> getidlclass() {
+
+    public List<String> getidlclass() {
         return getUniqueColumnValues("ID_Class");
     }
+
     // Phương thức trợ giúp để lấy giá trị độc nhất từ một cột cụ thể
     private List<String> getUniqueColumnValues(String columnName) {
         List<String> values = new ArrayList<>();
@@ -123,9 +126,11 @@ public List<String> getidlclass() {
         }
         return values;
     }
-   public List<Student> selectByKeyword2(String keyword) {
+
+    public List<Student> selectByKeyword2(String keyword) {
         String sql = "SELECT * FROM Student WHERE ID_Class LIKE ? OR Last_Name LIKE ?;";
-        return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");}
+        return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
+    }
 
     public boolean checkCountIDStudent(String keyword) {
         try {
@@ -141,5 +146,19 @@ public List<String> getidlclass() {
             e.getMessage();
         }
         return false;
+    }
+
+    public String returnLastID() {
+        String lastID = null;
+        String sql = "SELECT TOP 1 ID_Student FROM Student ORDER BY ID_Student DESC";
+        ResultSet rs = JDBCHelper.executeQuery(sql);
+        try {
+            if(rs.next()) {
+                lastID = rs.getString("ID_Student");
+            }
+        } catch (SQLException ex) {
+            ex.getMessage();
+        }
+        return lastID;
     }
 }
