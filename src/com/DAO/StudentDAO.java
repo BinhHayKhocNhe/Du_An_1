@@ -106,9 +106,11 @@ public class StudentDAO implements myInterFace<Student, String> {
         String sql = "SELECT * FROM Student WHERE ID_Student LIKE ? OR Last_Name LIKE ?;";
         return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
     }
-public List<String> getidlclass() {
+
+    public List<String> getidlclass() {
         return getUniqueColumnValues("ID_Class");
     }
+
     // Phương thức trợ giúp để lấy giá trị độc nhất từ một cột cụ thể
     private List<String> getUniqueColumnValues(String columnName) {
         List<String> values = new ArrayList<>();
@@ -123,9 +125,11 @@ public List<String> getidlclass() {
         }
         return values;
     }
-   public List<Student> selectByKeyword2(String keyword) {
+
+    public List<Student> selectByKeyword2(String keyword) {
         String sql = "SELECT * FROM Student WHERE ID_Class LIKE ? OR Last_Name LIKE ?;";
-        return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");}
+        return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
+    }
 
     public boolean checkCountIDStudent(String keyword) {
         try {
