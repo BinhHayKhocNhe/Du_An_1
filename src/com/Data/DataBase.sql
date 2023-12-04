@@ -247,6 +247,10 @@ VALUES
     ('C008', 'Summer',  2021, 'Note for Summer'),
     ('C009', 'Fall', 2021, 'Note for Fall'),
     ('C010', 'Spring',  2024, 'Note for Spring');
+select * from Course_Relationship
+UPDATE Course_Relationship SET ID_Course = 'C001', ID_Class = 'C001', ID_Student = 'STU001', 
+       ID_Teacher = 'TCH001' WHERE ID_Course = 'C001' AND ID_Class = 'C001' AND ID_Student = 'STU001' 
+	   AND ID_Teacher = 'TCH002';
 
 CREATE TABLE Class (
     ID_Class NVARCHAR(50) NOT NULL PRIMARY KEY,
@@ -255,6 +259,11 @@ CREATE TABLE Class (
     Quantity INT NOT NULL,
     Note NVARCHAR(255),
 );
+ALTER TABLE Class
+ADD CONSTRAINT FK_Class_Teacher
+FOREIGN KEY (ID_Teacher)
+REFERENCES Teacher(ID_Teacher);
+
 -- Thêm dữ liệu vào bảng Class
 INSERT INTO Class (ID_Class, Class_Name, ID_Teacher, Quantity, Note) VALUES
     ('C001', 'Class 1', 'TCH001',  25, 'Note for Class 1'),

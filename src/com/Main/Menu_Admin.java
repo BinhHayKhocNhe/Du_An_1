@@ -165,8 +165,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         lbTeacher = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         lblthoat = new javax.swing.JLabel();
-        lbldoimk = new javax.swing.JLabel();
-        lblhotro = new javax.swing.JLabel();
+        lbQRCode = new javax.swing.JLabel();
         lbStaff = new javax.swing.JLabel();
         lbStudent = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -583,27 +582,17 @@ public class Menu_Admin extends javax.swing.JFrame {
                 lblthoatMouseClicked(evt);
             }
         });
-        jplSlideMenu.add(lblthoat, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 560, 210, 30));
+        jplSlideMenu.add(lblthoat, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 520, 190, 30));
 
-        lbldoimk.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        lbldoimk.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbldoimk.setText("Change Password");
-        lbldoimk.addMouseListener(new java.awt.event.MouseAdapter() {
+        lbQRCode.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lbQRCode.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbQRCode.setText("QR Code");
+        lbQRCode.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lbldoimkMouseClicked(evt);
+                lbQRCodeMouseClicked(evt);
             }
         });
-        jplSlideMenu.add(lbldoimk, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 520, 210, 30));
-
-        lblhotro.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        lblhotro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblhotro.setText("Help");
-        lblhotro.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblhotroMouseClicked(evt);
-            }
-        });
-        jplSlideMenu.add(lblhotro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 210, 30));
+        jplSlideMenu.add(lbQRCode, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 490, 190, 30));
 
         lbStaff.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         lbStaff.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -3586,7 +3575,7 @@ public class Menu_Admin extends javax.swing.JFrame {
 
     }//GEN-LAST:event_lbGuardiansMouseClicked
 
-    private void lblhotroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblhotroMouseClicked
+    private void lbQRCodeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbQRCodeMouseClicked
         cardTrangChu.setVisible(false);
         cardInformation.setVisible(false);
         cardListStudent.setVisible(false);
@@ -3594,17 +3583,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         cardListTeacher.setVisible(false);
         cardListStaff.setVisible(false);
         cardhelp.setVisible(true);
-    }//GEN-LAST:event_lblhotroMouseClicked
-
-    private void lbldoimkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbldoimkMouseClicked
-        cardTrangChu.setVisible(false);
-        cardInformation.setVisible(false);
-        cardListStudent.setVisible(false);
-        cardDoimk.setVisible(true);
-        cardListTeacher.setVisible(false);
-        cardListStaff.setVisible(false);
-        cardhelp.setVisible(false);
-    }//GEN-LAST:event_lbldoimkMouseClicked
+    }//GEN-LAST:event_lbQRCodeMouseClicked
 
     private void lblthoatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblthoatMouseClicked
         if (Message.confirm(this, "Do you want exit ?")) {
@@ -5587,6 +5566,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JLabel lbAvatarTeacher;
     private javax.swing.JLabel lbGuardians;
     private javax.swing.JLabel lbNameAdmin;
+    private javax.swing.JLabel lbQRCode;
     private javax.swing.JLabel lbShowCurrentPass;
     private javax.swing.JLabel lbShowEnterPass;
     private javax.swing.JLabel lbShowNewPass;
@@ -5598,8 +5578,6 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JLabel lblOpenMenu;
     private javax.swing.JLabel lblTaiKhoan;
     private javax.swing.JLabel lblTrangChu;
-    private javax.swing.JLabel lbldoimk;
-    private javax.swing.JLabel lblhotro;
     private javax.swing.JLabel lblthoat;
     private javax.swing.JRadioButton rdFemale;
     private javax.swing.JRadioButton rdFemaleParent;
