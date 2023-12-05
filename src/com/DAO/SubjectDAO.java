@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubjectDAO implements myInterFace<Subject, String> {
+
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Subject WHERE ID_Subject = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM Subject";
     private final String INSERT_SQL = "INSERT INTO Subject (ID_Subject, Subject_Name, Note) VALUES (?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE Subject SET Subject_Name = ?, Note = ? WHERE ID_Subject = ?";
-    private final String DELETE_SQL = "DELETE FROM Subject WHERE ID_Subject = ?";
 
     @Override
     public void insert(Subject entity) {
@@ -22,7 +22,7 @@ public class SubjectDAO implements myInterFace<Subject, String> {
                 entity.getID_Subject(),
                 entity.getSubject_Name(),
                 entity.getNote()
-        ); // Handle the exception as needed
+        );
     }
 
     @Override
@@ -32,34 +32,42 @@ public class SubjectDAO implements myInterFace<Subject, String> {
                 entity.getSubject_Name(),
                 entity.getNote(),
                 entity.getID_Subject()
-        ); // Handle the exception as needed
+        );
     }
 
     @Override
     public void delete(String id) {
-        JDBCHelper.executeUpdate(DELETE_SQL, id); // Handle the exception as needed
+        return;
     }
 
     @Override
     public boolean checkID(Subject entity) {
-        // Implement the checkID operation here if needed
+        final String SQL = "SELECT 1 FROM Subject WHERE ID_Subject = ?;";
+        try {
+            ResultSet rs = JDBCHelper.executeQuery(SQL, entity.getID_Subject());
+            if (rs.next()) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
     @Override
     public void find(Subject entity) {
-        // Implement the find operation here if needed
+        return;
     }
 
     @Override
     public Subject selectById(String id) {
-       List<Subject> list = selectBySql(SELECT_BY_ID_SQL, id);
+        List<Subject> list = selectBySql(SELECT_BY_ID_SQL, id);
         return list.isEmpty() ? null : list.get(0);
     }
 
     @Override
     public List<Subject> selectAll() {
-   return selectBySql(SELECT_ALL_SQL);
+        return selectBySql(SELECT_ALL_SQL);
     }
 
     @Override
@@ -75,8 +83,12 @@ public class SubjectDAO implements myInterFace<Subject, String> {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            // Handle the exception as needed
         }
         return subjectList;
+    }
+
+    public List<Subject> selectByKeyword(String keyword) {
+        String sql = "SELECT * FROM Subject WHERE ID_Subject LIKE ? OR Subject_Name LIKE ?;";
+        return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
     }
 }

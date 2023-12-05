@@ -561,22 +561,6 @@ Total_Salary FLOAT NOT NULL,
 Remaining FLOAT NOT NULL,
 Note NVARCHAR(50),
 );
-CREATE TABLE Personal_Profile(
-ID_Student NVARCHAR(50) NOT NULL,
-ID_Staff NVARCHAR(50) NOT NULL,
-Date_Of_Profile_Creation DATETIME DEFAULT GETDATE(),
-Note NVARCHAR(255),
-ID_Profile NVARCHAR(50) NOT NULL,
-CONSTRAINT PK_ID_Profile PRIMARY KEY(ID_Profile),
-CONSTRAINT FK_Profile_Student FOREIGN KEY (ID_Student) REFERENCES Student(ID_Student),
-CONSTRAINT FK_Profile_Salary FOREIGN KEY (ID_Staff) REFERENCES Staff(ID_Staff)
-);
-CREATE TABLE Admission(
-ID_Profile NVARCHAR(50) NOT NULL,
-Admission_Date DATETIME NOT NULL,
-Note NVARCHAR(255),
-CONSTRAINT FK_ID_Profile FOREIGN KEY (ID_Profile) REFERENCES Personal_Profile(ID_Profile)
-);
 
 CREATE TABLE Staff_Working_Day(
 ID_Staff NVARCHAR(50) NOT NULL,
