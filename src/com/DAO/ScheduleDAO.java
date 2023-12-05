@@ -12,8 +12,10 @@ public class ScheduleDAO implements myInterFace<Schedule, String> {
 
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Schedule WHERE ID_Course = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM Schedule";
-    private final String INSERT_SQL = "INSERT INTO Schedule (ID_Course, ID_Teacher, ID_Student, ID_Class, ID_Subject, School_Day, Schedule_Date, Course_Name, Note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE Schedule SET ID_Teacher = ?, ID_Student = ?, ID_Class = ?, ID_Subject = ?, School_Day = ?, Schedule_Date = ?, Course_Name = ?, Note = ? WHERE ID_Course = ?";
+    private final String INSERT_SQL = "INSERT INTO Schedule (ID_Course, ID_Teacher, ID_Student, ID_Class, ID_Subject, School_Day"
+            + ", Schedule_Date, Course_Name, Note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE Schedule SET ID_Teacher = ?, ID_Student = ?, ID_Class = ?, ID_Subject = ?, School_Day = ?"
+            + ", Schedule_Date = ?, Course_Name = ?, Note = ? WHERE ID_Course = ?";
     private final String DELETE_SQL = "DELETE FROM Schedule WHERE ID_Course = ?";
 
     @Override
@@ -99,12 +101,15 @@ public class ScheduleDAO implements myInterFace<Schedule, String> {
         }
         return scheduleList;
     }
-     public List<String> get_sub() {
+
+    public List<String> get_sub() {
         return getUniqueColumnValues("ID_Subject");
     }
-       public List<String> get_day() {
+
+    public List<String> get_day() {
         return getUniqueColumnValues("School_Day");
     }
+
     // Phương thức trợ giúp để lấy giá trị độc nhất từ một cột cụ thể
     private List<String> getUniqueColumnValues(String columnName) {
         List<String> values = new ArrayList<>();
