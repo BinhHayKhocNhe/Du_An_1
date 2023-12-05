@@ -7,8 +7,10 @@ package com.Main;
 
 import com.DAO.ClassDAO;
 import com.DAO.StaffDAO;
+import com.DAO.Staff_SalaryDAO;
 import com.DAO.StudentDAO;
 import com.Entity.Staff;
+import com.Entity.Staff_Salary;
 import com.Entity.Student;
 import com.Entity.Class;
 import com.Utils.Authentication;
@@ -45,6 +47,7 @@ public class Form_Staff extends javax.swing.JFrame {
     StaffDAO daoStaff = new StaffDAO();
     StudentDAO daostu = new StudentDAO();
     ClassDAO classDAO = new ClassDAO();
+    Staff_SalaryDAO salaryDAO = new Staff_SalaryDAO();
 
     /**
      * Creates new form Menu
@@ -64,7 +67,7 @@ public class Form_Staff extends javax.swing.JFrame {
         InforStaff();
         uploadcboIDClass();
         setRdo();
-
+        tableSalary();
     }
 
     private void CardFalse() {
@@ -160,7 +163,7 @@ public class Form_Staff extends javax.swing.JFrame {
         }
 //        set Year cho student
         int currentYear = LocalDate.now().getYear();
-        int sixYearAgo = currentYear - 5;
+        int sixYearAgo = currentYear - 6;
         for (int i = sixYearAgo; i <= currentYear; i++) {
             cbYearModelSutdent.addElement(i);
         }
@@ -444,6 +447,7 @@ public class Form_Staff extends javax.swing.JFrame {
             // Hiển thị thông báo thành công trên luồng giao diện người dùng chính
             SwingUtilities.invokeLater(() -> {
                 Message.alert(this, "Added Student Successfully!");
+                autoID();
             });
         } catch (Exception e) {
             // Xử lý ngoại lệ chung
@@ -511,6 +515,13 @@ public class Form_Staff extends javax.swing.JFrame {
         }
     }
 
+    private void autoID() {
+        String resetFormStudent = daostu.returnLastID();
+        String newID_Stuent = autoID_Student(resetFormStudent);
+        txtID_Student.setText(newID_Stuent);
+        refreshFormStudent();
+    }
+
 // refresh form student
     private void refreshFormStudent() {
         JTextComponent text[] = {txtNote_Student, txtAdd_Student, txtL_Name_Student, txtM_Name_Student, txtF_Name_Student};
@@ -519,13 +530,37 @@ public class Form_Staff extends javax.swing.JFrame {
         rdoMale_Student.setSelected(true);
         rdoStatus_Student_On.setSelected(true);
     }
+// salary staff
 
-    private void autoID() {
-        String resetFormStudent = daostu.returnLastID();
-        String newID_Stuent = autoID_Student(resetFormStudent);
-        txtID_Student.setText(newID_Stuent);
-        txtID_Student.setEnabled(false);
-        refreshFormStudent();
+    private void tableSalary() {
+        Staff_Salary salary = salaryDAO.selectById(Authentication.staff.getID_Staff());
+        DefaultTableModel model = (DefaultTableModel) tblSalary_Student.getModel();
+        model.setRowCount(0);
+        try {
+            // Chuyển đổi kiểu dữ liệu từ String sang int hoặc double
+            int numberOfWorkingDays = Integer.parseInt(salary.getNumber_Of_Working_Days());
+            double dailyWage = Double.parseDouble(salary.getDaily_Wage());
+
+            // Thực hiện phép nhân
+            double totalIncome = (numberOfWorkingDays * dailyWage);
+
+            Object row[] = {
+                salary.getID_Staff_Salary(),
+                numberOfWorkingDays,
+                dailyWage,
+                salary.getMonth(),
+                salary.getYear(),
+                totalIncome,
+                salary.getNote()
+            };
+            model.addRow(row);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            Message.alert(this, "Lỗi chuyển đổi dữ liệu thành số!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Message.alert(this, "Lỗi truy vấn dữ liệu: " + e.getMessage());
+        }
     }
 
     /**
@@ -725,6 +760,13 @@ public class Form_Staff extends javax.swing.JFrame {
         cardStaff_Salary = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jSeparator8 = new javax.swing.JSeparator();
+        jTabbedPane2 = new javax.swing.JTabbedPane();
+        jPanel9 = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tblSalary_Student = new javax.swing.JTable();
+        txtFindSalary = new javax.swing.JTextField();
+        jLabel58 = new javax.swing.JLabel();
+        jLabel59 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -1871,6 +1913,7 @@ public class Form_Staff extends javax.swing.JFrame {
 
         jLabel46.setText("ID Student:");
 
+        txtID_Student.setEnabled(false);
         txtID_Student.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtID_StudentActionPerformed(evt);
@@ -1968,6 +2011,7 @@ public class Form_Staff extends javax.swing.JFrame {
 
         btnAdd2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Add.png"))); // NOI18N
         btnAdd2.setText("Add");
+        btnAdd2.setEnabled(false);
         btnAdd2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAdd2ActionPerformed(evt);
@@ -2288,16 +2332,73 @@ public class Form_Staff extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel12.setText("SALARY");
 
+        jTabbedPane2.setBackground(new java.awt.Color(255, 255, 255));
+        jTabbedPane2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(51, 51, 51), new java.awt.Color(153, 153, 153)));
+
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+
+        tblSalary_Student.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID Salary", "Number_Of_Working_Days", "Daily_Wage", "Month", "Year", "Total", "Note"
+            }
+        ));
+        jScrollPane7.setViewportView(tblSalary_Student);
+
+        jLabel58.setText("Find Month");
+
+        jLabel59.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel59.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel59.setText("Note: History only displays the most recent 12 months");
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane7)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(jLabel58, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(txtFindSalary, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(jLabel59)
+                .addGap(28, 28, 28))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addGap(0, 16, Short.MAX_VALUE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel58, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtFindSalary, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(jLabel59, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jTabbedPane2.addTab("HISTORY SALARY", jPanel9);
+
         javax.swing.GroupLayout cardStaff_SalaryLayout = new javax.swing.GroupLayout(cardStaff_Salary);
         cardStaff_Salary.setLayout(cardStaff_SalaryLayout);
         cardStaff_SalaryLayout.setHorizontalGroup(
             cardStaff_SalaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cardStaff_SalaryLayout.createSequentialGroup()
-                .addGap(520, 520, 520)
-                .addGroup(cardStaff_SalaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator8))
-                .addContainerGap(482, Short.MAX_VALUE))
+                .addGroup(cardStaff_SalaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(cardStaff_SalaryLayout.createSequentialGroup()
+                        .addGap(520, 520, 520)
+                        .addGroup(cardStaff_SalaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator8)))
+                    .addGroup(cardStaff_SalaryLayout.createSequentialGroup()
+                        .addGap(215, 215, 215)
+                        .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         cardStaff_SalaryLayout.setVerticalGroup(
             cardStaff_SalaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2306,7 +2407,9 @@ public class Form_Staff extends javax.swing.JFrame {
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(500, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(68, Short.MAX_VALUE))
         );
 
         jplMain.add(cardStaff_Salary, "card2");
@@ -2651,6 +2754,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private void btnNew2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNew2ActionPerformed
         // TODO add your handling code here:
         autoID();
+        btnAdd2.setEnabled(true);
     }//GEN-LAST:event_btnNew2ActionPerformed
 
     private void rdoStatus_Student_OnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoStatus_Student_OnActionPerformed
@@ -2665,9 +2769,6 @@ public class Form_Staff extends javax.swing.JFrame {
         // TODO add your handling code here:
         addStudent();
         setTableStudent();
-        txtID_Student.setEnabled(true);
-        txtID_Student.setText(null);
-        refreshFormStudent();
     }//GEN-LAST:event_btnAdd2ActionPerformed
 
     private void tblList_stuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblList_stuMouseClicked
@@ -2829,6 +2930,8 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel55;
     private javax.swing.JLabel jLabel56;
     private javax.swing.JLabel jLabel57;
+    private javax.swing.JLabel jLabel58;
+    private javax.swing.JLabel jLabel59;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -2841,12 +2944,14 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
@@ -2856,6 +2961,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JPanel jplMain;
     private javax.swing.JPanel jplSlideMenu;
@@ -2890,6 +2996,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JRadioButton rdoStatus_Student_Off;
     private javax.swing.JRadioButton rdoStatus_Student_On;
     private javax.swing.JTable tblList_stu;
+    private javax.swing.JTable tblSalary_Student;
     private javax.swing.JTable tblStaff;
     private javax.swing.JTextField txtAdd_Student;
     private javax.swing.JTextField txtAddress;
@@ -2902,6 +3009,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JTextField txtF_Name1;
     private javax.swing.JTextField txtF_Name_Student;
     private javax.swing.JTextField txtFind;
+    private javax.swing.JTextField txtFindSalary;
     private javax.swing.JTextField txtFind_Stu;
     private javax.swing.JTextField txtID_Student;
     private javax.swing.JTextField txtId_Staff;

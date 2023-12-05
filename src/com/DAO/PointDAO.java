@@ -12,8 +12,10 @@ public class PointDAO implements myInterFace<Point, String> {
 
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Point WHERE ID_Student = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM Point";
-    private final String INSERT_SQL = "INSERT INTO Point (ID_Student, ID_Class, ID_Subject, ID_Teacher, Year, Point, Course_Name, Note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE Point SET ID_Class = ?, ID_Subject = ?, ID_Teacher = ?, Year = ?, Point = ?, Course_Name = ?, Note = ? WHERE ID_Student = ?";
+    private final String INSERT_SQL = "INSERT INTO Point (ID_Student, ID_Class, ID_Subject, ID_Teacher"
+            + ", Year, Point, Course_Name, Note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE Point SET ID_Class = ?, ID_Subject = ?, ID_Teacher = ?"
+            + ", Year = ?, Point = ?, Course_Name = ?, Note = ? WHERE ID_Student = ?";
     private final String DELETE_SQL = "DELETE FROM Point WHERE ID_Student = ?";
 
     @Override
@@ -96,6 +98,7 @@ public class PointDAO implements myInterFace<Point, String> {
         }
         return pointList;
     }
+
     public List<String> getUniqueStudentIDs() {
         return getUniqueColumnValues("ID_Student");
     }
@@ -107,9 +110,11 @@ public class PointDAO implements myInterFace<Point, String> {
     public List<String> getUniqueSubjectIDs() {
         return getUniqueColumnValues("ID_Subject");
     }
- public List<String> getUniqueTeacherIDs() {
+
+    public List<String> getUniqueTeacherIDs() {
         return getUniqueColumnValues("ID_Teacher");
     }
+
     // Phương thức trợ giúp để lấy giá trị độc nhất từ một cột cụ thể
     private List<String> getUniqueColumnValues(String columnName) {
         List<String> values = new ArrayList<>();
@@ -124,7 +129,8 @@ public class PointDAO implements myInterFace<Point, String> {
         }
         return values;
     }
-      public List<Point> selectByKeyword(String keyword) {
+
+    public List<Point> selectByKeyword(String keyword) {
         String sql = "SELECT * FROM Point WHERE ID_Student LIKE ? or Last_Name like ?";
         return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
     }

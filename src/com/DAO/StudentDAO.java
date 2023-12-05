@@ -33,15 +33,16 @@ public class StudentDAO implements myInterFace<Student, String> {
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         JDBCHelper.executeUpdate(sql,
-                entity.getID_Student(), entity.getFirst_Name(), entity.getMiddle_Name(), entity.getLast_Name(),
-                entity.isGender(), entity.getAddress_Student(), entity.getID_Class(), entity.isStatus_Student(), entity.getAvatar(),
+                entity.getID_Student(), entity.getFirst_Name(), entity.getMiddle_Name(), entity.getLast_Name(),entity.isGender()
+                ,entity.getAddress_Student(), entity.getID_Class(), entity.isStatus_Student(), entity.getAvatar(),
                 entity.getDate_Of_Birth(), entity.getMonth_Of_Birth(), entity.getYear_Of_Birth(), entity.getNote());
     }
 
     @Override
     public void update(Student entity) {
         JDBCHelper.executeUpdate(UPDATE_SQL, entity.getFirst_Name(), entity.getMiddle_Name(), entity.getLast_Name(),
-                entity.isGender(), entity.getAddress_Student(), entity.getID_Class(), entity.isStatus_Student(), entity.getAvatar(),
+                entity.isGender(), entity.getAddress_Student(), entity.getID_Class(), entity.isStatus_Student(),
+                entity.getAvatar(),
                 entity.getDate_Of_Birth(), entity.getMonth_Of_Birth(), entity.getYear_Of_Birth(), entity.getNote(),
                 entity.getID_Student());
     }
