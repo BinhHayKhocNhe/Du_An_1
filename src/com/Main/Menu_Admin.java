@@ -3636,17 +3636,17 @@ public class Menu_Admin extends javax.swing.JFrame {
         cardQRCode.setLayout(cardQRCodeLayout);
         cardQRCodeLayout.setHorizontalGroup(
             cardQRCodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(cardQRCodeLayout.createSequentialGroup()
-                .addGap(325, 325, 325)
-                .addComponent(QRCode, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(325, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardQRCodeLayout.createSequentialGroup()
+                .addContainerGap(297, Short.MAX_VALUE)
+                .addComponent(QRCode, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(253, 253, 253))
         );
         cardQRCodeLayout.setVerticalGroup(
             cardQRCodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardQRCodeLayout.createSequentialGroup()
-                .addContainerGap(71, Short.MAX_VALUE)
-                .addComponent(QRCode, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(69, 69, 69))
+            .addGroup(cardQRCodeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(QRCode, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         jplMain.add(cardQRCode, "card3");
@@ -5609,7 +5609,7 @@ public class Menu_Admin extends javax.swing.JFrame {
             String filePath = "Du_An_1.jpg";
             File destination = new File("img_QR_Code", filePath);
             filePath = Paths.get(destination.getAbsolutePath()).toString();
-            int size = 400;
+            int size = 500;
             String fileType = "jpg";
             File qrFile = new File(filePath);
             QR_Code_Util.createQRImage(qrFile, qrCodeText, size, fileType);
