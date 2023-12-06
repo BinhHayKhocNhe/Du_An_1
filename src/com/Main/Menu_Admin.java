@@ -38,12 +38,8 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
-import java.net.URI;
-import java.awt.Desktop;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.Workbook;
 
 /**
@@ -1394,7 +1390,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                         .addComponent(btnUpdateTeacher)
                         .addComponent(btnResetFormTeacher))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         tabTeacher.addTab("INFORMATION", jLayeredPane2);
@@ -1455,34 +1451,33 @@ public class Menu_Admin extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 809, Short.MAX_VALUE))
                     .addGroup(jLayeredPane4Layout.createSequentialGroup()
-                        .addGroup(jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jLayeredPane4Layout.createSequentialGroup()
-                                .addGap(261, 261, 261)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(45, 45, 45)
-                                .addComponent(txtFindTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jLayeredPane4Layout.createSequentialGroup()
-                                .addGap(301, 301, 301)
-                                .addComponent(btnExportTeacher)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnImportTeacher)))
+                        .addGap(301, 301, 301)
+                        .addComponent(btnExportTeacher)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnImportTeacher)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane4Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtFindTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(310, 310, 310))
         );
         jLayeredPane4Layout.setVerticalGroup(
             jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane4Layout.createSequentialGroup()
-                .addGap(0, 2, Short.MAX_VALUE)
+                .addGap(0, 18, Short.MAX_VALUE)
                 .addGroup(jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFindTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFindTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
                 .addGroup(jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnExportTeacher)
                     .addComponent(btnImportTeacher))
-                .addGap(52, 52, 52))
+                .addGap(32, 32, 32))
         );
 
         tabTeacher.addTab("LIST OF TEACHER", jLayeredPane4);
@@ -1572,7 +1567,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                 .addGroup(jLayeredPane5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnResetPassTeacher)
                     .addComponent(btnExitResetPassTeacher))
-                .addContainerGap(169, Short.MAX_VALUE))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
 
         tabTeacher.addTab("REFRESH PASSWORD", jLayeredPane5);
@@ -1588,7 +1583,9 @@ public class Menu_Admin extends javax.swing.JFrame {
         );
         cardListTeacherLayout.setVerticalGroup(
             cardListTeacherLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabTeacher)
+            .addGroup(cardListTeacherLayout.createSequentialGroup()
+                .addComponent(tabTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 27, Short.MAX_VALUE))
         );
 
         jplMain.add(cardListTeacher, "card3");
@@ -2367,7 +2364,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                                 .addComponent(jLabel63)
                                 .addComponent(rdONStudent)
                                 .addComponent(rdOFFStudent)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                         .addGroup(jLayeredPane9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel65)
                             .addComponent(cbYearStudent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2390,7 +2387,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                             .addComponent(btnUpdateStudent)
                             .addComponent(btnResetFormStudent)))
                     .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(139, Short.MAX_VALUE))
+                .addContainerGap(138, Short.MAX_VALUE))
         );
 
         tabStudent.addTab("INFORMATION", jLayeredPane9);
@@ -3807,8 +3804,10 @@ public class Menu_Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_lbQRCodeMouseClicked
 
     private void lblthoatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblthoatMouseClicked
-        if (Message.confirm(this, "Do you want exit ?")) {
-            System.exit(0);
+        if (Message.confirm(this, "Do you want log out ?")) {
+            Login login = new Login();
+            login.setVisible(true);
+            this.dispose();
         }
     }//GEN-LAST:event_lblthoatMouseClicked
 
