@@ -41,8 +41,15 @@ public class ExcelUtils {
                 row.createCell(3).setCellValue(resultSet.getString("Last_Name"));
                 row.createCell(4).setCellValue(resultSet.getString("Email"));
                 row.createCell(5).setCellValue(resultSet.getString("Phone_Number"));
-                row.createCell(6).setCellValue(resultSet.getString("Gender"));
-                row.createCell(7).setCellValue(resultSet.getString("Status_Teacher"));
+                
+                boolean isMale = resultSet.getBoolean("Gender");
+                String genderLabel = (isMale) ? "Male" : "Female";
+                row.createCell(6).setCellValue(genderLabel);
+                
+                boolean isStatus = resultSet.getBoolean("Status_Teacher");
+                String status = (isStatus) ? "ON" : "OFF";
+                row.createCell(7).setCellValue(status);
+                
                 row.createCell(8).setCellValue(resultSet.getString("Level_Teacher"));
                 row.createCell(9).setCellValue(resultSet.getString("Address_Teacher"));
                 row.createCell(10).setCellValue(resultSet.getString("Year_Of_Birth") + "-"
