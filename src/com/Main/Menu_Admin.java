@@ -26,6 +26,7 @@ import com.Entity.Student;
 import com.Entity.Subject;
 import com.Entity.Teacher;
 import com.Utils.Authentication;
+import com.Utils.ExcelUtils;
 import com.Utils.IsValidForm;
 import com.Utils.Message;
 import com.Utils.QR_Code_Util;
@@ -39,6 +40,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 import java.net.URI;
 import java.awt.Desktop;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  *
@@ -71,6 +77,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private ClassDAO classDAO = new ClassDAO();
     private SubjectDAO subjectDAO = new SubjectDAO();
     private DefaultTableModel tableModelSubject = new DefaultTableModel();
+    private String file = "";
 
     /**
      * Creates new form Menu
@@ -92,7 +99,6 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.rdMaleParent.setSelected(true);
         this.rdMaleStudent.setSelected(true);
         this.txtStartDateStaff.setEditable(false);
-        this.btnAddStudent.setEnabled(false);
         this.uploadComboboxTeacher();
         this.uploadComboboxStaff();
         this.initTableTeacher();
@@ -272,6 +278,8 @@ public class Menu_Admin extends javax.swing.JFrame {
         tableTeacher = new javax.swing.JTable();
         txtFindTeacher = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        btnExportTeacher = new javax.swing.JButton();
+        btnImportTeacher = new javax.swing.JButton();
         jLayeredPane5 = new javax.swing.JLayeredPane();
         jLabel39 = new javax.swing.JLabel();
         txtIDResetPassTeacher = new javax.swing.JTextField();
@@ -493,6 +501,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         btnResetSubject = new javax.swing.JButton();
+        jLayeredPane19 = new javax.swing.JLayeredPane();
         cardQRCode = new javax.swing.JPanel();
         QRCode = new javax.swing.JLabel();
         cardDoimk = new javax.swing.JPanel();
@@ -1417,31 +1426,63 @@ public class Menu_Admin extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Find:");
 
+        btnExportTeacher.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnExportTeacher.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Down.png"))); // NOI18N
+        btnExportTeacher.setText("Excel Export");
+        btnExportTeacher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportTeacherActionPerformed(evt);
+            }
+        });
+
+        btnImportTeacher.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnImportTeacher.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Up.png"))); // NOI18N
+        btnImportTeacher.setText("Excel Import");
+
         jLayeredPane4.setLayer(jScrollPane4, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane4.setLayer(txtFindTeacher, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane4.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane4.setLayer(btnExportTeacher, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane4.setLayer(btnImportTeacher, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane4Layout = new javax.swing.GroupLayout(jLayeredPane4);
         jLayeredPane4.setLayout(jLayeredPane4Layout);
         jLayeredPane4Layout.setHorizontalGroup(
             jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 821, Short.MAX_VALUE)
             .addGroup(jLayeredPane4Layout.createSequentialGroup()
-                .addGap(261, 261, 261)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
-                .addComponent(txtFindTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jLayeredPane4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 809, Short.MAX_VALUE))
+                    .addGroup(jLayeredPane4Layout.createSequentialGroup()
+                        .addGroup(jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jLayeredPane4Layout.createSequentialGroup()
+                                .addGap(261, 261, 261)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(45, 45, 45)
+                                .addComponent(txtFindTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jLayeredPane4Layout.createSequentialGroup()
+                                .addGap(301, 301, 301)
+                                .addComponent(btnExportTeacher)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnImportTeacher)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jLayeredPane4Layout.setVerticalGroup(
             jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane4Layout.createSequentialGroup()
-                .addGap(0, 10, Short.MAX_VALUE)
+                .addGap(0, 2, Short.MAX_VALUE)
                 .addGroup(jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFindTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnExportTeacher)
+                    .addComponent(btnImportTeacher))
+                .addGap(52, 52, 52))
         );
 
         tabTeacher.addTab("LIST OF TEACHER", jLayeredPane4);
@@ -3614,6 +3655,19 @@ public class Menu_Admin extends javax.swing.JFrame {
 
         tabCourse.addTab("SUBJECT", jLayeredPane18);
 
+        javax.swing.GroupLayout jLayeredPane19Layout = new javax.swing.GroupLayout(jLayeredPane19);
+        jLayeredPane19.setLayout(jLayeredPane19Layout);
+        jLayeredPane19Layout.setHorizontalGroup(
+            jLayeredPane19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 821, Short.MAX_VALUE)
+        );
+        jLayeredPane19Layout.setVerticalGroup(
+            jLayeredPane19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 505, Short.MAX_VALUE)
+        );
+
+        tabCourse.addTab("tab5", jLayeredPane19);
+
         javax.swing.GroupLayout cardLearningManagementLayout = new javax.swing.GroupLayout(cardLearningManagement);
         cardLearningManagement.setLayout(cardLearningManagementLayout);
         cardLearningManagementLayout.setHorizontalGroup(
@@ -3988,7 +4042,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUpdateStudentActionPerformed
 
     private void btnAddStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddStudentActionPerformed
-        // TODO add your handling code here:
+        this.addStudent();
     }//GEN-LAST:event_btnAddStudentActionPerformed
 
     private void btnUploadImgStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadImgStudentActionPerformed
@@ -4227,6 +4281,16 @@ public class Menu_Admin extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         this.updateSubject();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btnExportTeacherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportTeacherActionPerformed
+        try {
+            List<Teacher> teacherList = teacher_DAO.selectAll();
+            Workbook workbook = ExcelUtils.exportToExcelTeacher(teacherList);
+            chooseDirectoryToSave(workbook);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }//GEN-LAST:event_btnExportTeacherActionPerformed
     private void setCardFalse() {
         cardTrangChu.setVisible(false);
         cardInformation.setVisible(false);
@@ -4880,6 +4944,29 @@ public class Menu_Admin extends javax.swing.JFrame {
             ImageIcon icon = XImage.read(file.getName());
             lbAvatarStudent.setIcon(icon);
             lbAvatarStudent.setToolTipText(file.getName());
+        }
+    }
+
+    private void addStudent() {
+        JTextComponent textComponent[] = {txtIDStudent, txtFirstNameStudent, txtLastNameStudent, txtAddressStudent, txtClassStudent};
+        if (!IsValidForm.checkNull(textComponent)) {
+            return;
+        } else if (lbAvatarStudent.getToolTipText() == null) {
+            Message.alert(this, "Please choose a representative photo !");
+            return;
+        } else if (studentDAO.checkCountIDStudent(txtIDStudent.getText()) == false) {
+            Message.alert(this, "Student code is already in use !");
+            txtIDStudent.requestFocus();
+            return;
+        }
+        try {
+            Student student = getFormStudent();
+            studentDAO.insert(student);
+            this.fillTableStudent();
+            Message.alert(this, "Add student information successfully !");
+            this.resetFormStudent();
+        } catch (Exception e) {
+            e.getMessage();
         }
     }
 
@@ -5619,6 +5706,38 @@ public class Menu_Admin extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+//export excel teacher
+
+    private void chooseDirectoryToSave(Workbook workbook) {
+        JFileChooser fileChooser = new JFileChooser();
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+
+            try {
+                // Đường dẫn được chọn từ hộp thoại chọn file
+                String filePath = selectedFile.getAbsolutePath();
+
+                // Thêm phần mở rộng .xls nếu không được tự động thêm
+                if (!filePath.toLowerCase().endsWith(".xls")) {
+                    filePath += ".xls";
+                }
+
+                // Ghi workbook vào file đã chọn
+                try (FileOutputStream outFile = new FileOutputStream(filePath)) {
+                    workbook.write(outFile);
+                }
+
+                workbook.close();
+
+                Message.alert(this, "Export Excel successfully to: " + filePath);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                Message.alert(this, "Error exporting Excel: " + ex.getMessage());
+            }
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -5686,6 +5805,8 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JButton btnExitResetPassParent;
     private javax.swing.JButton btnExitResetPassStaff;
     private javax.swing.JButton btnExitResetPassTeacher;
+    private javax.swing.JButton btnExportTeacher;
+    private javax.swing.JButton btnImportTeacher;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnResetFormCourse;
     private javax.swing.JButton btnResetFormCourseInformation;
@@ -5854,6 +5975,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JLayeredPane jLayeredPane16;
     private javax.swing.JLayeredPane jLayeredPane17;
     private javax.swing.JLayeredPane jLayeredPane18;
+    private javax.swing.JLayeredPane jLayeredPane19;
     private javax.swing.JLayeredPane jLayeredPane2;
     private javax.swing.JLayeredPane jLayeredPane3;
     private javax.swing.JLayeredPane jLayeredPane4;
