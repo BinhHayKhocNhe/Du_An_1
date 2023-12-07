@@ -4,7 +4,10 @@
  */
 package com.Utils;
 
+import java.util.List;
 import java.util.regex.Pattern;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 
@@ -39,5 +42,13 @@ public class IsValidForm {
 
     public static boolean isValidPhoneNumber(String phoneNumber) {
         return phoneNumber.matches("\\d{10}");
+    }
+
+    public static void fillComboBox(DefaultComboBoxModel model, List<?> data, JComboBox comboBox) {
+        model.removeAllElements();
+        for (Object item : data) {
+            model.addElement(item);
+        }
+        comboBox.setModel(model);
     }
 }
