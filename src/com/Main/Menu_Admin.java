@@ -11,6 +11,7 @@ import com.DAO.Course_Relationship_DAO;
 import com.DAO.CoursesDAO;
 import com.DAO.Guardian_Student_RelationshipDAO;
 import com.DAO.Guardians_DAO;
+import com.DAO.PointDAO;
 import com.DAO.ScheduleDAO;
 import com.DAO.StaffDAO;
 import com.DAO.StudentDAO;
@@ -43,6 +44,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.Year;
 import java.util.Date;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -78,7 +80,9 @@ public class Menu_Admin extends javax.swing.JFrame {
     private SubjectDAO subjectDAO = new SubjectDAO();
     private DefaultTableModel tableModelSubject = new DefaultTableModel();
     private DefaultTableModel tableModelSchedule = new DefaultTableModel();
+    private DefaultTableModel tableModelPoint = new DefaultTableModel();
     private ScheduleDAO scheduleDAO = new ScheduleDAO();
+    private PointDAO pointDAO = new PointDAO();
 
     /**
      * Creates new form Menu
@@ -113,6 +117,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.initTableClass();
         this.initTableSubject();
         this.initTableSchedule();
+        this.initTablePoint();
         this.setFormAdmin();
         this.fillFindResetPassTeacher();
         this.fillFindTableTeacher();
@@ -126,6 +131,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.uploadComboboxParent();
         this.uploadComboboxCourse();
         this.uploadComboboxCourseInformation();
+        this.fillComboboxPoint();
         this.fillComboboxSchedule();
         this.fillTableRelationship();
         this.fillTableCourse();
@@ -133,6 +139,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.fillTableClass();
         this.fillTableSubject();
         this.fillTableSchedule();
+        this.fillTablePoint();
     }
 
     private void openMenu() {
@@ -387,6 +394,35 @@ public class Menu_Admin extends javax.swing.JFrame {
         tableStudent = new javax.swing.JTable();
         txtFindStudent = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        jLayeredPane20 = new javax.swing.JLayeredPane();
+        jScrollPane24 = new javax.swing.JScrollPane();
+        tablePoint = new javax.swing.JTable();
+        jLabel80 = new javax.swing.JLabel();
+        cbIDClassPoint = new javax.swing.JComboBox<>();
+        jLabel83 = new javax.swing.JLabel();
+        cbIDStudentPoint = new javax.swing.JComboBox<>();
+        jLabel84 = new javax.swing.JLabel();
+        jLabel85 = new javax.swing.JLabel();
+        cbYearPoint = new javax.swing.JComboBox<>();
+        cbIDSubjectPoint = new javax.swing.JComboBox<>();
+        jLabel86 = new javax.swing.JLabel();
+        jScrollPane25 = new javax.swing.JScrollPane();
+        txtNotePoint = new javax.swing.JTextArea();
+        jLabel87 = new javax.swing.JLabel();
+        cbCourseNamePoint = new javax.swing.JComboBox<>();
+        jLabel88 = new javax.swing.JLabel();
+        txtPoint = new javax.swing.JTextField();
+        jLabel89 = new javax.swing.JLabel();
+        txtIDTeacherPoint = new javax.swing.JTextField();
+        jLabel90 = new javax.swing.JLabel();
+        txtFindPoint = new javax.swing.JTextField();
+        btnAddPoint = new javax.swing.JButton();
+        btnUpdatePoint = new javax.swing.JButton();
+        btnResetPoint = new javax.swing.JButton();
+        btnImportPoint = new javax.swing.JButton();
+        btnExportPoint = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        jButton12 = new javax.swing.JButton();
         cardListParent = new javax.swing.JPanel();
         tabParent = new javax.swing.JTabbedPane();
         jLayeredPane11 = new javax.swing.JLayeredPane();
@@ -777,7 +813,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                 .addGroup(cardTrangChuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addContainerGap(189, Short.MAX_VALUE))
+                .addContainerGap(190, Short.MAX_VALUE))
         );
 
         jplMain.add(cardTrangChu, "card2");
@@ -957,7 +993,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                 .addGroup(jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnUpdate)
                     .addComponent(btnRefresh))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         tabAccount.addTab("INFORMATION", jLayeredPane3);
@@ -1074,7 +1110,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAccept)
                     .addComponent(btnExit))
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addContainerGap(200, Short.MAX_VALUE))
         );
 
         tabAccount.addTab("CHANGE PASSWORD", jLayeredPane1);
@@ -1627,7 +1663,7 @@ public class Menu_Admin extends javax.swing.JFrame {
             cardListTeacherLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cardListTeacherLayout.createSequentialGroup()
                 .addComponent(tabTeacher, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 27, Short.MAX_VALUE))
+                .addGap(0, 36, Short.MAX_VALUE))
         );
 
         jplMain.add(cardListTeacher, "card3");
@@ -1965,7 +2001,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                         .addComponent(btnUpdateStaff)
                         .addComponent(btnResetFormStaff))
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
         tabStaff.addTab("INFORMATION", jLayeredPane6);
@@ -2016,7 +2052,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         jLayeredPane7Layout.setVerticalGroup(
             jLayeredPane7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane7Layout.createSequentialGroup()
-                .addGap(0, 10, Short.MAX_VALUE)
+                .addGap(0, 11, Short.MAX_VALUE)
                 .addGroup(jLayeredPane7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFindStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
@@ -2111,7 +2147,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                 .addGroup(jLayeredPane8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnResetPassStaff)
                     .addComponent(btnExitResetPassStaff))
-                .addContainerGap(169, Short.MAX_VALUE))
+                .addContainerGap(170, Short.MAX_VALUE))
         );
 
         tabStaff.addTab("REFRESH PASSWORD", jLayeredPane8);
@@ -2398,7 +2434,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                                     .addComponent(jLabel63)
                                     .addComponent(rdONStudent)
                                     .addComponent(rdOFFStudent))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jLayeredPane9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel65)
                             .addComponent(cbYearStudent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2421,7 +2457,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                             .addComponent(btnUpdateStudent)
                             .addComponent(btnResetFormStudent)))
                     .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(130, Short.MAX_VALUE))
+                .addContainerGap(133, Short.MAX_VALUE))
         );
 
         tabStudent.addTab("INFORMATION", jLayeredPane9);
@@ -2461,26 +2497,270 @@ public class Menu_Admin extends javax.swing.JFrame {
         jLayeredPane10.setLayout(jLayeredPane10Layout);
         jLayeredPane10Layout.setHorizontalGroup(
             jLayeredPane10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 821, Short.MAX_VALUE)
             .addGroup(jLayeredPane10Layout.createSequentialGroup()
-                .addGap(261, 261, 261)
+                .addGap(284, 284, 284)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
+                .addGap(18, 18, 18)
                 .addComponent(txtFindStudent, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 809, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jLayeredPane10Layout.setVerticalGroup(
             jLayeredPane10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane10Layout.createSequentialGroup()
-                .addGap(0, 10, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jLayeredPane10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFindStudent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(115, Short.MAX_VALUE))
         );
 
         tabStudent.addTab("LIST OF STUDENT", jLayeredPane10);
+
+        tablePoint.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane24.setViewportView(tablePoint);
+
+        jLabel80.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel80.setText("ID Student:");
+
+        cbIDClassPoint.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel83.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel83.setText("ID Class:");
+
+        cbIDStudentPoint.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel84.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel84.setText("ID Subject:");
+
+        jLabel85.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel85.setText("Year:");
+
+        cbYearPoint.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        cbIDSubjectPoint.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel86.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel86.setText("Note:");
+
+        txtNotePoint.setColumns(20);
+        txtNotePoint.setRows(5);
+        jScrollPane25.setViewportView(txtNotePoint);
+
+        jLabel87.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel87.setText("Course Name:");
+
+        cbCourseNamePoint.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel88.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel88.setText("Point:");
+
+        jLabel89.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel89.setText("ID Teacher:");
+
+        jLabel90.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel90.setText("Find:");
+
+        btnAddPoint.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        btnAddPoint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Add.png"))); // NOI18N
+        btnAddPoint.setText("ADD");
+
+        btnUpdatePoint.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        btnUpdatePoint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/edit-24px.png"))); // NOI18N
+        btnUpdatePoint.setText("UPDATE");
+        btnUpdatePoint.setToolTipText("");
+
+        btnResetPoint.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        btnResetPoint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Refresh.png"))); // NOI18N
+        btnResetPoint.setText("REFRESH");
+        btnResetPoint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetPointActionPerformed(evt);
+            }
+        });
+
+        btnImportPoint.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        btnImportPoint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Up.png"))); // NOI18N
+        btnImportPoint.setText("EXCEL IMPORT");
+
+        btnExportPoint.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        btnExportPoint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Down.png"))); // NOI18N
+        btnExportPoint.setText("EXCEL EXPORT");
+
+        jButton11.setText("jButton11");
+
+        jButton12.setText("jButton12");
+
+        jLayeredPane20.setLayer(jScrollPane24, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(jLabel80, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(cbIDClassPoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(jLabel83, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(cbIDStudentPoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(jLabel84, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(jLabel85, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(cbYearPoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(cbIDSubjectPoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(jLabel86, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(jScrollPane25, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(jLabel87, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(cbCourseNamePoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(jLabel88, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(txtPoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(jLabel89, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(txtIDTeacherPoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(jLabel90, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(txtFindPoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(btnAddPoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(btnUpdatePoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(btnResetPoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(btnImportPoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(btnExportPoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(jButton11, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane20.setLayer(jButton12, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jLayeredPane20Layout = new javax.swing.GroupLayout(jLayeredPane20);
+        jLayeredPane20.setLayout(jLayeredPane20Layout);
+        jLayeredPane20Layout.setHorizontalGroup(
+            jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jLayeredPane20Layout.createSequentialGroup()
+                .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jLayeredPane20Layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jLayeredPane20Layout.createSequentialGroup()
+                                .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jLayeredPane20Layout.createSequentialGroup()
+                                        .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel80)
+                                            .addComponent(jLabel83))
+                                        .addGap(49, 49, 49)
+                                        .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(cbIDClassPoint, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(cbIDStudentPoint, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jLayeredPane20Layout.createSequentialGroup()
+                                        .addComponent(jLabel87)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cbCourseNamePoint, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(53, 53, 53)
+                                .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jLayeredPane20Layout.createSequentialGroup()
+                                        .addComponent(jLabel84)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cbIDSubjectPoint, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(48, 48, 48)
+                                        .addComponent(jLabel86))
+                                    .addGroup(jLayeredPane20Layout.createSequentialGroup()
+                                        .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane20Layout.createSequentialGroup()
+                                                .addComponent(jLabel85)
+                                                .addGap(52, 52, 52))
+                                            .addGroup(jLayeredPane20Layout.createSequentialGroup()
+                                                .addComponent(jLabel88)
+                                                .addGap(46, 46, 46)))
+                                        .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txtPoint, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jLayeredPane20Layout.createSequentialGroup()
+                                                .addGap(4, 4, 4)
+                                                .addComponent(cbYearPoint, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGap(16, 16, 16)))))
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane25, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jLayeredPane20Layout.createSequentialGroup()
+                                .addComponent(jLabel89)
+                                .addGap(50, 50, 50)
+                                .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jLayeredPane20Layout.createSequentialGroup()
+                                        .addGap(16, 16, 16)
+                                        .addComponent(jLabel90)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtFindPoint, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtIDTeacherPoint, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jLayeredPane20Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane24, javax.swing.GroupLayout.PREFERRED_SIZE, 661, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnUpdatePoint, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnResetPoint, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnImportPoint, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnExportPoint, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAddPoint, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jLayeredPane20Layout.createSequentialGroup()
+                        .addGap(287, 287, 287)
+                        .addComponent(jButton11)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton12)))
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
+        jLayeredPane20Layout.setVerticalGroup(
+            jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane20Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jLayeredPane20Layout.createSequentialGroup()
+                        .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel80)
+                            .addComponent(cbIDStudentPoint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel84)
+                            .addComponent(cbIDSubjectPoint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel86))
+                        .addGap(18, 18, 18)
+                        .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel83)
+                            .addComponent(cbIDClassPoint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel85)
+                            .addComponent(cbYearPoint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel87)
+                            .addComponent(cbCourseNamePoint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel88)
+                            .addComponent(txtPoint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel89)
+                    .addComponent(txtIDTeacherPoint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel90)
+                    .addComponent(txtFindPoint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane24, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jLayeredPane20Layout.createSequentialGroup()
+                        .addComponent(btnAddPoint)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnUpdatePoint)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnResetPoint)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnImportPoint)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnExportPoint)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton11)
+                    .addComponent(jButton12))
+                .addGap(52, 52, 52))
+        );
+
+        tabStudent.addTab("POINT", jLayeredPane20);
 
         javax.swing.GroupLayout cardListStudentLayout = new javax.swing.GroupLayout(cardListStudent);
         cardListStudent.setLayout(cardListStudentLayout);
@@ -2493,7 +2773,9 @@ public class Menu_Admin extends javax.swing.JFrame {
         );
         cardListStudentLayout.setVerticalGroup(
             cardListStudentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabStudent)
+            .addGroup(cardListStudentLayout.createSequentialGroup()
+                .addComponent(tabStudent, javax.swing.GroupLayout.PREFERRED_SIZE, 533, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 16, Short.MAX_VALUE))
         );
 
         jplMain.add(cardListStudent, "card3");
@@ -2716,7 +2998,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                     .addComponent(btnAddParent)
                     .addComponent(btnUpdateParent)
                     .addComponent(btnResetFormParent))
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
 
         tabParent.addTab("INFORMATION", jLayeredPane11);
@@ -2767,7 +3049,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         jLayeredPane12Layout.setVerticalGroup(
             jLayeredPane12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane12Layout.createSequentialGroup()
-                .addGap(0, 10, Short.MAX_VALUE)
+                .addGap(0, 11, Short.MAX_VALUE)
                 .addGroup(jLayeredPane12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFindParent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
@@ -2862,7 +3144,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                 .addGroup(jLayeredPane13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnResetPassParent)
                     .addComponent(btnExitResetPassParent))
-                .addContainerGap(169, Short.MAX_VALUE))
+                .addContainerGap(170, Short.MAX_VALUE))
         );
 
         tabParent.addTab("REFRESH PASSWORD", jLayeredPane13);
@@ -2995,7 +3277,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(btnDeleteRelationship)
                     .addComponent(btnResetFormReletionship))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         tabParent.addTab("RELATIONSHIP", jLayeredPane14);
@@ -3191,7 +3473,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                     .addComponent(btnResetFormCourse)
                     .addComponent(btnUpdateTeacher1)
                     .addComponent(btnAddCourse))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         tabCourse.addTab("COURSE", jLayeredPane15);
@@ -3355,7 +3637,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                     .addComponent(btnAddCourse_Relationship)
                     .addComponent(btnDeleteCourse_Relationship)
                     .addComponent(btnResetFormCourseInformation))
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
 
         tabCourse.addTab("COURSE INFORMATION", jLayeredPane16);
@@ -3548,7 +3830,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                     .addComponent(jButton4)
                     .addComponent(btnUpdateClass)
                     .addComponent(btnAddClass))
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         tabCourse.addTab("CLASS", jLayeredPane17);
@@ -3696,7 +3978,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                     .addComponent(btnResetSubject)
                     .addComponent(jButton3)
                     .addComponent(jButton2))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         tabCourse.addTab("SUBJECT", jLayeredPane18);
@@ -3797,6 +4079,11 @@ public class Menu_Admin extends javax.swing.JFrame {
 
         btnDeleteSchedule.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Trash.png"))); // NOI18N
         btnDeleteSchedule.setText("DELETE");
+        btnDeleteSchedule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteScheduleActionPerformed(evt);
+            }
+        });
 
         jLayeredPane19.setLayer(jLabel108, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane19.setLayer(jLabel109, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -3924,7 +4211,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                                 .addComponent(jLabel115)
                                 .addComponent(txtScheduleSchoolDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jScrollPane22))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(jLayeredPane19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel117)
                     .addComponent(txtFindSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -3991,7 +4278,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         );
         cardDoimkLayout.setVerticalGroup(
             cardDoimkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 540, Short.MAX_VALUE)
+            .addGap(0, 541, Short.MAX_VALUE)
         );
 
         jplMain.add(cardDoimk, "card3");
@@ -4593,6 +4880,14 @@ public class Menu_Admin extends javax.swing.JFrame {
     private void btnUpdateScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateScheduleActionPerformed
         this.updateSchedule();
     }//GEN-LAST:event_btnUpdateScheduleActionPerformed
+
+    private void btnDeleteScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteScheduleActionPerformed
+        this.deleteSchedule();
+    }//GEN-LAST:event_btnDeleteScheduleActionPerformed
+
+    private void btnResetPointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetPointActionPerformed
+        this.resetFormPoint();
+    }//GEN-LAST:event_btnResetPointActionPerformed
     private void setCardFalse() {
         cardTrangChu.setVisible(false);
         cardInformation.setVisible(false);
@@ -6075,7 +6370,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private void setFormSchedule(Schedule schedule) {
         final String datePattern = "yyyy-MM-dd";
         txtScheduleSchoolDay.setText(XDate.toString(schedule.getSchoolDay(), datePattern));
-        txtScheduleCreatedDate.setText(XDate.toString(schedule.getScheduleDate(), datePattern));
+        txtScheduleCreatedDate.setText(String.valueOf(schedule.getScheduleDate()));
         cbScheduleCourse.setSelectedItem(schedule.getID_Course());
         cbScheduleTeacher.setSelectedItem(schedule.getID_Teacher());
         cbScheduleClass.setSelectedItem(schedule.getID_Class());
@@ -6112,6 +6407,10 @@ public class Menu_Admin extends javax.swing.JFrame {
         Date schoolDay = XDate.toDate(txtScheduleSchoolDay.getText(), datePattern);
         schedule.setSchoolDay(schoolDay);
         schedule.setNote(txtScheduleNote.getText());
+
+        final String dateTimePattern = "yyyy-MM-dd HH:mm:ss";
+        Date createDay = XDate.toDate(txtScheduleCreatedDate.getText(), dateTimePattern);
+        schedule.setScheduleDate(createDay);
         return schedule;
     }
 
@@ -6146,7 +6445,7 @@ public class Menu_Admin extends javax.swing.JFrame {
             Message.alert(this, "This class schedule is not available !");
             return;
         }
-        System.out.println("" + schedule.getScheduleDate());
+
         try {
             scheduleDAO.update(schedule);
             this.fillTableSchedule();
@@ -6155,6 +6454,71 @@ public class Menu_Admin extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void deleteSchedule() {
+        if (!IsValidForm.checkNull(txtScheduleSchoolDay)) {
+            return;
+        }
+        Date scheduleSchoolDay = XDate.toDate(txtScheduleSchoolDay.getText(), "yyyy-MM-dd");
+        if (IsValidForm.canUpdateSchedule(scheduleSchoolDay) == false) {
+            Message.alert(this, "The information cannot be edited because the current date has passed !");
+            return;
+        }
+        Schedule schedule = getFormSchedule();
+        if (scheduleDAO.checkID(schedule) == false) {
+            Message.alert(this, "This class schedule is not available !");
+            return;
+        }
+
+        try {
+            scheduleDAO.deleteSchedule(schedule);
+            this.fillTableSchedule();
+            this.resetFormSchedule();
+            Message.alert(this, "Delete schedule successfully !");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void fillComboboxPoint() {
+        IsValidForm.fillComboBox(new DefaultComboBoxModel(), classDAO.selectAllIDClass(), cbIDClassPoint);
+        IsValidForm.fillComboBox(new DefaultComboBoxModel(), studentDAO.selectAllIDStudent(), cbIDStudentPoint);
+        IsValidForm.fillComboBox(new DefaultComboBoxModel(), subjectDAO.selectAllIDSubject(), cbIDSubjectPoint);
+        final String courseName[] = {"Spring", "Summer", "Fall"};
+        IsValidForm.fillComboBox(new DefaultComboBoxModel(courseName), Arrays.asList(courseName), cbCourseNamePoint);
+
+        final int currentYear = Year.now().getValue();
+        DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel<>();
+        for (int i = currentYear; i >= 2015; i--) {
+            comboBoxModel.addElement(i);
+        }
+        cbYearPoint.setModel(comboBoxModel);
+    }
+
+    private void initTablePoint() {
+        String columns[] = {"ID Student", "ID Class", "Year", "Course Name", "ID Teacher", "GPA", "Classification"};
+        tableModelPoint.setColumnIdentifiers(columns);
+        tablePoint.setModel(tableModelPoint);
+    }
+
+    private void fillTablePoint() {
+        tableModelPoint.setRowCount(0);
+        List<Object[]> list = pointDAO.getGPA();
+        for (Object[] row : list) {
+            tableModelPoint.addRow(row);
+        }
+    }
+
+    private void resetFormPoint() {
+        JTextComponent textComponent[] = {txtPoint, txtIDTeacherPoint, txtFindPoint, txtNotePoint};
+        IsValidForm.refreshForm(textComponent);
+        JComboBox comboBox[] = {cbIDStudentPoint, cbIDSubjectPoint, cbIDClassPoint, cbYearPoint, cbCourseNamePoint};
+        for (JComboBox jComboBox : comboBox) {
+            jComboBox.setSelectedIndex(0);
+        }
+        fillTablePoint();
+
     }
 
     /**
@@ -6214,6 +6578,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JButton btnAddCourse;
     private javax.swing.JButton btnAddCourse_Relationship;
     private javax.swing.JButton btnAddParent;
+    private javax.swing.JButton btnAddPoint;
     private javax.swing.JButton btnAddSchedule;
     private javax.swing.JButton btnAddStaff;
     private javax.swing.JButton btnAddStudent;
@@ -6225,7 +6590,9 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JButton btnExitResetPassParent;
     private javax.swing.JButton btnExitResetPassStaff;
     private javax.swing.JButton btnExitResetPassTeacher;
+    private javax.swing.JButton btnExportPoint;
     private javax.swing.JButton btnExportTeacher;
+    private javax.swing.JButton btnImportPoint;
     private javax.swing.JButton btnImportTeacher;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnResetFormCourse;
@@ -6238,10 +6605,12 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JButton btnResetPassParent;
     private javax.swing.JButton btnResetPassStaff;
     private javax.swing.JButton btnResetPassTeacher;
+    private javax.swing.JButton btnResetPoint;
     private javax.swing.JButton btnResetSubject;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JButton btnUpdateClass;
     private javax.swing.JButton btnUpdateParent;
+    private javax.swing.JButton btnUpdatePoint;
     private javax.swing.JButton btnUpdateSchedule;
     private javax.swing.JButton btnUpdateStaff;
     private javax.swing.JButton btnUpdateStudent;
@@ -6270,10 +6639,14 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbClassCourse;
     private javax.swing.JComboBox<String> cbClassTeacher;
     private javax.swing.JComboBox<String> cbCourse;
+    private javax.swing.JComboBox<String> cbCourseNamePoint;
     private javax.swing.JComboBox<String> cbCourse_Infor;
     private javax.swing.JComboBox<String> cbDateStaff;
     private javax.swing.JComboBox<String> cbDateStudent;
     private javax.swing.JComboBox<String> cbDateTeacher;
+    private javax.swing.JComboBox<String> cbIDClassPoint;
+    private javax.swing.JComboBox<String> cbIDStudentPoint;
+    private javax.swing.JComboBox<String> cbIDSubjectPoint;
     private javax.swing.JComboBox<String> cbJobParent;
     private javax.swing.JComboBox<String> cbLevelTeacher;
     private javax.swing.JComboBox<String> cbMonthStaff;
@@ -6288,10 +6661,13 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbScheduleTeacher;
     private javax.swing.JComboBox<String> cbStudentCourse;
     private javax.swing.JComboBox<String> cbTeacherCourse;
+    private javax.swing.JComboBox<String> cbYearPoint;
     private javax.swing.JComboBox<String> cbYearStaff;
     private javax.swing.JComboBox<String> cbYearStudent;
     private javax.swing.JComboBox<String> cbYearTeacher;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -6394,9 +6770,18 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel78;
     private javax.swing.JLabel jLabel79;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel80;
     private javax.swing.JLabel jLabel81;
     private javax.swing.JLabel jLabel82;
+    private javax.swing.JLabel jLabel83;
+    private javax.swing.JLabel jLabel84;
+    private javax.swing.JLabel jLabel85;
+    private javax.swing.JLabel jLabel86;
+    private javax.swing.JLabel jLabel87;
+    private javax.swing.JLabel jLabel88;
+    private javax.swing.JLabel jLabel89;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel90;
     private javax.swing.JLabel jLabel92;
     private javax.swing.JLabel jLabel93;
     private javax.swing.JLabel jLabel94;
@@ -6417,6 +6802,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JLayeredPane jLayeredPane18;
     private javax.swing.JLayeredPane jLayeredPane19;
     private javax.swing.JLayeredPane jLayeredPane2;
+    private javax.swing.JLayeredPane jLayeredPane20;
     private javax.swing.JLayeredPane jLayeredPane3;
     private javax.swing.JLayeredPane jLayeredPane4;
     private javax.swing.JLayeredPane jLayeredPane5;
@@ -6442,6 +6828,8 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane21;
     private javax.swing.JScrollPane jScrollPane22;
     private javax.swing.JScrollPane jScrollPane23;
+    private javax.swing.JScrollPane jScrollPane24;
+    private javax.swing.JScrollPane jScrollPane25;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
@@ -6499,6 +6887,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JTable tableCourse;
     private javax.swing.JTable tableCourse_Relationship;
     private javax.swing.JTable tableParent;
+    private javax.swing.JTable tablePoint;
     private javax.swing.JTable tableRelationship;
     private javax.swing.JTable tableResetPassParent;
     private javax.swing.JTable tableResetPassStaff;
@@ -6526,6 +6915,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JTextField txtFindCourse;
     private javax.swing.JTextField txtFindCourseInformation;
     private javax.swing.JTextField txtFindParent;
+    private javax.swing.JTextField txtFindPoint;
     private javax.swing.JTextField txtFindRelationship;
     private javax.swing.JTextField txtFindSchedule;
     private javax.swing.JTextField txtFindStaff;
@@ -6548,6 +6938,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JTextField txtIDStudent;
     private javax.swing.JTextField txtIDSubject;
     private javax.swing.JTextField txtIDTeacher;
+    private javax.swing.JTextField txtIDTeacherPoint;
     private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtLastNameParent;
     private javax.swing.JTextField txtLastNameStaff;
@@ -6564,6 +6955,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JTextArea txtNoteClass;
     private javax.swing.JTextArea txtNoteCourse;
     private javax.swing.JTextArea txtNoteParent;
+    private javax.swing.JTextArea txtNotePoint;
     private javax.swing.JTextArea txtNoteStaff;
     private javax.swing.JTextArea txtNoteStudent;
     private javax.swing.JTextArea txtNoteSubject;
@@ -6572,6 +6964,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JTextField txtPhoneParent;
     private javax.swing.JTextField txtPhoneStaff;
     private javax.swing.JTextField txtPhoneTeacher;
+    private javax.swing.JTextField txtPoint;
     private javax.swing.JTextField txtQuantity;
     private javax.swing.JTextField txtRelationshipGuadians;
     private javax.swing.JTextField txtRelationshipStudent;

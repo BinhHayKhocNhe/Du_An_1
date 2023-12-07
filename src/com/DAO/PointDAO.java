@@ -134,4 +134,29 @@ public class PointDAO implements myInterFace<Point, String> {
         String sql = "SELECT * FROM Point WHERE ID_Student LIKE ? or Last_Name like ?";
         return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
     }
+
+    private List<Object[]> getListOfArray(String sql, String[] cols, Object... args) {
+        try {
+            List<Object[]> list = new ArrayList<>();
+            ResultSet rs = JDBCHelper.executeQuery(sql, args);
+            while (rs.next()) {
+                Object[] vals = new Object[cols.length];
+                for (int i = 0; i < cols.length; i++) {
+                    vals[i] = rs.getObject(cols[i]);
+                }
+                list.add(vals);
+            }
+            rs.getStatement().getConnection().close();
+            return list;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Object[]> getGPA() {
+        String sql = "{CALL GetAllStudentPerformance}";
+        String[] cols = {"ID_Student", "ID_Class", "Year", "Course_Name", "ID_Teacher", "GPA", "Classification", "Note"};
+        return this.getListOfArray(sql, cols);
+    }
+
 }

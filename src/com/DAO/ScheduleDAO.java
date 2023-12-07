@@ -19,8 +19,8 @@ public class ScheduleDAO implements myInterFace<Schedule, String> {
             + "Course_Name, Note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE Schedule SET ID_Teacher = ?, ID_Student = ?, ID_Class = ?, ID_Subject = ?, School_Day = ?,"
             + "Course_Name = ?, Note = ? WHERE ID_Course = ? AND ID_Class = ?;";
-    private final String DELETE_SQL = "DELETE FROM Schedule WHERE ID_Course = ?";
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final String DELETE_SQL = "DELETE FROM Schedule WHERE ID_Course = ? AND ID_Teacher = ? AND ID_Student = ? AND ID_Class = ?"
+            + " AND ID_Subject = ? AND School_Day = ? AND Course_Name = ? AND Schedule_Date > ?";
 
     @Override
     public void insert(Schedule entity) {
@@ -55,7 +55,7 @@ public class ScheduleDAO implements myInterFace<Schedule, String> {
 
     @Override
     public void delete(String id) {
-        JDBCHelper.executeUpdate(DELETE_SQL, id); // Handle the exception as needed
+        return;
     }
 
     @Override
@@ -115,6 +115,12 @@ public class ScheduleDAO implements myInterFace<Schedule, String> {
     public List<Schedule> selectByKeyword(String keyword) {
         String sql = "SELECT * FROM Schedule WHERE ID_Course LIKE ? OR ID_Teacher LIKE ?;";
         return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
+    }
+
+    public void deleteSchedule(Schedule entity) {
+        JDBCHelper.executeUpdate(DELETE_SQL, entity.getID_Course(), entity.getID_Teacher(), entity.getID_Student(),
+                entity.getID_Class(), entity.getID_Subject(), entity.getSchoolDay(),
+                entity.getCourseName(), entity.getScheduleDate());
     }
 
     public List<String> get_sub() {
