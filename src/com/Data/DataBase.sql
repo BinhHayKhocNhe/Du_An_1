@@ -210,6 +210,7 @@ Subject_Name NVARCHAR(50) NOT NULL,
 Note NVARCHAR(255),
 CONSTRAINT PK_ID_Subject PRIMARY KEY(ID_Subject)
 );
+
 INSERT INTO Subject (ID_Subject, Subject_Name, Note) VALUES 
 ('MAT001', 'Mathematics', 'Subject covering arithmetic and theory.'),
 ('WR001', 'Writing', 'Subject focusing on writing and expression.'),
@@ -223,6 +224,7 @@ Year int NOT NULL,
 Note NVARCHAR(255),
 CONSTRAINT PK_ID_Course PRIMARY KEY(ID_Course)
 );
+
 CREATE TABLE Course_Relationship(
 ID_Course NVARCHAR(50) NOT NULL,
 ID_Class NVARCHAR(50) NOT NULL,
@@ -259,6 +261,7 @@ CREATE TABLE Class (
     Quantity INT NOT NULL,
     Note NVARCHAR(255),
 );
+
 ALTER TABLE Class
 ADD CONSTRAINT FK_Class_Teacher
 FOREIGN KEY (ID_Teacher)
@@ -301,6 +304,7 @@ CONSTRAINT FK_Schedule_Class FOREIGN KEY (ID_Class) REFERENCES Class(ID_Class),
 CONSTRAINT FK_Schedule_Course FOREIGN KEY (ID_Course) REFERENCES Course(ID_Course),
 CONSTRAINT FK_Schedule_Subject FOREIGN KEY (ID_Subject) REFERENCES Subject(ID_Subject)
 );
+
 -- Thêm dữ liệu vào bảng Schedule
 INSERT INTO Schedule (ID_Course, ID_Teacher, ID_Student, ID_Class, ID_Subject, School_Day, Course_Name, Note)
 VALUES

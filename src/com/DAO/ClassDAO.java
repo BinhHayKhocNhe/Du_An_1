@@ -4,7 +4,6 @@ import com.Utils.JDBCHelper;
 import com.Entity.Class;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,5 +108,19 @@ public class ClassDAO implements myInterFace<Class, String> {
             e.getMessage();
         }
         return list;
+    }
+
+    public int selectQuantity(String idClass) {
+        final String sql = "SELECT Quantity FROM Class WHERE ID_Class = ?;";
+        int count = 0;
+        try {
+            ResultSet resultSet = JDBCHelper.executeQuery(sql, idClass);
+            while (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
     }
 }

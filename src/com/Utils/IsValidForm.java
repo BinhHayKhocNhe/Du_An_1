@@ -4,6 +4,9 @@
  */
 package com.Utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
@@ -16,6 +19,9 @@ import javax.swing.text.JTextComponent;
  * @author Duong Minh Binh
  */
 public class IsValidForm {
+
+    private static final String datePattern = "yyyy-MM-dd";
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
 
     public static void refreshForm(JTextComponent... textComponents) {
         for (JTextComponent textComponent : textComponents) {
@@ -50,5 +56,36 @@ public class IsValidForm {
             model.addElement(item);
         }
         comboBox.setModel(model);
+    }
+
+    public static boolean isValidDate(String dateString) {
+        try {
+            dateFormat.setLenient(false); // Tắt tính linh hoạt của định dạng
+            Date inputDate = dateFormat.parse(dateString);
+
+            // Kiểm tra nếu là ngày đã qua
+            Date currentDate = new Date();
+            if (inputDate.before(currentDate)) {
+                Message.alert(null, "Cannot enter a date in the past.");
+                return false;
+            }
+
+            return true; // Nếu không có ngoại lệ và ngày không phải là ngày đã qua, chuỗi là hợp lệ
+        } catch (ParseException e) {
+            Message.alert(null, "Invalid date string. Note (yyyy-MM-dd)");
+            return false; // Nếu có ngoại lệ, chuỗi không hợp lệ
+        }
+    }
+
+    //kiểm tra ngày hiện tại
+    public static boolean canUpdateSchedule(Date schoolDay) {
+        try {
+            Date currentDate = new Date();
+            // Kiểm tra nếu ngày trong trường School_Day đã qua ngày hiện tại
+            return schoolDay.after(currentDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

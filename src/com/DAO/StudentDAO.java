@@ -176,4 +176,18 @@ public class StudentDAO implements myInterFace<Student, String> {
         }
         return list;
     }
+
+    public int selectCountStudent(String classId) {
+        final String sql = "SELECT COUNT(ID_Student) FROM Student WHERE ID_Class = ?";
+        int count = 0;
+        try {
+            ResultSet resultSet = JDBCHelper.executeQuery(sql, classId);
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 }
