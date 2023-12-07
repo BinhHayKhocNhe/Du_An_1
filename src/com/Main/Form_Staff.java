@@ -21,6 +21,7 @@ import com.Utils.XImage;
 import com.microsoft.sqlserver.jdbc.StringUtils;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.event.ItemEvent;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -67,7 +68,9 @@ public class Form_Staff extends javax.swing.JFrame {
         InforStaff();
         uploadcboIDClass();
         setRdo();
+        setMonthSalary();
         tableSalary();
+
     }
 
     private void CardFalse() {
@@ -440,7 +443,13 @@ public class Form_Staff extends javax.swing.JFrame {
             Message.alert(this, "The student code is already in use!");
             return;
         }
-
+        int count = daostu.selectCountStudent(txtClassStudent.getText());
+        int Quantity = classDAO.selectQuantity(txtClassStudent.getText());
+        if (count >= Quantity) {
+            Message.alert(this, "The number of students in this class is sufficient !");
+            txtClassStudent.requestFocus();
+            return;
+        }
         try {
             // Thêm sinh viên vào cơ sở dữ liệu
             daostu.insert(student);
@@ -533,34 +542,59 @@ public class Form_Staff extends javax.swing.JFrame {
 // salary staff
 
     private void tableSalary() {
-        Staff_Salary salary = salaryDAO.selectById(Authentication.staff.getID_Staff());
-        DefaultTableModel model = (DefaultTableModel) tblSalary_Student.getModel();
-        model.setRowCount(0);
-        try {
-            // Chuyển đổi kiểu dữ liệu từ String sang int hoặc double
-            int numberOfWorkingDays = Integer.parseInt(salary.getNumber_Of_Working_Days());
-            double dailyWage = Double.parseDouble(salary.getDaily_Wage());
+        if (Authentication.staff != null) {
+            String staffID = Authentication.staff.getID_Staff();
+            try {
+                // Đảm bảo selectedItem không phải là null
+                Object selectedItem = cboMonthSalary.getSelectedIndex();
 
-            // Thực hiện phép nhân
-            double totalIncome = (numberOfWorkingDays * dailyWage);
+                // Chuyển đổi selectedItem thành String
+                String monthString = selectedItem.toString();
+                int month = Integer.parseInt(monthString);
+                if (staffID != null && !staffID.isEmpty()) {
+                    List<Staff_Salary> salaryStaff;
+                    // Kiểm tra xem month có giá trị hợp lệ không
+                    if (month == 0) {
+                        salaryStaff = salaryDAO.returnAllSalaryByID(staffID);
+                    } else {
+                        salaryStaff = salaryDAO.returnAllSalary(staffID, month);
+                    }
+                    DefaultTableModel model = (DefaultTableModel) tblSalary_Student.getModel();
+                    model.setRowCount(0);
+                    // Tiếp tục với logic xử lý dữ liệu
+                    for (Staff_Salary salary : salaryStaff) {
+                        Object row[] = {
+                            salary.getID_Staff_Salary(),
+                            salary.getNumber_Of_Working_Days(),
+                            salary.getDaily_Wage(),
+                            salary.getMonth(),
+                            salary.getYear(),
+                            salary.getNumber_Of_Working_Days() * salary.getDaily_Wage(),
+                            salary.getNote()
+                        };
+                        model.addRow(row);
+                    }
+                } else {
+                    Message.alert(this, "Mã nhân viên không hợp lệ hoặc trống.");
+                }
 
-            Object row[] = {
-                salary.getID_Staff_Salary(),
-                numberOfWorkingDays,
-                dailyWage,
-                salary.getMonth(),
-                salary.getYear(),
-                totalIncome,
-                salary.getNote()
-            };
-            model.addRow(row);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            Message.alert(this, "Lỗi chuyển đổi dữ liệu thành số!");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Message.alert(this, "Lỗi truy vấn dữ liệu: " + e.getMessage());
+            } catch (NumberFormatException numberFormatException) {
+                numberFormatException.printStackTrace();
+                Message.alert(this, "Định dạng tháng không hợp lệ: " + numberFormatException.getMessage());
+            }
+        } else {
+            Message.alert(this, "Authentication.staff là null.");
         }
+    }
+
+// setComboBox Tháng Lương
+    private void setMonthSalary() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        model.addElement("All");
+        for (int i = 1; i <= 12; i++) {
+            model.addElement(String.valueOf(i));
+        }
+        cboMonthSalary.setModel(model);
     }
 
     /**
@@ -764,9 +798,9 @@ public class Form_Staff extends javax.swing.JFrame {
         jPanel9 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         tblSalary_Student = new javax.swing.JTable();
-        txtFindSalary = new javax.swing.JTextField();
         jLabel58 = new javax.swing.JLabel();
         jLabel59 = new javax.swing.JLabel();
+        cboMonthSalary = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -1076,7 +1110,7 @@ public class Form_Staff extends javax.swing.JFrame {
                     .addGroup(cardHome1Layout.createSequentialGroup()
                         .addGap(58, 58, 58)
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(133, Short.MAX_VALUE))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
 
         jplMain.add(cardHome1, "card3");
@@ -2356,6 +2390,18 @@ public class Form_Staff extends javax.swing.JFrame {
         jLabel59.setForeground(new java.awt.Color(255, 0, 0));
         jLabel59.setText("Note: History only displays the most recent 12 months");
 
+        cboMonthSalary.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboMonthSalary.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cboMonthSalaryItemStateChanged(evt);
+            }
+        });
+        cboMonthSalary.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboMonthSalaryActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -2364,9 +2410,9 @@ public class Form_Staff extends javax.swing.JFrame {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addComponent(jLabel58, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(txtFindSalary, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cboMonthSalary, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 192, Short.MAX_VALUE)
                 .addComponent(jLabel59)
                 .addGap(28, 28, 28))
         );
@@ -2376,8 +2422,8 @@ public class Form_Staff extends javax.swing.JFrame {
                 .addGap(0, 16, Short.MAX_VALUE)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel58, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtFindSalary, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(jLabel59, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel59, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(cboMonthSalary))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -2798,6 +2844,15 @@ public class Form_Staff extends javax.swing.JFrame {
         lblSche.setForeground(Color.BLACK);
     }//GEN-LAST:event_lblScheMouseExited
 
+    private void cboMonthSalaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMonthSalaryActionPerformed
+        // TODO add your handling code here:
+        tableSalary();
+    }//GEN-LAST:event_cboMonthSalaryActionPerformed
+
+    private void cboMonthSalaryItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboMonthSalaryItemStateChanged
+
+    }//GEN-LAST:event_cboMonthSalaryItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -2874,6 +2929,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cboMonth;
     private javax.swing.JComboBox<String> cboMonth1;
     private javax.swing.JComboBox<String> cboMonth2;
+    private javax.swing.JComboBox<String> cboMonthSalary;
     private javax.swing.JComboBox<String> cboYear;
     private javax.swing.JComboBox<String> cboYear1;
     private javax.swing.JComboBox<String> cboYear2;
@@ -3009,7 +3065,6 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JTextField txtF_Name1;
     private javax.swing.JTextField txtF_Name_Student;
     private javax.swing.JTextField txtFind;
-    private javax.swing.JTextField txtFindSalary;
     private javax.swing.JTextField txtFind_Stu;
     private javax.swing.JTextField txtID_Student;
     private javax.swing.JTextField txtId_Staff;

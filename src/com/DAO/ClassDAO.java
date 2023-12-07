@@ -4,7 +4,6 @@ import com.Utils.JDBCHelper;
 import com.Entity.Class;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

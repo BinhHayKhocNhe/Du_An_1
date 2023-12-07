@@ -47,7 +47,7 @@ public class Staff_SalaryDAO implements myInterFace<Staff_Salary, String> {
     @Override
     public Staff_Salary selectById(String id) {
         String sql = "Select * from Staff_Salary where ID_Staff like ?;";
-        List<Staff_Salary> list = selectBySql(sql,"%" + id + "%");
+        List<Staff_Salary> list = selectBySql(sql, "%" + id + "%");
         return list.size() > 0 ? list.get(0) : null;
     }
 
@@ -67,8 +67,8 @@ public class Staff_SalaryDAO implements myInterFace<Staff_Salary, String> {
                 Staff_Salary staff_Salary = new Staff_Salary();
                 staff_Salary.setID_Staff(rs.getString("ID_Staff"));
                 staff_Salary.setID_Staff_Salary(rs.getString("ID_Staff_Salary"));
-                staff_Salary.setNumber_Of_Working_Days(rs.getString("Number_Of_Working_Days"));
-                staff_Salary.setDaily_Wage(rs.getString("Daily_Wage"));
+                staff_Salary.setNumber_Of_Working_Days(rs.getInt("Number_Of_Working_Days"));
+                staff_Salary.setDaily_Wage(rs.getFloat("Daily_Wage"));
                 staff_Salary.setNote(rs.getString("Note"));
                 staff_Salary.setMonth(rs.getInt("Month"));
                 staff_Salary.setYear(rs.getInt("Year"));
@@ -81,4 +81,13 @@ public class Staff_SalaryDAO implements myInterFace<Staff_Salary, String> {
         return listSalary;
     }
 
+    public List<Staff_Salary> returnAllSalaryByID(String idStaff) {
+        String sql = "SELECT * FROM Staff_Salary WHERE ID_Staff LIKE ?";
+        return selectBySql(sql, "%" + idStaff + "%");
+    }
+
+    public List<Staff_Salary> returnAllSalary(String idStaff, int month) {
+        String sql = "SELECT * FROM Staff_Salary WHERE ID_Staff LIKE ? and Month = ?;";
+        return selectBySql(sql, "%" + idStaff + "%",  month );
+    }
 }
