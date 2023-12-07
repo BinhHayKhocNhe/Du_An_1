@@ -4,6 +4,7 @@ import com.Entity.Teacher;
 import com.Utils.JDBCHelper;
 import com.Utils.Message;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,8 +87,8 @@ public class Teacher_DAO implements myInterFace<Teacher, String> {
         try {
             ResultSet rs = JDBCHelper.executeQuery(sql, args);
             while (rs.next()) {
-                Teacher teacher = new Teacher(rs.getString("ID_Teacher"), rs.getString("Password_Teacher")
-                        , rs.getString("First_Name"), rs.getString("Middle_Name"),
+                Teacher teacher = new Teacher(rs.getString("ID_Teacher"), rs.getString("Password_Teacher"),
+                        rs.getString("First_Name"), rs.getString("Middle_Name"),
                         rs.getString("Last_Name"), rs.getString("Email"), rs.getString("Phone_Number"),
                         rs.getString("Level_Teacher"), rs.getString("Address_Teacher"), rs.getString("Avatar"),
                         rs.getString("Note"), rs.getBoolean("Gender"), rs.getBoolean("Status_Teacher"),
@@ -166,4 +167,17 @@ public class Teacher_DAO implements myInterFace<Teacher, String> {
         }
     }
 
+    public List<String> selectAllIDTeacher() {
+        final String sql = "SELECT ID_Teacher FROM Teacher;";
+        List<String> list = new ArrayList<>();
+        try {
+            ResultSet resultSet = JDBCHelper.executeQuery(sql);
+            while (resultSet.next()) {
+                list.add(resultSet.getString("ID_Teacher"));
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return list;
+    }
 }

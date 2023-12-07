@@ -96,4 +96,18 @@ public class CoursesDAO implements myInterFace<Courses, String> {
         String sql = "SELECT * FROM Course where ID_Course LIKE ? OR Course_Name LIKE ?;";
         return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
     }
+
+    public List<String> selectAllIDCourses() {
+        final String sql = "SELECT ID_Course FROM Course;";
+        List<String> list = new ArrayList<>();
+        try {
+            ResultSet resultSet = JDBCHelper.executeQuery(sql);
+            while (resultSet.next()) {
+                list.add(resultSet.getString("ID_Course"));
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return list;
+    }
 }

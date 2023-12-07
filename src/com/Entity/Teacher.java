@@ -13,8 +13,14 @@ public class Teacher {
     public Teacher() {
     }
 
+    @Override
+    public String toString() {
+        return ID_Teacher;
+    }
+
     public Teacher(String ID_Teacher, String Password_Teacher, String First_Name, String Middle_Name, String Last_Name, String Email, String Phone_Number, String Level_Teacher, String Address_Teacher, String Avatar, String Note, boolean Gender, boolean Status_Teacher, int Date_Of_Birth, int Month_Of_Birth, int Year_Of_Birth, Date Start_Date) {
         this.ID_Teacher = ID_Teacher;
+        this.Password_Teacher = Password_Teacher;
         this.First_Name = First_Name;
         this.Middle_Name = Middle_Name;
         this.Last_Name = Last_Name;
@@ -30,7 +36,6 @@ public class Teacher {
         this.Month_Of_Birth = Month_Of_Birth;
         this.Year_Of_Birth = Year_Of_Birth;
         this.Start_Date = Start_Date;
-        this.Password_Teacher = Password_Teacher;
     }
 
     public String getID_Teacher() {

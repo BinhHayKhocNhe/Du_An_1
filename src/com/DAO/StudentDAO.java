@@ -34,7 +34,7 @@ public class StudentDAO implements myInterFace<Student, String> {
 
         JDBCHelper.executeUpdate(sql,
                 entity.getID_Student(), entity.getFirst_Name(), entity.getMiddle_Name(), entity.getLast_Name(), entity.isGender(),
-                 entity.getAddress_Student(), entity.getID_Class(), entity.isStatus_Student(), entity.getAvatar(),
+                entity.getAddress_Student(), entity.getID_Class(), entity.isStatus_Student(), entity.getAvatar(),
                 entity.getDate_Of_Birth(), entity.getMonth_Of_Birth(), entity.getYear_Of_Birth(), entity.getNote());
     }
 
@@ -161,5 +161,19 @@ public class StudentDAO implements myInterFace<Student, String> {
             ex.getMessage();
         }
         return lastID;
+    }
+
+    public List<String> selectAllIDStudent() {
+        final String sql = "SELECT ID_Student FROM Student;";
+        List<String> list = new ArrayList<>();
+        try {
+            ResultSet resultSet = JDBCHelper.executeQuery(sql);
+            while (resultSet.next()) {
+                list.add(resultSet.getString("ID_Student"));
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return list;
     }
 }

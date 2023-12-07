@@ -102,6 +102,11 @@ public class ScheduleDAO implements myInterFace<Schedule, String> {
         return scheduleList;
     }
 
+    public List<Schedule> selectByKeyword(String keyword) {
+        String sql = "SELECT * FROM Schedule WHERE ID_Course LIKE ? OR ID_Teacher LIKE ?;";
+        return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
+    }
+
     public List<String> get_sub() {
         return getUniqueColumnValues("ID_Subject");
     }
