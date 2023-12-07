@@ -1,6 +1,6 @@
 ﻿use Du_An_1;
-go
 
+go
 CREATE TRIGGER PreventUpdateScheduleSchoolDay
 ON Schedule
 INSTEAD OF UPDATE
@@ -25,6 +25,36 @@ BEGIN
             INNER JOIN inserted i ON s.ID_Course = i.ID_Course; -- Thay thế 'ID_Course' bằng tên cột khóa chính thực tế của bảng
         END
     END
+END;
+
+go --Lấy GPA
+CREATE PROCEDURE GetAllStudentPerformance
+AS
+BEGIN
+    SELECT 
+        ID_Student,
+        ID_Class,
+        Year,
+        Course_Name,
+        ID_Teacher,
+        SUM(Point) / COUNT(ID_Subject) AS GPA,
+        CASE
+            WHEN (SUM(Point) / NULLIF(COUNT(ID_Subject), 0)) >= 9.0 THEN 'Excellent'
+            WHEN (SUM(Point) / NULLIF(COUNT(ID_Subject), 0)) >= 8.0 AND (SUM(Point) / NULLIF(COUNT(ID_Subject), 0)) < 9.0 THEN 'Very Good'
+            WHEN (SUM(Point) / NULLIF(COUNT(ID_Subject), 0)) >= 7.0 AND (SUM(Point) / NULLIF(COUNT(ID_Subject), 0)) < 8.0 THEN 'Good'
+            WHEN (SUM(Point) / NULLIF(COUNT(ID_Subject), 0)) >= 6.0 AND (SUM(Point) / NULLIF(COUNT(ID_Subject), 0)) < 7.0 THEN 'Satisfactory'
+            ELSE 'Needs Improvement'
+        END AS Classification,
+        Note
+    FROM 
+        Point
+    GROUP BY 
+        ID_Student,
+        ID_Class,
+        Year,
+        Course_Name,
+        ID_Teacher,
+        Note;
 END;
 
 

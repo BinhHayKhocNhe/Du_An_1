@@ -24,6 +24,7 @@ import com.Entity.Guardian_Student_Relationship;
 import com.Entity.Guardians;
 import com.Entity.Staff;
 import com.Entity.Class;
+import com.Entity.Point;
 import com.Entity.Schedule;
 import com.Entity.Student;
 import com.Entity.Subject;
@@ -6518,7 +6519,23 @@ public class Menu_Admin extends javax.swing.JFrame {
             jComboBox.setSelectedIndex(0);
         }
         fillTablePoint();
+    }
 
+    private void setFormPoint(Point point) {
+        cbIDStudentPoint.setSelectedItem(point.getID_Student());
+        cbIDSubjectPoint.setSelectedItem(point.getID_Subject());
+        cbIDClassPoint.setSelectedItem(point.getID_Class());
+        cbYearPoint.setSelectedItem(point.getYear());
+        cbCourseNamePoint.setSelectedItem(point.getCourse_Name());
+        txtPoint.setText(String.valueOf(point.getPoint()));
+        txtIDTeacherPoint.setText(point.getID_Teacher());
+        txtNotePoint.setText(point.getNote());
+    }
+
+    private Point getFormPoint() {
+        Point point = new Point();
+        
+        return point;
     }
 
     /**

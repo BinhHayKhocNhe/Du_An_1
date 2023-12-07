@@ -333,7 +333,7 @@ CONSTRAINT FK_Point_Teacher FOREIGN KEY (ID_Teacher) REFERENCES Teacher(ID_Teach
 CONSTRAINT FK_Point_Class FOREIGN KEY (ID_Class) REFERENCES Class(ID_Class),
 CONSTRAINT FK_Point_Subject FOREIGN KEY (ID_Subject) REFERENCES Subject(ID_Subject)
 );
-
+select * from Point
 
 -- Thêm dữ liệu mẫu vào bảng Point
 INSERT INTO Point (ID_Student, ID_Class, ID_Subject, ID_Teacher, Year, Point, Course_Name, Note)
