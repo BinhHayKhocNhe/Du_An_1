@@ -33,8 +33,8 @@ public class StudentDAO implements myInterFace<Student, String> {
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         JDBCHelper.executeUpdate(sql,
-                entity.getID_Student(), entity.getFirst_Name(), entity.getMiddle_Name(), entity.getLast_Name(),entity.isGender()
-                ,entity.getAddress_Student(), entity.getID_Class(), entity.isStatus_Student(), entity.getAvatar(),
+                entity.getID_Student(), entity.getFirst_Name(), entity.getMiddle_Name(), entity.getLast_Name(), entity.isGender(),
+                entity.getAddress_Student(), entity.getID_Class(), entity.isStatus_Student(), entity.getAvatar(),
                 entity.getDate_Of_Birth(), entity.getMonth_Of_Birth(), entity.getYear_Of_Birth(), entity.getNote());
     }
 
@@ -154,12 +154,40 @@ public class StudentDAO implements myInterFace<Student, String> {
         String sql = "SELECT TOP 1 ID_Student FROM Student ORDER BY ID_Student DESC";
         ResultSet rs = JDBCHelper.executeQuery(sql);
         try {
-            if(rs.next()) {
+            if (rs.next()) {
                 lastID = rs.getString("ID_Student");
             }
         } catch (SQLException ex) {
             ex.getMessage();
         }
         return lastID;
+    }
+
+    public List<String> selectAllIDStudent() {
+        final String sql = "SELECT ID_Student FROM Student;";
+        List<String> list = new ArrayList<>();
+        try {
+            ResultSet resultSet = JDBCHelper.executeQuery(sql);
+            while (resultSet.next()) {
+                list.add(resultSet.getString("ID_Student"));
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return list;
+    }
+
+    public int selectCountStudent(String classId) {
+        final String sql = "SELECT COUNT(ID_Student) FROM Student WHERE ID_Class = ?";
+        int count = 0;
+        try {
+            ResultSet resultSet = JDBCHelper.executeQuery(sql, classId);
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
     }
 }

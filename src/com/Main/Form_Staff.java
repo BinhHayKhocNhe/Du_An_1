@@ -21,6 +21,7 @@ import com.Utils.XImage;
 import com.microsoft.sqlserver.jdbc.StringUtils;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Image;
 import java.awt.event.ItemEvent;
 import java.io.File;
 import java.time.LocalDate;
@@ -323,8 +324,19 @@ public class Form_Staff extends javax.swing.JFrame {
         txtAddress1.setText(sta.getAddress_Staff());
         txtM_Name1.setText(sta.getMiddle_Name());
         txtL_Name1.setText(sta.getLast_Name());
-        lblAvatar.setIcon(XImage.read(sta.getAvatar()));
         txtPosition1.setText(sta.getPosition());
+        ImageIcon icon = XImage.read(sta.getAvatar());
+        Image originalImage = icon.getImage();
+        int width1 = lblAvartarBig.getWidth();
+        int height1 = lblAvartarBig.getHeight();
+        int width = lblAvatar1.getWidth();
+        int height = lblAvatar1.getHeight();
+        Image scaledImage1 = originalImage.getScaledInstance(width1, height1, Image.SCALE_SMOOTH);
+        Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon1 = new ImageIcon(scaledImage1);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        lblAvartarBig.setIcon(scaledIcon1);
+        lblAvatar1.setIcon(scaledIcon);
         lblNameBig.setText(sta.getFirst_Name() + " " + sta.getMiddle_Name() + " " + sta.getLast_Name());
         Message.alert(this, "Hello " + sta.getFirst_Name() + " " + sta.getMiddle_Name() + " " + sta.getLast_Name());
     }
@@ -438,16 +450,16 @@ public class Form_Staff extends javax.swing.JFrame {
 
         Student student = getFormStudent();
 
-        // Kiểm tra trùng lặp ID sinh viên
-        if (!daostu.checkCountIDStudent(txtID_Student.getText())) {
-            Message.alert(this, "The student code is already in use!");
-            return;
-        }
-        int count = daostu.selectCountStudent(txtClassStudent.getText());
-        int Quantity = classDAO.selectQuantity(txtClassStudent.getText());
+//         Kiểm tra trùng lặp ID sinh viên
+//        if (!daostu.checkCountIDStudent(txtID_Student.getText())) {
+//            Message.alert(this, "The student code is already in use!");
+//            return;
+//        }
+        int count = daostu.selectCountStudent(txtID_Student.getText());
+        int Quantity = classDAO.selectQuantity((String) cboID_Class_Student.getSelectedItem());
         if (count >= Quantity) {
             Message.alert(this, "The number of students in this class is sufficient !");
-            txtClassStudent.requestFocus();
+            txtID_Student.requestFocus();
             return;
         }
         try {
@@ -615,7 +627,7 @@ public class Form_Staff extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jplSlideMenu = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        lblAvartarBig = new javax.swing.JLabel();
         lblNameBig = new javax.swing.JLabel();
         lblCloseMenu = new javax.swing.JLabel();
         lblHome = new javax.swing.JLabel();
@@ -630,6 +642,7 @@ public class Form_Staff extends javax.swing.JFrame {
         jpllMenuBar = new javax.swing.JPanel();
         lblOpenMenu = new javax.swing.JLabel();
         jplTitle = new javax.swing.JPanel();
+        lbTitle = new javax.swing.JLabel();
         jplMain = new javax.swing.JPanel();
         cardHome1 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
@@ -791,6 +804,7 @@ public class Form_Staff extends javax.swing.JFrame {
         jSeparator7 = new javax.swing.JSeparator();
         cardhelp = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
+        lblAVT = new javax.swing.JLabel();
         cardStaff_Salary = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jSeparator8 = new javax.swing.JSeparator();
@@ -821,7 +835,9 @@ public class Form_Staff extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/user.png"))); // NOI18N
+        lblAvartarBig.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAvartarBig.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/User.png"))); // NOI18N
+        lblAvartarBig.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblNameBig.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         lblNameBig.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -848,9 +864,9 @@ public class Form_Staff extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(60, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
+                .addContainerGap(43, Short.MAX_VALUE)
+                .addComponent(lblAvartarBig, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblCloseMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
             .addComponent(lblNameBig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -860,12 +876,10 @@ public class Form_Staff extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblCloseMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(lblAvartarBig, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblNameBig)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         jplSlideMenu.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 210, 150));
@@ -1043,15 +1057,22 @@ public class Form_Staff extends javax.swing.JFrame {
 
         jplTitle.setBackground(new java.awt.Color(0, 168, 255));
 
+        lbTitle.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbTitle.setText("Viet Duc School");
+
         javax.swing.GroupLayout jplTitleLayout = new javax.swing.GroupLayout(jplTitle);
         jplTitle.setLayout(jplTitleLayout);
         jplTitleLayout.setHorizontalGroup(
             jplTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1100, Short.MAX_VALUE)
+            .addComponent(lbTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 1100, Short.MAX_VALUE)
         );
         jplTitleLayout.setVerticalGroup(
             jplTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 30, Short.MAX_VALUE)
+            .addGroup(jplTitleLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel1.add(jplTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1100, 30));
@@ -2341,13 +2362,20 @@ public class Form_Staff extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel7.setText("Help");
 
+        lblAVT.setText("lbl");
+
         javax.swing.GroupLayout cardhelpLayout = new javax.swing.GroupLayout(cardhelp);
         cardhelp.setLayout(cardhelpLayout);
         cardhelpLayout.setHorizontalGroup(
             cardhelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cardhelpLayout.createSequentialGroup()
-                .addGap(520, 520, 520)
-                .addComponent(jLabel7)
+                .addGroup(cardhelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(cardhelpLayout.createSequentialGroup()
+                        .addGap(520, 520, 520)
+                        .addComponent(jLabel7))
+                    .addGroup(cardhelpLayout.createSequentialGroup()
+                        .addGap(369, 369, 369)
+                        .addComponent(lblAVT, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(531, Short.MAX_VALUE))
         );
         cardhelpLayout.setVerticalGroup(
@@ -2355,7 +2383,9 @@ public class Form_Staff extends javax.swing.JFrame {
             .addGroup(cardhelpLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(jLabel7)
-                .addContainerGap(511, Short.MAX_VALUE))
+                .addGap(89, 89, 89)
+                .addComponent(lblAVT, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(252, Short.MAX_VALUE))
         );
 
         jplMain.add(cardhelp, "card3");
@@ -2955,7 +2985,6 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
@@ -3026,7 +3055,10 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JLabel lbShowCurrentPass;
     private javax.swing.JLabel lbShowEnterPass;
     private javax.swing.JLabel lbShowNewPass;
+    private javax.swing.JLabel lbTitle;
+    private javax.swing.JLabel lblAVT;
     private javax.swing.JLabel lblAcc;
+    private javax.swing.JLabel lblAvartarBig;
     private javax.swing.JLabel lblAvatar;
     private javax.swing.JLabel lblAvatar1;
     private javax.swing.JLabel lblAvatar2;

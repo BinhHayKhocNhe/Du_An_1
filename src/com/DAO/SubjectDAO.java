@@ -91,4 +91,18 @@ public class SubjectDAO implements myInterFace<Subject, String> {
         String sql = "SELECT * FROM Subject WHERE ID_Subject LIKE ? OR Subject_Name LIKE ?;";
         return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
     }
+
+    public List<String> selectAllIDSubject() {
+        final String sql = "SELECT ID_Subject FROM Subject;";
+        List<String> list = new ArrayList<>();
+        try {
+            ResultSet resultSet = JDBCHelper.executeQuery(sql);
+            while (resultSet.next()) {
+                list.add(resultSet.getString("ID_Subject"));
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return list;
+    }
 }

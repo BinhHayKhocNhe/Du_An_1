@@ -17,6 +17,7 @@ public class PointDAO implements myInterFace<Point, String> {
     private final String UPDATE_SQL = "UPDATE Point SET ID_Class = ?, ID_Subject = ?, ID_Teacher = ?"
             + ", Year = ?, Point = ?, Course_Name = ?, Note = ? WHERE ID_Student = ?";
     private final String DELETE_SQL = "DELETE FROM Point WHERE ID_Student = ?";
+    private final String poin_SQL_ByID = "SELECT * FROM Point WHERE ID_Teacher = ? ;";
 
     @Override
     public void insert(Point entity) {
@@ -134,4 +135,33 @@ public class PointDAO implements myInterFace<Point, String> {
         String sql = "SELECT * FROM Point WHERE ID_Student LIKE ? or Last_Name like ?";
         return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
     }
+
+    public List<Point> returnPoin(String id) {
+        return selectBySql(poin_SQL_ByID, id);
+    }
+
+    private List<Object[]> getListOfArray(String sql, String[] cols, Object... args) {
+        try {
+            List<Object[]> list = new ArrayList<>();
+            ResultSet rs = JDBCHelper.executeQuery(sql, args);
+            while (rs.next()) {
+                Object[] vals = new Object[cols.length];
+                for (int i = 0; i < cols.length; i++) {
+                    vals[i] = rs.getObject(cols[i]);
+                }
+                list.add(vals);
+            }
+            rs.getStatement().getConnection().close();
+            return list;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Object[]> getGPA() {
+        String sql = "{CALL GetAllStudentPerformance}";
+        String[] cols = {"ID_Student", "ID_Class", "Year", "Course_Name", "ID_Teacher", "GPA", "Classification", "Note"};
+        return this.getListOfArray(sql, cols);
+    }
+
 }

@@ -2,21 +2,27 @@ package com.DAO;
 
 import com.Entity.Schedule;
 import com.Utils.JDBCHelper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ScheduleDAO implements myInterFace<Schedule, String> {
 
-    private final String SELECT_BY_ID_SQL = "SELECT * FROM Schedule WHERE ID_Course = ?";
+    private final String SELECT_BY_ID_SQL = "SELECT * FROM Schedule WHERE ID_Course = ? AND ID_Teacher = ?"
+            + " AND ID_Student = ? AND ID_Class = ? AND ID_Subject = ? AND Course_Name = ? AND School_Day = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM Schedule";
-    private final String INSERT_SQL = "INSERT INTO Schedule (ID_Course, ID_Teacher, ID_Student, ID_Class, ID_Subject, School_Day"
-            + ", Schedule_Date, Course_Name, Note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE Schedule SET ID_Teacher = ?, ID_Student = ?, ID_Class = ?, ID_Subject = ?, School_Day = ?"
-            + ", Schedule_Date = ?, Course_Name = ?, Note = ? WHERE ID_Course = ?";
-    private final String DELETE_SQL = "DELETE FROM Schedule WHERE ID_Course = ?";
+    private final String INSERT_SQL = "INSERT INTO Schedule (ID_Course, ID_Teacher, ID_Student, ID_Class, ID_Subject, School_Day,"
+            + "Course_Name, Note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE Schedule SET ID_Teacher = ?, ID_Student = ?, ID_Class = ?, ID_Subject = ?, School_Day = ?,"
+            + "Course_Name = ?, Note = ? WHERE ID_Course = ? AND ID_Class = ?;";
+    private final String DELETE_SQL = "DELETE FROM Schedule WHERE ID_Course = ? AND ID_Teacher = ? AND ID_Student = ? AND ID_Class = ?"
+            + " AND ID_Subject = ? AND School_Day = ? AND Course_Name = ? AND Schedule_Date > ?";
+    private final String sache_SQL_ByID = "SELECT * FROM Schedule WHERE ID_Teacher = ? ;";
+    private final String sache_SQL_ByDay = "SELECT * FROM Schedule WHERE ID_Teacher = ? and School_Day = ?;";
 
     @Override
     public void insert(Schedule entity) {
@@ -28,7 +34,6 @@ public class ScheduleDAO implements myInterFace<Schedule, String> {
                 entity.getID_Class(),
                 entity.getID_Subject(),
                 entity.getSchoolDay(),
-                entity.getScheduleDate(),
                 entity.getCourseName(),
                 entity.getNote()
         ); // Handle the exception as needed
@@ -43,21 +48,29 @@ public class ScheduleDAO implements myInterFace<Schedule, String> {
                 entity.getID_Class(),
                 entity.getID_Subject(),
                 entity.getSchoolDay(),
-                entity.getScheduleDate(),
                 entity.getCourseName(),
                 entity.getNote(),
-                entity.getID_Course()
-        ); // Handle the exception as needed
+                entity.getID_Course(),
+                entity.getID_Class()
+        );
     }
 
     @Override
     public void delete(String id) {
-        JDBCHelper.executeUpdate(DELETE_SQL, id); // Handle the exception as needed
+        return;
     }
 
     @Override
     public boolean checkID(Schedule entity) {
-        // Implement the checkID operation here if needed
+        final String sql = "SELECT 1 FROM Schedule WHERE ID_Course = ?;";
+        try {
+            ResultSet rs = JDBCHelper.executeQuery(sql, entity.getID_Course());
+            if (rs.next()) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
         return false;
     }
 
@@ -68,8 +81,7 @@ public class ScheduleDAO implements myInterFace<Schedule, String> {
 
     @Override
     public Schedule selectById(String id) {
-        List<Schedule> list = selectBySql(SELECT_BY_ID_SQL, id);
-        return list.isEmpty() ? null : list.get(0);
+        return null;
     }
 
     @Override
@@ -102,6 +114,17 @@ public class ScheduleDAO implements myInterFace<Schedule, String> {
         return scheduleList;
     }
 
+    public List<Schedule> selectByKeyword(String keyword) {
+        String sql = "SELECT * FROM Schedule WHERE ID_Course LIKE ? OR ID_Teacher LIKE ?;";
+        return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
+    }
+
+    public void deleteSchedule(Schedule entity) {
+        JDBCHelper.executeUpdate(DELETE_SQL, entity.getID_Course(), entity.getID_Teacher(), entity.getID_Student(),
+                entity.getID_Class(), entity.getID_Subject(), entity.getSchoolDay(),
+                entity.getCourseName(), entity.getScheduleDate());
+    }
+
     public List<String> get_sub() {
         return getUniqueColumnValues("ID_Subject");
     }
@@ -123,5 +146,18 @@ public class ScheduleDAO implements myInterFace<Schedule, String> {
             // Handle the exception as needed
         }
         return values;
+    }
+
+    public Schedule selectByIdSchedule(String... arg) {
+        List<Schedule> list = selectBySql(SELECT_BY_ID_SQL, arg);
+        return list.isEmpty() ? null : list.get(0);
+    }
+
+    public List<Schedule> returnScheduleByDay(String idTeacher, Date day) {
+        return selectBySql(sache_SQL_ByDay, idTeacher, day);
+    }
+
+    public List<Schedule> returnScheduleByID(String id) {
+        return selectBySql(sache_SQL_ByID, id);
     }
 }

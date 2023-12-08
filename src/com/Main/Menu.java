@@ -16,10 +16,15 @@ import com.Entity.Teacher;
 import com.Utils.Authentication;
 import com.Utils.IsValidForm;
 import com.Utils.Message;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import java.util.Arrays;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -32,12 +37,9 @@ public class Menu extends javax.swing.JFrame {
     ClassDAO classDAO = new ClassDAO();
     int x = 210;    //chieu rong
     int y = 600;    //chieu cao
-    DefaultTableModel hehe = new DefaultTableModel();
-    DefaultTableModel huhu = new DefaultTableModel();
+    private DefaultTableModel hehe = new DefaultTableModel();
+    private DefaultTableModel huhu = new DefaultTableModel();
 
-    /**
-     * Creates new form Menu
-     */
     public Menu() {
         initComponents();
         cardTrangChu.setVisible(true);
@@ -49,10 +51,13 @@ public class Menu extends javax.swing.JFrame {
         initTablePointt();
         Tbl_diem();
         initTableSche();
-        filldiem();
         initComboBoxes();
+        filltableSchedule();
+
 //        validateInput();
         InforTeacher();
+        System.out.println("" + txtID.getText());
+        String teacherID = txtID.getText();
     }
 
     public void openMenu() {
@@ -142,7 +147,7 @@ public class Menu extends javax.swing.JFrame {
     }
 
     private void initTablePointt() {
-        String columns[] = {"Student ID", "Class ID", "Subject ID", "Teacher ID", "Year", "Point", "Course Name", "Note"};
+        String columns[] = {"Student ID", "Class ID", "Subject ID", "Year", "Point", "Course Name", "Note"};
         hehe.setColumnIdentifiers(columns);
         tbl_diem.setModel(hehe);
     }
@@ -150,15 +155,15 @@ public class Menu extends javax.swing.JFrame {
     private void Tbl_diem() {
 //        String keyword = txt_tim_name.getText();
 //       List<Point> list = pointDAO.selectByKeyword(keyword);
+        List<Point> pointList;
         hehe.setRowCount(0);
         try {
-            List<Point> pointList = pointDAO.selectAll();
+            pointList = pointDAO.returnPoin(Authentication.teacher.getID_Teacher());
             for (Point point : pointList) {
                 Object[] rowData = {
                     point.getID_Student(),
                     point.getID_Class(),
                     point.getID_Subject(),
-                    point.getID_Teacher(),
                     point.getYear(),
                     point.getPoint(),
                     point.getCourse_Name(),
@@ -172,36 +177,54 @@ public class Menu extends javax.swing.JFrame {
     }
 
     private void initTableSche() {
-        String abc[] = {"Course ID", "Teacher ID", "Student ID", "Class ID", "Subject ID", "School Day", "Schedule Date", "Course Name", "Note"};
+        String abc[] = {"Class ID", "Subject ID", "School Day", "Course Name", "Course ID", "Note"};
         huhu.setColumnIdentifiers(abc);
         tbl_lich.setModel(huhu);
     }
 
-    public void filldiem() {
-
+    public void filltableSchedule() {
+        List<Schedule> scheduleList;
         huhu.setRowCount(0);
+        Object selectedItem = cmb_time.getSelectedItem();
 
-        try {
-            List<Schedule> scheduleList = scheduleDAO.selectAll();
-            for (Schedule schedule : scheduleList) {
-                Object[] rowData = {
-                    schedule.getID_Course(),
-                    schedule.getID_Teacher(),
-                    schedule.getID_Student(),
-                    schedule.getID_Class(),
-                    schedule.getID_Subject(),
-                    schedule.getSchoolDay(),
-                    schedule.getScheduleDate(),
-                    schedule.getCourseName(),
-                    schedule.getNote()
-                };
-                huhu.addRow(rowData);
+        if (selectedItem != null) {
+            String school_Day = selectedItem.toString();
+            Date school_Day1 = null;
 
+            if (!"All".equalsIgnoreCase(school_Day)) {
+                // Chỉ chuyển đổi sang Date nếu không phải là "All"
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    school_Day1 = sdf.parse(school_Day);
+                } catch (ParseException ex) {
+                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                }
             }
-        } catch (Exception e) {
 
+            if ("All".equalsIgnoreCase(school_Day) || school_Day1 == null) {
+                // Nếu là "All" hoặc không thể phân tích cú pháp ngày, lấy tất cả lịch trình
+                scheduleList = scheduleDAO.returnScheduleByID(Authentication.teacher.getID_Teacher());
+            } else {
+                // Nếu có ngày cụ thể, lấy lịch trình theo ngày
+                scheduleList = scheduleDAO.returnScheduleByDay(Authentication.teacher.getID_Teacher(), school_Day1);
+            }
+
+            try {
+                for (Schedule schedule : scheduleList) {
+                    Object[] rowData = {
+                        schedule.getID_Class(),
+                        schedule.getID_Subject(),
+                        schedule.getSchoolDay(),
+                        schedule.getCourseName(),
+                        schedule.getID_Course(),
+                        schedule.getNote()
+                    };
+                    huhu.addRow(rowData);
+                }
+            } catch (Exception e) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+            }
         }
-
     }
 
     private void initComboBoxes() {
@@ -215,38 +238,42 @@ public class Menu extends javax.swing.JFrame {
         cmb_time.removeAllItems();
         // Sau đó thêm dữ liệu mới
         PointDAO pointDAO = new PointDAO();
+//        pointList = pointDAO.returnPoin(Authentication.teacher.getID_Teacher());
+       
+            List<String> studentIds = pointDAO.getUniqueStudentIDs();
+            for (String id : studentIds) {
+                cmb_list_hs1.addItem(id);
+            }
 
-        List<String> studentIds = pointDAO.getUniqueStudentIDs();
-        for (String id : studentIds) {
-            cmb_list_hs1.addItem(id);
+            List<String> classIds = pointDAO.getUniqueClassIDs();
+            for (String id : classIds) {
+                cmb_list_class.addItem(id);
+            }
+
+            List<String> subjectIds = pointDAO.getUniqueSubjectIDs();
+            for (String id : subjectIds) {
+                cmb_list_sb.addItem(id);
+            }
+//            List<String> TeacherIsd = pointDAO.getUniqueTeacherIDs();
+//            for (String id : TeacherIsd) {
+//                cmb_id_teacher.addItem(id);
+//            }
+            List<String> classIsd = studentDAO.getidlclass();
+            for (String id : classIsd) {
+                cmbclass.addItem(id);
+            }
+            List<String> chIds = scheduleDAO.get_sub();
+            for (String id : chIds) {
+                cmb_list_mon.addItem(id);
+            }
+            List<String> Time = scheduleDAO.get_day();
+            cmb_time.addItem("ALL");
+            for (String id : Time) {
+                cmb_time.addItem(id);
+            }
         }
 
-        List<String> classIds = pointDAO.getUniqueClassIDs();
-        for (String id : classIds) {
-            cmb_list_class.addItem(id);
-        }
-
-        List<String> subjectIds = pointDAO.getUniqueSubjectIDs();
-        for (String id : subjectIds) {
-            cmb_list_sb.addItem(id);
-        }
-        List<String> TeacherIsd = pointDAO.getUniqueTeacherIDs();
-        for (String id : TeacherIsd) {
-            cmb_id_teacher.addItem(id);
-        }
-        List<String> classIsd = studentDAO.getidlclass();
-        for (String id : classIsd) {
-            cmbclass.addItem(id);
-        }
-        List<String> chIds = scheduleDAO.get_sub();
-        for (String id : chIds) {
-            cmb_list_mon.addItem(id);
-        }
-        List<String> Time = scheduleDAO.get_day();
-        for (String id : Time) {
-            cmb_time.addItem(id);
-        }
-    }
+    
 
     private boolean validateInput() {
         // Kiểm tra các trường không được để trống
@@ -291,9 +318,12 @@ public class Menu extends javax.swing.JFrame {
         txtMidName.setText(sta.getMiddle_Name());
         txtLastName.setText(sta.getLast_Name());
 
+        tbl_name.setText(sta.getLast_Name());
+
         txtNote.setText(sta.getNote());
         txtPhone.setText(sta.getPhone_Number());
         txtAddress.setText(sta.getAddress_Teacher());
+        cmb_id_teacher.addItem(sta.getID_Teacher());
 
         Message.alert(this, "Hello " + sta.getFirst_Name() + " " + sta.getMiddle_Name() + " " + sta.getLast_Name());
     }
@@ -322,109 +352,6 @@ public class Menu extends javax.swing.JFrame {
         return true;
     }
 
-//    private void loadDataToTable() {
-//
-//        List<Student> studentList = HocSinhDao.getAllStudents();
-//        List<Class> classList = ClassDAO.getAllClasses();
-//
-//        List<Student> studentList = studentDAO.selectAll();
-//        DefaultTableModel model = new DefaultTableModel();
-//        tbl_list_hocsinh.setModel(model);
-//
-//
-//        DefaultTableModel studentModel = new DefaultTableModel();
-//        DefaultTableModel classModel = new DefaultTableModel();
-//
-//        studentModel.addColumn("Student ID");
-//        studentModel.addColumn("Full Name");
-//        studentModel.addColumn("Gender");
-//        studentModel.addColumn("Address");
-//        studentModel.addColumn("Status");
-//
-//        // Add data to the table model for Student
-//        for (Student student : studentList) {
-//            String fullName = student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name();
-//            String genderString = student.isGender() ? "Male" : "Female";
-//            Object[] rowData = {
-//                student.getID_Student(),
-//
-//                fullName,
-//                genderString,
-//                student.getAddress_Student(),
-//                student.isStatus_Student(), //             
-//
-//                student.getFirst_Name(),
-//                student.getMiddle_Name(),
-//                student.getLast_Name(),
-//                student.isGender(),
-//                student.getAddress_Student(),
-//                student.isStatus_Student(),
-//                student.getAvatar(),
-//                student.getDate_Of_Birth(),
-//                student.getMonth_Of_Birth(),
-//                student.getYear_Of_Birth(),
-//                student.getNote()
-//
-//            };
-//            studentModel.addRow(rowData);
-//        }
-//
-//        classModel.addColumn("Class ID");
-//        classModel.addColumn("Class Name");
-//
-//        for (Class classEntity : classList) {
-//            Object[] rowData = {
-//                classEntity.getID_Class(),
-//                classEntity.getClass_Name()
-//
-//            };
-//            classModel.addRow(rowData);
-//        }
-//
-//        DefaultTableModel mergedModel = mergeModels(studentModel, classModel);
-//
-//        tbl_list_hocsinh.setModel(mergedModel);
-//    }
-//
-//    private DefaultTableModel mergeModels(DefaultTableModel model1, DefaultTableModel model2) {
-//        DefaultTableModel mergedModel = new DefaultTableModel();
-//
-//        for (int i = 0; i < model1.getColumnCount(); i++) {
-//            mergedModel.addColumn(model1.getColumnName(i));
-//        }
-//
-//        for (int i = 0; i < model2.getColumnCount(); i++) {
-//            mergedModel.addColumn(model2.getColumnName(i));
-//        }
-//
-//        int rowCount = Math.max(model1.getRowCount(), model2.getRowCount());
-//        for (int i = 0; i < rowCount; i++) {
-//            Object[] rowData = new Object[model1.getColumnCount() + model2.getColumnCount()];
-//            for (int j = 0; j < model1.getColumnCount(); j++) {
-//                rowData[j] = (i < model1.getRowCount()) ? model1.getValueAt(i, j) : null;
-//            }
-//            for (int j = 0; j < model2.getColumnCount(); j++) {
-//                rowData[model1.getColumnCount() + j] = (i < model2.getRowCount()) ? model2.getValueAt(i, j) : null;
-//            }
-//            mergedModel.addRow(rowData);
-//        }
-//
-//        return mergedModel;
-//
-//    }
-//
-//    private void loadClassNamesToComboBox() {
-//
-//        List<Class> classes = ClassDAO.getAllClasses();
-//
-//        cmbclass.removeAllItems();
-//
-//        for (Class classEntity : classes) {
-//            cmbclass.addItem(classEntity.getClass_Name());
-//        }
-//    }
-//
-//
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -433,7 +360,7 @@ public class Menu extends javax.swing.JFrame {
         jplSlideMenu = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        tbl_name = new javax.swing.JLabel();
         lblCloseMenu = new javax.swing.JLabel();
         lblTrangChu = new javax.swing.JLabel();
         lblTaiKhoan = new javax.swing.JLabel();
@@ -446,6 +373,7 @@ public class Menu extends javax.swing.JFrame {
         jpllMenuBar = new javax.swing.JPanel();
         lblOpenMenu = new javax.swing.JLabel();
         jplTitle = new javax.swing.JPanel();
+        lbTitle1 = new javax.swing.JLabel();
         jplMain = new javax.swing.JPanel();
         cardTrangChu = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -499,8 +427,6 @@ public class Menu extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_diem = new javax.swing.JTable();
-        jLabel10 = new javax.swing.JLabel();
-        txt_tim_name = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         cmb_list_sb = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
@@ -551,6 +477,7 @@ public class Menu extends javax.swing.JFrame {
         jTextField8 = new javax.swing.JTextField();
         jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
+        lbTitle = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -572,8 +499,8 @@ public class Menu extends javax.swing.JFrame {
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/user.png"))); // NOI18N
 
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel4.setText("Teacher");
+        tbl_name.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        tbl_name.setText("hihi");
 
         lblCloseMenu.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         lblCloseMenu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -597,8 +524,8 @@ public class Menu extends javax.swing.JFrame {
                         .addComponent(lblCloseMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(72, 72, 72))))
+                        .addComponent(tbl_name)
+                        .addGap(85, 85, 85))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -609,7 +536,7 @@ public class Menu extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addComponent(tbl_name)
                 .addContainerGap(34, Short.MAX_VALUE))
         );
 
@@ -719,15 +646,22 @@ public class Menu extends javax.swing.JFrame {
 
         jplTitle.setBackground(new java.awt.Color(0, 168, 255));
 
+        lbTitle1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbTitle1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbTitle1.setText("Viet Duc School");
+
         javax.swing.GroupLayout jplTitleLayout = new javax.swing.GroupLayout(jplTitle);
         jplTitle.setLayout(jplTitleLayout);
         jplTitleLayout.setHorizontalGroup(
             jplTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 940, Short.MAX_VALUE)
+            .addComponent(lbTitle1, javax.swing.GroupLayout.DEFAULT_SIZE, 940, Short.MAX_VALUE)
         );
         jplTitleLayout.setVerticalGroup(
             jplTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 30, Short.MAX_VALUE)
+            .addGroup(jplTitleLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbTitle1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel1.add(jplTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 30));
@@ -772,7 +706,7 @@ public class Menu extends javax.swing.JFrame {
         cardTrangChuLayout.setHorizontalGroup(
             cardTrangChuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardTrangChuLayout.createSequentialGroup()
-                .addContainerGap(212, Short.MAX_VALUE)
+                .addContainerGap(211, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -1082,7 +1016,7 @@ public class Menu extends javax.swing.JFrame {
         cardTaiKhoanLayout.setHorizontalGroup(
             cardTaiKhoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardTaiKhoanLayout.createSequentialGroup()
-                .addContainerGap(219, Short.MAX_VALUE)
+                .addContainerGap(218, Short.MAX_VALUE)
                 .addComponent(tabAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 669, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(53, 53, 53))
         );
@@ -1189,15 +1123,6 @@ public class Menu extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tbl_diem);
 
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel10.setText("Find");
-
-        txt_tim_name.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txt_tim_nameKeyReleased(evt);
-            }
-        });
-
         jLabel11.setText("ID Student");
 
         cmb_list_sb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -1246,21 +1171,14 @@ public class Menu extends javax.swing.JFrame {
         cardNhapdiemLayout.setHorizontalGroup(
             cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cardNhapdiemLayout.createSequentialGroup()
-                .addContainerGap(211, Short.MAX_VALUE)
+                .addContainerGap(219, Short.MAX_VALUE)
                 .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardNhapdiemLayout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(378, 378, 378))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardNhapdiemLayout.createSequentialGroup()
-                        .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardNhapdiemLayout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardNhapdiemLayout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addGap(18, 18, 18)
-                                .addComponent(txt_tim_name, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(84, 84, 84)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(cardNhapdiemLayout.createSequentialGroup()
                                 .addComponent(jLabel13)
@@ -1309,8 +1227,6 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(cardNhapdiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_tim_name, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
                     .addComponent(jLabel41)
                     .addComponent(cmb_id_teacher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1373,6 +1289,11 @@ public class Menu extends javax.swing.JFrame {
         jLabel6.setText("Time");
 
         cmb_time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmb_time.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmb_timeActionPerformed(evt);
+            }
+        });
 
         cmb_list_mon.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -1394,7 +1315,7 @@ public class Menu extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(cmb_time, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardLichLayout.createSequentialGroup()
-                .addGap(0, 227, Short.MAX_VALUE)
+                .addGap(0, 226, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 708, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardLichLayout.createSequentialGroup()
@@ -1413,7 +1334,7 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardLichLayout.createSequentialGroup()
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmb_time, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmb_time, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
@@ -1465,7 +1386,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardhelpLayout.createSequentialGroup()
-                .addContainerGap(210, Short.MAX_VALUE)
+                .addContainerGap(209, Short.MAX_VALUE)
                 .addGroup(cardhelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(cardhelpLayout.createSequentialGroup()
                         .addComponent(jLabel7)
@@ -1564,7 +1485,7 @@ public class Menu extends javax.swing.JFrame {
                         .addComponent(jButton12)
                         .addGap(18, 18, 18)
                         .addComponent(jButton13)))
-                .addContainerGap(360, Short.MAX_VALUE))
+                .addContainerGap(359, Short.MAX_VALUE))
         );
         cardDoimkLayout.setVerticalGroup(
             cardDoimkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1591,6 +1512,11 @@ public class Menu extends javax.swing.JFrame {
         jplMain.add(cardDoimk, "card3");
 
         jPanel1.add(jplMain, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 940, 540));
+
+        lbTitle.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbTitle.setText("Viet Duc School");
+        jPanel1.add(lbTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1736,6 +1662,8 @@ public class Menu extends javax.swing.JFrame {
 
         try {
             pointDAO.insert(point);
+            Message.alert(this, "Add Point Sucsecfuly");
+            Tbl_diem();
         } catch (Exception ex) {
             ex.printStackTrace();
             // Xử lý ngoại lệ
@@ -1748,120 +1676,18 @@ public class Menu extends javax.swing.JFrame {
         Tbl_list_HocSinh();
     }//GEN-LAST:event_txt_id_hocsinhKeyReleased
 
-    private void txt_tim_nameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_tim_nameKeyReleased
-//        Tbl_diem();
-    }//GEN-LAST:event_txt_tim_nameKeyReleased
-
     private void cmbclassKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbclassKeyReleased
 //        Tbl_list_HocSinh();
     }//GEN-LAST:event_cmbclassKeyReleased
     private void btn_tim_hocsinhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tim_hocsinhActionPerformed
-//
-//        String studentId = txt_id_hocsinh.getText();
-//
-//// Lấy danh sách học sinh từ DAO
-//        List<Student> studentList = studentDAO.selectAll();
-//
-//// Lấy danh sách lớp học từ DAO
-//        List<Class> classList = classDAO.selectAll();
-//
-//// Tạo danh sách dòng dữ liệu cho bảng
-//        DefaultTableModel tableModel = new DefaultTableModel();
-//        tableModel.addColumn("Student ID");
-//        tableModel.addColumn("Full Name");
-//        tableModel.addColumn("Gender");
-//        tableModel.addColumn("Address");
-//        tableModel.addColumn("Status");
-//        tableModel.addColumn("Class ID");
-//        tableModel.addColumn("Class Name");
-//
-//// Lọc danh sách học sinh và lớp học dựa trên ID học sinh
-//        for (Student student : studentList) {
-//            if (student.getID_Student().equalsIgnoreCase(studentId)) {
-//                String fullName = student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name();
-//                String genderString = student.isGender() ? "Male" : "Female";
-//
-//                // Dòng dữ liệu cho học sinh
-//                Object[] rowData = {
-//                    student.getID_Student(),
-//                    fullName,
-//                    genderString,
-//                    student.getAddress_Student(),
-//                    student.isStatus_Student(),
-//                    "", // Dòng này để trống cho thông tin lớp học, bạn có thể cập nhật sau
-//                    "" // Dòng này để trống cho thông tin tên lớp học, bạn có thể cập nhật sau
-//                };
-//
-//                // Thêm dòng dữ liệu học sinh vào bảng
-//                tableModel.addRow(rowData);
-//
-//                // Tìm lớp học tương ứng với ID học sinh
-//                for (Class classEntity : classList) {
-//                    if (classEntity.getID_Student().equalsIgnoreCase(studentId)) {
-//                        // Cập nhật thông tin lớp học vào dòng dữ liệu đã tạo
-//                        tableModel.setValueAt(classEntity.getID_Class(), tableModel.getRowCount() - 1, 5);
-//                        tableModel.setValueAt(classEntity.getClass_Name(), tableModel.getRowCount() - 1, 6);
-//                    }
-//                }
-//            }
-//        }
-
-// Cập nhật bảng tbl_list_hocsinh bằng dữ liệu đã tạo
-//        tbl_list_hocsinh.setModel(tableModel);
-
-//String studentId = txt_id_hocsinh.getText();
-//
-//// Lấy danh sách học sinh từ DAO
-//List<Student> studentList = HocSinhDao.getAllStudents();
-//
-//// Lấy danh sách lớp học từ DAO
-//List<Class> classList = ClassDAO.getAllClasses();
-//
-//// Tạo danh sách dòng dữ liệu cho bảng
-//DefaultTableModel tableModel = new DefaultTableModel();
-//tableModel.addColumn("Student ID");
-//tableModel.addColumn("Full Name");
-//tableModel.addColumn("Gender");
-//tableModel.addColumn("Address");
-//tableModel.addColumn("Status");
-//tableModel.addColumn("Class ID");
-//tableModel.addColumn("Class Name");
-//
-//// Lọc danh sách học sinh và lớp học dựa trên ID học sinh
-//for (Student student : studentList) {
-//    if (student.getID_Student().equalsIgnoreCase(studentId)) {
-//        String fullName = student.getFirst_Name() + " " + student.getMiddle_Name() + " " + student.getLast_Name();
-//        String genderString = student.isGender() ? "Male" : "Female";
-//        
-//        // Dòng dữ liệu cho học sinh
-//        Object[] rowData = {
-//            student.getID_Student(),
-//            fullName,
-//            genderString,
-//            student.getAddress_Student(),
-//            student.isStatus_Student(),
-//            "", // Dòng này để trống cho thông tin lớp học, bạn có thể cập nhật sau
-//            ""  // Dòng này để trống cho thông tin tên lớp học, bạn có thể cập nhật sau
-//        };
-//        
-//        // Thêm dòng dữ liệu học sinh vào bảng
-//        tableModel.addRow(rowData);
-//        
-//        // Tìm lớp học tương ứng với ID học sinh
-//        for (Class classEntity : classList) {
-//            if (classEntity.getID_Student().equalsIgnoreCase(studentId)) {
-//                // Cập nhật thông tin lớp học vào dòng dữ liệu đã tạo
-//                tableModel.setValueAt(classEntity.getID_Class(), tableModel.getRowCount() - 1, 5);
-//                tableModel.setValueAt(classEntity.getClass_Name(), tableModel.getRowCount() - 1, 6);
-//            }
-//        }
-//    }
-//}
-//
-//// Cập nhật bảng tbl_list_hocsinh bằng dữ liệu đã tạo
-//tbl_list_hocsinh.setModel(tableModel);           
+          
 
     }//GEN-LAST:event_btn_tim_hocsinhActionPerformed
+
+    private void cmb_timeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_timeActionPerformed
+        // TODO add your handling code here:
+        filltableSchedule();
+    }//GEN-LAST:event_cmb_timeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1927,7 +1753,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -1959,7 +1784,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
@@ -1992,6 +1816,8 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel lbShowCurrentPass;
     private javax.swing.JLabel lbShowEnterPass;
     private javax.swing.JLabel lbShowNewPass;
+    private javax.swing.JLabel lbTitle;
+    private javax.swing.JLabel lbTitle1;
     private javax.swing.JLabel lblCloseMenu;
     private javax.swing.JLabel lblOpenMenu;
     private javax.swing.JLabel lblTaiKhoan;
@@ -2007,6 +1833,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTable tbl_diem;
     private javax.swing.JTable tbl_lich;
     private javax.swing.JTable tbl_list_hocsinh;
+    private javax.swing.JLabel tbl_name;
     private javax.swing.JTextField txtAddress;
     private javax.swing.JPasswordField txtCurrentPass;
     private javax.swing.JTextField txtEmail;
@@ -2021,7 +1848,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTextField txt_id_hocsinh;
     private javax.swing.JTextArea txt_note;
     private javax.swing.JTextField txt_poin;
-    private javax.swing.JTextField txt_tim_name;
     private javax.swing.JTextField txt_year;
     private javax.swing.JTextField txtcr;
     // End of variables declaration//GEN-END:variables

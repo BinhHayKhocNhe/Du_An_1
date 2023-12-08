@@ -9,14 +9,12 @@ import java.util.List;
 
 public class ClassDAO implements myInterFace<Class, String> {
 
-
     private final String SELECT_ALL_SQL = "SELECT * FROM Class";
     private final String INSERT_SQL = "INSERT INTO Class (ID_Class, Class_Name, ID_Teacher, "
             + "Quantity, Note) VALUES(?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE Class SET Class_Name = ?, ID_Teacher = ?, Quantity = ?, "
             + "Note = ? WHERE ID_Class = ?;";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Class WHERE ID_Class = ?;";
-
 
     @Override
     public void insert(Class entity) {
@@ -96,5 +94,33 @@ public class ClassDAO implements myInterFace<Class, String> {
     public List<Class> selectByKeyword(String keyword) {
         String sql = "SELECT * FROM Class WHERE ID_Class LIKE ? OR Class_Name LIKE ?;";
         return this.selectBySql(sql, "%" + keyword + "%", "%" + keyword + "%");
+    }
+
+    public List<String> selectAllIDClass() {
+        final String sql = "SELECT ID_Class FROM Class;";
+        List<String> list = new ArrayList<>();
+        try {
+            ResultSet resultSet = JDBCHelper.executeQuery(sql);
+            while (resultSet.next()) {
+                list.add(resultSet.getString("ID_Class"));
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return list;
+    }
+
+    public int selectQuantity(String idClass) {
+        final String sql = "SELECT Quantity FROM Class WHERE ID_Class = ?;";
+        int count = 0;
+        try {
+            ResultSet resultSet = JDBCHelper.executeQuery(sql, idClass);
+            while (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
     }
 }
