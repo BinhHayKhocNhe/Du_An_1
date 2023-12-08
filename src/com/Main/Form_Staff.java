@@ -22,7 +22,6 @@ import com.microsoft.sqlserver.jdbc.StringUtils;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Image;
-import java.awt.event.ItemEvent;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -84,6 +83,16 @@ public class Form_Staff extends javax.swing.JFrame {
         cardhelp.setVisible(false);
         cardHome1.setVisible(false);
         closeMenu();
+    }
+
+    private void setBackGround() {
+        lblHome.setOpaque(false);
+        lblAcc.setOpaque(false);
+        lblSta_Li.setOpaque(false);
+        lblStudent.setOpaque(false);
+        lblSche.setOpaque(false);
+        lblSalary.setOpaque(false);
+
     }
 
     private void setTimeSlide() {
@@ -433,6 +442,11 @@ public class Form_Staff extends javax.swing.JFrame {
             Message.alert(this, "you don't have access");
         } else {
             CardFalse();
+            lbTitle.setText("Viet Duc School - Student");
+            setBackGround();
+            lblStudent.setOpaque(true);
+            lblStudent.setBackground(Color.getHSBColor((float) 0.16, (float) 0.6, (float) 0.9));
+
             cardAddStudent.setVisible(true);
         }
     }
@@ -636,7 +650,7 @@ public class Form_Staff extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         lblLog_out = new javax.swing.JLabel();
         lblHelp = new javax.swing.JLabel();
-        Student = new javax.swing.JLabel();
+        lblStudent = new javax.swing.JLabel();
         lblSalary = new javax.swing.JLabel();
         lblSche = new javax.swing.JLabel();
         jpllMenuBar = new javax.swing.JPanel();
@@ -884,9 +898,10 @@ public class Form_Staff extends javax.swing.JFrame {
 
         jplSlideMenu.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 210, 150));
 
-        lblHome.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lblHome.setBackground(new java.awt.Color(255, 255, 255));
+        lblHome.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblHome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblHome.setText("Home");
+        lblHome.setText("HOME");
         lblHome.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblHome.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -901,9 +916,9 @@ public class Form_Staff extends javax.swing.JFrame {
         });
         jplSlideMenu.add(lblHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 150, 120, 30));
 
-        lblAcc.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lblAcc.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblAcc.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblAcc.setText("Account");
+        lblAcc.setText("ACCOUNT");
         lblAcc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblAccMouseClicked(evt);
@@ -922,9 +937,9 @@ public class Form_Staff extends javax.swing.JFrame {
         });
         jplSlideMenu.add(lblAcc, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 200, 120, 30));
 
-        lblSta_Li.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lblSta_Li.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblSta_Li.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSta_Li.setText("Staff ");
+        lblSta_Li.setText("STAFF");
         lblSta_Li.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblSta_LiMouseClicked(evt);
@@ -971,25 +986,25 @@ public class Form_Staff extends javax.swing.JFrame {
         });
         jplSlideMenu.add(lblHelp, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 500, 120, 30));
 
-        Student.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        Student.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Student.setText("Student");
-        Student.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblStudent.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lblStudent.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblStudent.setText("STUDENT");
+        lblStudent.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                StudentMouseClicked(evt);
+                lblStudentMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                StudentMouseEntered(evt);
+                lblStudentMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                StudentMouseExited(evt);
+                lblStudentMouseExited(evt);
             }
         });
-        jplSlideMenu.add(Student, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 300, 120, 30));
+        jplSlideMenu.add(lblStudent, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 300, 120, 30));
 
-        lblSalary.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lblSalary.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblSalary.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSalary.setText("Salary");
+        lblSalary.setText("SALARY");
         lblSalary.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblSalaryMouseClicked(evt);
@@ -1003,9 +1018,9 @@ public class Form_Staff extends javax.swing.JFrame {
         });
         jplSlideMenu.add(lblSalary, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 400, 120, 30));
 
-        lblSche.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lblSche.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblSche.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSche.setText(" Schedule");
+        lblSche.setText("SCHEDULE");
         lblSche.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblScheMouseClicked(evt);
@@ -2526,17 +2541,29 @@ public class Form_Staff extends javax.swing.JFrame {
 
     private void lblHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHomeMouseClicked
         CardFalse();
+        lbTitle.setText("Viet Duc School - Home");
+        setBackGround();
+        lblHome.setOpaque(true);
+        lblHome.setBackground(Color.getHSBColor((float) 0.16, (float) 0.6, (float) 0.9));
         cardHome1.setVisible(true);
     }//GEN-LAST:event_lblHomeMouseClicked
 
     private void lblAccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAccMouseClicked
         CardFalse();
+        lbTitle.setText("Viet Duc School - Account");
+        setBackGround();
+        lblAcc.setOpaque(true);
+        lblAcc.setBackground(Color.getHSBColor((float) 0.16, (float) 0.6, (float) 0.9));
         cardStaff.setVisible(true);
 
     }//GEN-LAST:event_lblAccMouseClicked
 
     private void lblSta_LiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSta_LiMouseClicked
         CardFalse();
+        lbTitle.setText("Viet Duc School - Staff");
+        setBackGround();
+        lblSta_Li.setOpaque(true);
+        lblSta_Li.setBackground(Color.getHSBColor((float) 0.16, (float) 0.6, (float) 0.9));
         cardInfor.setVisible(true);
 
     }//GEN-LAST:event_lblSta_LiMouseClicked
@@ -2545,10 +2572,10 @@ public class Form_Staff extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cardStaffMouseClicked
 
-    private void StudentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StudentMouseClicked
+    private void lblStudentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblStudentMouseClicked
         setButtonOffice();
 
-    }//GEN-LAST:event_StudentMouseClicked
+    }//GEN-LAST:event_lblStudentMouseClicked
 
     private void lblHelpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHelpMouseClicked
         CardFalse();
@@ -2566,6 +2593,11 @@ public class Form_Staff extends javax.swing.JFrame {
 
     private void lblSalaryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSalaryMouseClicked
         CardFalse();
+        lbTitle.setText("Viet Duc School - Salary");
+        setBackGround();
+        lblSalary.setOpaque(true);
+        lblSalary.setBackground(Color.getHSBColor((float) 0.16, (float) 0.6, (float) 0.9));
+
         cardStaff_Salary.setVisible(true);
     }//GEN-LAST:event_lblSalaryMouseClicked
 
@@ -2616,11 +2648,11 @@ public class Form_Staff extends javax.swing.JFrame {
         lblSta_Li.setForeground(Color.RED);
     }//GEN-LAST:event_lblSta_LiMouseEntered
 
-    private void StudentMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StudentMouseEntered
+    private void lblStudentMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblStudentMouseEntered
         // TODO add your handling code here:
         this.setCursor(new Cursor(HAND_CURSOR));
-        Student.setForeground(Color.RED);
-    }//GEN-LAST:event_StudentMouseEntered
+        lblStudent.setForeground(Color.RED);
+    }//GEN-LAST:event_lblStudentMouseEntered
 
     private void lblSalaryMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSalaryMouseEntered
         // TODO add your handling code here:
@@ -2658,11 +2690,11 @@ public class Form_Staff extends javax.swing.JFrame {
         lblSta_Li.setForeground(Color.BLACK);
     }//GEN-LAST:event_lblSta_LiMouseExited
 
-    private void StudentMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StudentMouseExited
+    private void lblStudentMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblStudentMouseExited
         // TODO add your handling code here:
         this.setCursor(new Cursor(DEFAULT_CURSOR));
-        Student.setForeground(Color.BLACK);
-    }//GEN-LAST:event_StudentMouseExited
+        lblStudent.setForeground(Color.BLACK);
+    }//GEN-LAST:event_lblStudentMouseExited
 
     private void lblSalaryMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSalaryMouseExited
         // TODO add your handling code here:
@@ -2859,6 +2891,10 @@ public class Form_Staff extends javax.swing.JFrame {
     private void lblScheMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblScheMouseClicked
         // TODO add your handling code here:
         CardFalse();
+        lbTitle.setText("Viet Duc School - Schedule");
+        setBackGround();
+        lblSche.setOpaque(true);
+        lblSche.setBackground(Color.getHSBColor((float) 0.16, (float) 0.6, (float) 0.9));
         cardSchedule.setVisible(true);
     }//GEN-LAST:event_lblScheMouseClicked
 
@@ -2922,7 +2958,6 @@ public class Form_Staff extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane INFORMATION;
     private javax.swing.JTabbedPane INFORSTUDENT;
-    private javax.swing.JLabel Student;
     private javax.swing.JButton btnAccept;
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnAdd1;
@@ -3071,6 +3106,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JLabel lblSalary;
     private javax.swing.JLabel lblSche;
     private javax.swing.JLabel lblSta_Li;
+    private javax.swing.JLabel lblStudent;
     private javax.swing.JRadioButton rdoFemale;
     private javax.swing.JRadioButton rdoFemale1;
     private javax.swing.JRadioButton rdoFemale_Student;
