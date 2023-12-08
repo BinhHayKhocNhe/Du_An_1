@@ -21,6 +21,12 @@ public class PointDAO implements myInterFace<Point, String> {
 
     @Override
     public void insert(Point entity) {
+        if (isDuplicate(entity)) {
+
+            System.out.println("Duplicate entry: Point already exists for the selected student, class, subject, and year.");
+            return;
+        }
+
         JDBCHelper.executeUpdate(
                 INSERT_SQL,
                 entity.getID_Student(),
@@ -162,6 +168,31 @@ public class PointDAO implements myInterFace<Point, String> {
         String sql = "{CALL GetAllStudentPerformance}";
         String[] cols = {"ID_Student", "ID_Class", "Year", "Course_Name", "ID_Teacher", "GPA", "Classification", "Note"};
         return this.getListOfArray(sql, cols);
+    }
+
+    public boolean isDuplicate(Point point) {
+        String checkDuplicateSQL = "SELECT COUNT(*) FROM Point WHERE ID_Student = ? AND ID_Class = ? AND ID_Subject = ? AND Year = ?";
+        try {
+            ResultSet resultSet = JDBCHelper.executeQuery(checkDuplicateSQL,
+                    point.getID_Student(),
+                    point.getID_Class(),
+                    point.getID_Subject(),
+                    point.getYear()
+            );
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count > 0; // Nếu count lớn hơn 0, có nghĩa là bản ghi trùng lặp tồn tại
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            // Xử lý ngoại lệ theo cách phù hợp
+        }
+        return false;
+    }
+
+    public interface DuplicateChecker<T> {
+
+        boolean isDuplicate(T entity);
     }
 
 }

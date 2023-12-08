@@ -239,41 +239,39 @@ public class Menu extends javax.swing.JFrame {
         // Sau đó thêm dữ liệu mới
         PointDAO pointDAO = new PointDAO();
 //        pointList = pointDAO.returnPoin(Authentication.teacher.getID_Teacher());
-       
-            List<String> studentIds = pointDAO.getUniqueStudentIDs();
-            for (String id : studentIds) {
-                cmb_list_hs1.addItem(id);
-            }
 
-            List<String> classIds = pointDAO.getUniqueClassIDs();
-            for (String id : classIds) {
-                cmb_list_class.addItem(id);
-            }
+        List<String> studentIds = pointDAO.getUniqueStudentIDs();
+        for (String id : studentIds) {
+            cmb_list_hs1.addItem(id);
+        }
 
-            List<String> subjectIds = pointDAO.getUniqueSubjectIDs();
-            for (String id : subjectIds) {
-                cmb_list_sb.addItem(id);
-            }
+        List<String> classIds = pointDAO.getUniqueClassIDs();
+        for (String id : classIds) {
+            cmb_list_class.addItem(id);
+        }
+
+        List<String> subjectIds = pointDAO.getUniqueSubjectIDs();
+        for (String id : subjectIds) {
+            cmb_list_sb.addItem(id);
+        }
 //            List<String> TeacherIsd = pointDAO.getUniqueTeacherIDs();
 //            for (String id : TeacherIsd) {
 //                cmb_id_teacher.addItem(id);
 //            }
-            List<String> classIsd = studentDAO.getidlclass();
-            for (String id : classIsd) {
-                cmbclass.addItem(id);
-            }
-            List<String> chIds = scheduleDAO.get_sub();
-            for (String id : chIds) {
-                cmb_list_mon.addItem(id);
-            }
-            List<String> Time = scheduleDAO.get_day();
-            cmb_time.addItem("ALL");
-            for (String id : Time) {
-                cmb_time.addItem(id);
-            }
+        List<String> classIsd = studentDAO.getidlclass();
+        for (String id : classIsd) {
+            cmbclass.addItem(id);
         }
-
-    
+        List<String> chIds = scheduleDAO.get_sub();
+        for (String id : chIds) {
+            cmb_list_mon.addItem(id);
+        }
+        List<String> Time = scheduleDAO.get_day();
+        cmb_time.addItem("ALL");
+        for (String id : Time) {
+            cmb_time.addItem(id);
+        }
+    }
 
     private boolean validateInput() {
         // Kiểm tra các trường không được để trống
@@ -285,7 +283,7 @@ public class Menu extends javax.swing.JFrame {
                 || txt_year.getText().isEmpty()
                 //                || txtcr.getText().isEmpty()
                 || txt_note.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Tất cả các trường phải được điền.");
+            JOptionPane.showMessageDialog(null, "Please enter full information");
             return false;
         }
 
@@ -293,11 +291,11 @@ public class Menu extends javax.swing.JFrame {
         try {
             float point = Float.parseFloat(txt_poin.getText());
             if (point < 0 || point > 10) {
-                JOptionPane.showMessageDialog(null, "Điểm phải nằm trong khoảng từ 0 đến 10.");
+                JOptionPane.showMessageDialog(null, "Score must be from 0 to 10");
                 return false;
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Điểm phải là một số hợp lệ.");
+            JOptionPane.showMessageDialog(null, "Points must be a valid number");
             return false;
         }
 
@@ -324,9 +322,13 @@ public class Menu extends javax.swing.JFrame {
         txtPhone.setText(sta.getPhone_Number());
         txtAddress.setText(sta.getAddress_Teacher());
         cmb_id_teacher.addItem(sta.getID_Teacher());
+//         cmb_list_hs1.addItem(sta.get);
 
         Message.alert(this, "Hello " + sta.getFirst_Name() + " " + sta.getMiddle_Name() + " " + sta.getLast_Name());
     }
+//    private void setFormIforn(Poin sta){
+//    
+//    }
 
     private void resetFormChangePassWord() {
         JTextField text[] = {txtCurrentPass, txtNewPass, txtEnterPass};
@@ -350,6 +352,15 @@ public class Menu extends javax.swing.JFrame {
             return false;
         }
         return true;
+    }
+
+    private boolean isDuplicate(Point point) {
+        try {
+            return pointDAO.isDuplicate(point);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -1652,21 +1663,24 @@ public class Menu extends javax.swing.JFrame {
         point.setID_Student(cmb_list_hs1.getSelectedItem().toString());
         point.setID_Class(cmb_list_class.getSelectedItem().toString());
         point.setID_Subject(cmb_list_sb.getSelectedItem().toString());
-        point.setID_Teacher(cmb_id_teacher.getSelectedItem().toString()); // Đặt ID_Teacher
+        point.setID_Teacher(cmb_id_teacher.getSelectedItem().toString());
         point.setPoint(Float.parseFloat(txt_poin.getText()));
         point.setYear(Integer.parseInt(txt_year.getText()));
-//        point.setCourse_Name(txtcr.getText());
         point.setNote(txt_note.getText());
-        // Thiếu Course_Name
         point.setCourse_Name(txtcr.getText());
 
         try {
-            pointDAO.insert(point);
-            Message.alert(this, "Add Point Sucsecfuly");
-            Tbl_diem();
+            // Check for duplicates before inserting
+            if (isDuplicate(point)) {
+                Message.alert(this, "Duplicate entry: Point already exists for the selected student, class, subject, and year.");
+            } else {
+                pointDAO.insert(point);
+                Message.alert(this, "Add Point Successfully");
+                Tbl_diem();
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
-            // Xử lý ngoại lệ
+            // Handle the exception appropriately
         }
 
     }//GEN-LAST:event_bnt_addActionPerformed
@@ -1680,7 +1694,7 @@ public class Menu extends javax.swing.JFrame {
 //        Tbl_list_HocSinh();
     }//GEN-LAST:event_cmbclassKeyReleased
     private void btn_tim_hocsinhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tim_hocsinhActionPerformed
-          
+
 
     }//GEN-LAST:event_btn_tim_hocsinhActionPerformed
 
