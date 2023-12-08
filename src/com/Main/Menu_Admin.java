@@ -6,6 +6,7 @@
 package com.Main;
 
 import com.DAO.Administrators_DAO;
+import com.DAO.BonusDAO;
 import com.DAO.ClassDAO;
 import com.DAO.Course_Relationship_DAO;
 import com.DAO.CoursesDAO;
@@ -18,6 +19,7 @@ import com.DAO.StudentDAO;
 import com.DAO.SubjectDAO;
 import com.DAO.Teacher_DAO;
 import com.Entity.Administrators;
+import com.Entity.Bonus;
 import com.Entity.Course_Relationship;
 import com.Entity.Courses;
 import com.Entity.Guardian_Student_Relationship;
@@ -37,6 +39,7 @@ import com.Utils.QR_Code_Util;
 import com.Utils.XDate;
 import com.Utils.XImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -47,6 +50,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Year;
 import java.util.Date;
+import java.util.Iterator;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
 /**
@@ -84,6 +93,8 @@ public class Menu_Admin extends javax.swing.JFrame {
     private DefaultTableModel tableModelPoint = new DefaultTableModel();
     private ScheduleDAO scheduleDAO = new ScheduleDAO();
     private PointDAO pointDAO = new PointDAO();
+    private DefaultTableModel tableModelBonus = new DefaultTableModel();
+    private BonusDAO bonusDAO = new BonusDAO();
 
     /**
      * Creates new form Menu
@@ -99,6 +110,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.txtStartDateTeacher.setEditable(false);
         this.txtScheduleCreatedDate.setEditable(false);
         this.txtCurrentStudents.setEditable(false);
+        this.txtIDTeacherPoint.setEditable(false);
         this.rdONTeacher.setSelected(true);
         this.rdMaleTeacher.setSelected(true);
         this.rdONStaff.setSelected(true);
@@ -107,6 +119,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.rdMaleParent.setSelected(true);
         this.rdMaleStudent.setSelected(true);
         this.txtStartDateStaff.setEditable(false);
+        this.btnAddPoint.setEnabled(false);
         this.uploadComboboxTeacher();
         this.uploadComboboxStaff();
         this.initTableTeacher();
@@ -119,6 +132,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.initTableSubject();
         this.initTableSchedule();
         this.initTablePoint();
+        this.initTableBonus();
         this.setFormAdmin();
         this.fillFindResetPassTeacher();
         this.fillFindTableTeacher();
@@ -128,6 +142,7 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.fillTableStudent();
         this.fillTableParent();
         this.fillTableResetPassParent();
+        this.fillComboboxBonus();
         this.uploadComboboxStudent();
         this.uploadComboboxParent();
         this.uploadComboboxCourse();
@@ -141,6 +156,8 @@ public class Menu_Admin extends javax.swing.JFrame {
         this.fillTableSubject();
         this.fillTableSchedule();
         this.fillTablePoint();
+        this.fillTableBonus();
+
     }
 
     private void openMenu() {
@@ -422,8 +439,30 @@ public class Menu_Admin extends javax.swing.JFrame {
         btnResetPoint = new javax.swing.JButton();
         btnImportPoint = new javax.swing.JButton();
         btnExportPoint = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
+        jLayeredPane21 = new javax.swing.JLayeredPane();
+        jLabel91 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel119 = new javax.swing.JLabel();
+        jLabel120 = new javax.swing.JLabel();
+        jLabel121 = new javax.swing.JLabel();
+        cbYearBonus = new javax.swing.JComboBox<>();
+        jTextField3 = new javax.swing.JTextField();
+        jLabel122 = new javax.swing.JLabel();
+        jScrollPane26 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jScrollPane27 = new javax.swing.JScrollPane();
+        tableBonus = new javax.swing.JTable();
+        jLabel123 = new javax.swing.JLabel();
+        cbBonusName = new javax.swing.JComboBox<>();
+        jLabel124 = new javax.swing.JLabel();
+        cblevelBnous = new javax.swing.JComboBox<>();
+        txtFindBonus = new javax.swing.JTextField();
+        jLabel125 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        cbStudentBonus = new javax.swing.JComboBox<>();
         cardListParent = new javax.swing.JPanel();
         tabParent = new javax.swing.JTabbedPane();
         jLayeredPane11 = new javax.swing.JLayeredPane();
@@ -2534,6 +2573,11 @@ public class Menu_Admin extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tablePoint.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablePointMouseClicked(evt);
+            }
+        });
         jScrollPane24.setViewportView(tablePoint);
 
         jLabel80.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -2577,14 +2621,30 @@ public class Menu_Admin extends javax.swing.JFrame {
         jLabel90.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel90.setText("Find:");
 
+        txtFindPoint.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFindPointKeyReleased(evt);
+            }
+        });
+
         btnAddPoint.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         btnAddPoint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Add.png"))); // NOI18N
         btnAddPoint.setText("ADD");
+        btnAddPoint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddPointActionPerformed(evt);
+            }
+        });
 
         btnUpdatePoint.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         btnUpdatePoint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/edit-24px.png"))); // NOI18N
         btnUpdatePoint.setText("UPDATE");
         btnUpdatePoint.setToolTipText("");
+        btnUpdatePoint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdatePointActionPerformed(evt);
+            }
+        });
 
         btnResetPoint.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         btnResetPoint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Refresh.png"))); // NOI18N
@@ -2598,14 +2658,20 @@ public class Menu_Admin extends javax.swing.JFrame {
         btnImportPoint.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         btnImportPoint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Up.png"))); // NOI18N
         btnImportPoint.setText("EXCEL IMPORT");
+        btnImportPoint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportPointActionPerformed(evt);
+            }
+        });
 
         btnExportPoint.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         btnExportPoint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Down.png"))); // NOI18N
         btnExportPoint.setText("EXCEL EXPORT");
-
-        jButton11.setText("jButton11");
-
-        jButton12.setText("jButton12");
+        btnExportPoint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportPointActionPerformed(evt);
+            }
+        });
 
         jLayeredPane20.setLayer(jScrollPane24, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane20.setLayer(jLabel80, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -2631,8 +2697,6 @@ public class Menu_Admin extends javax.swing.JFrame {
         jLayeredPane20.setLayer(btnResetPoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane20.setLayer(btnImportPoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane20.setLayer(btnExportPoint, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane20.setLayer(jButton11, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane20.setLayer(jButton12, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane20Layout = new javax.swing.GroupLayout(jLayeredPane20);
         jLayeredPane20.setLayout(jLayeredPane20Layout);
@@ -2700,12 +2764,7 @@ public class Menu_Admin extends javax.swing.JFrame {
                             .addComponent(btnResetPoint, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnImportPoint, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnExportPoint, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAddPoint, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jLayeredPane20Layout.createSequentialGroup()
-                        .addGap(287, 287, 287)
-                        .addComponent(jButton11)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton12)))
+                            .addComponent(btnAddPoint, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
         jLayeredPane20Layout.setVerticalGroup(
@@ -2754,14 +2813,201 @@ public class Menu_Admin extends javax.swing.JFrame {
                         .addComponent(btnImportPoint)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnExportPoint)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jLayeredPane20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton11)
-                    .addComponent(jButton12))
-                .addGap(52, 52, 52))
+                .addGap(87, 87, 87))
         );
 
         tabStudent.addTab("POINT", jLayeredPane20);
+
+        jLabel91.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel91.setText("ID Bonus:");
+
+        jLabel119.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel119.setText("Year:");
+
+        jLabel120.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel120.setText("ID Student:");
+
+        jLabel121.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel121.setText("GPA:");
+
+        cbYearBonus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel122.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel122.setText("Note:");
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane26.setViewportView(jTextArea1);
+
+        tableBonus.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane27.setViewportView(tableBonus);
+
+        jLabel123.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel123.setText("Level:");
+
+        cbBonusName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel124.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel124.setText("Course_Name");
+
+        cblevelBnous.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        txtFindBonus.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFindBonusKeyReleased(evt);
+            }
+        });
+
+        jLabel125.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel125.setText("Find:");
+
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Add.png"))); // NOI18N
+        jButton5.setText("ADD");
+
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/edit-24px.png"))); // NOI18N
+        jButton6.setText("UPDATE");
+
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Trash.png"))); // NOI18N
+        jButton8.setText("DELETE");
+
+        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Refresh.png"))); // NOI18N
+        jButton9.setText("RESET");
+
+        cbStudentBonus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLayeredPane21.setLayer(jLabel91, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(jTextField1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(jLabel119, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(jLabel120, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(jLabel121, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(cbYearBonus, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(jTextField3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(jLabel122, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(jScrollPane26, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(jScrollPane27, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(jLabel123, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(cbBonusName, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(jLabel124, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(cblevelBnous, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(txtFindBonus, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(jLabel125, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(jButton5, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(jButton6, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(jButton8, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(jButton9, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane21.setLayer(cbStudentBonus, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jLayeredPane21Layout = new javax.swing.GroupLayout(jLayeredPane21);
+        jLayeredPane21.setLayout(jLayeredPane21Layout);
+        jLayeredPane21Layout.setHorizontalGroup(
+            jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jLayeredPane21Layout.createSequentialGroup()
+                .addGroup(jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jLayeredPane21Layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addGroup(jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel91)
+                            .addComponent(jLabel119)
+                            .addComponent(jLabel123))
+                        .addGap(18, 18, 18)
+                        .addGroup(jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbYearBonus, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cblevelBnous, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(60, 60, 60)
+                        .addGroup(jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel120)
+                            .addComponent(jLabel121)
+                            .addComponent(jLabel124))
+                        .addGroup(jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jLayeredPane21Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbStudentBonus, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(63, 63, 63))
+                            .addGroup(jLayeredPane21Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(cbBonusName, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane21Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel125)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtFindBonus, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(142, 142, 142)))
+                .addGroup(jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel122))
+                .addGap(14, 14, 14))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane21Layout.createSequentialGroup()
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addComponent(jScrollPane27, javax.swing.GroupLayout.PREFERRED_SIZE, 778, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
+            .addGroup(jLayeredPane21Layout.createSequentialGroup()
+                .addGap(255, 255, 255)
+                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton9)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jLayeredPane21Layout.setVerticalGroup(
+            jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jLayeredPane21Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel91)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel120)
+                    .addComponent(jLabel122)
+                    .addComponent(cbStudentBonus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jLayeredPane21Layout.createSequentialGroup()
+                        .addGroup(jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel119)
+                            .addComponent(jLabel121)
+                            .addComponent(cbYearBonus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel123)
+                                .addComponent(cblevelBnous, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(cbBonusName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel124)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtFindBonus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel125))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addComponent(jScrollPane27, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addGroup(jLayeredPane21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton5)
+                    .addComponent(jButton6)
+                    .addComponent(jButton8)
+                    .addComponent(jButton9))
+                .addGap(38, 38, 38))
+        );
+
+        tabStudent.addTab("BONUS", jLayeredPane21);
 
         javax.swing.GroupLayout cardListStudentLayout = new javax.swing.GroupLayout(cardListStudent);
         cardListStudent.setLayout(cardListStudentLayout);
@@ -4889,6 +5135,121 @@ public class Menu_Admin extends javax.swing.JFrame {
     private void btnResetPointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetPointActionPerformed
         this.resetFormPoint();
     }//GEN-LAST:event_btnResetPointActionPerformed
+
+    private void txtFindPointKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFindPointKeyReleased
+        this.fillTablePoint();
+    }//GEN-LAST:event_txtFindPointKeyReleased
+
+    private void tablePointMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablePointMouseClicked
+        tablePoint.setEnabled(false);
+        if (evt.getClickCount() == 2) {
+            this.clickTablePoint();
+            tablePoint.setEnabled(true);
+        }
+    }//GEN-LAST:event_tablePointMouseClicked
+
+    private void btnAddPointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPointActionPerformed
+        this.addPoint();
+    }//GEN-LAST:event_btnAddPointActionPerformed
+
+    private void btnUpdatePointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdatePointActionPerformed
+        this.updatePoint();
+    }//GEN-LAST:event_btnUpdatePointActionPerformed
+
+    private void btnExportPointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportPointActionPerformed
+        try {
+            List<Point> points = pointDAO.selectAll();
+            Workbook workbook = ExcelUtils.exportToExcelPoint(points);
+            chooseDirectoryToSave(workbook);
+            
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }//GEN-LAST:event_btnExportPointActionPerformed
+
+    private void btnImportPointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportPointActionPerformed
+        File file = this.chonFileExcelImportPoint();
+        if (file == null) {
+            Message.alert(this, "Lỗi dọc tập tin Excel!");
+        } else {
+            this.importToExcelPoint(file);
+        }
+    }//GEN-LAST:event_btnImportPointActionPerformed
+
+    private void txtFindBonusKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFindBonusKeyReleased
+        fillTableBonus();
+    }//GEN-LAST:event_txtFindBonusKeyReleased
+    private File chonFileExcelImportPoint() {
+        File excelFile = null;
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            excelFile = fileChooser.getSelectedFile();
+        }
+        return excelFile;
+    }
+
+    private void importToExcelPoint(File excelFile) {
+        try {
+            FileInputStream file = new FileInputStream(excelFile);
+            HSSFWorkbook workbook = new HSSFWorkbook(file);
+            HSSFSheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            rowIterator.next(); // Skip the header row
+
+            Point point = new Point();
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                point.setID_Student(getCellValue(row.getCell(0)));
+                point.setID_Class(getCellValue(row.getCell(1)));
+                point.setID_Subject(getCellValue(row.getCell(2)));
+                point.setID_Teacher(getCellValue(row.getCell(3)));
+
+                String yearCellValue = getCellValue(row.getCell(4));
+                if (yearCellValue.contains(".")) {
+                    point.setYear((int) Float.parseFloat(yearCellValue));
+                } else {
+                    point.setYear(Integer.parseInt(yearCellValue));
+                }
+
+                point.setPoint(Float.parseFloat(getCellValue(row.getCell(6))));
+                point.setCourse_Name(getCellValue(row.getCell(5)));
+                point.setNote(getCellValue(row.getCell(7)));
+
+                if (pointDAO.checkID(point) == true) {
+                    Message.alert(this, "Duplicate information !");
+                    return;
+                }
+                pointDAO.insert(point);
+            }
+
+            file.close();
+            fillTablePoint();
+            Message.alert(this, "Import successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getCellValue(Cell cell) {
+        if (cell == null) {
+            return "";
+        }
+
+        switch (cell.getCellType()) {
+            case STRING:
+                return cell.getStringCellValue();
+            case NUMERIC:
+                if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                    return String.valueOf(cell.getDateCellValue()); // Xử lý trường hợp ngày tháng
+                } else {
+                    return String.valueOf((float) cell.getNumericCellValue()); // Đổi kiểu dữ liệu thành float
+                }
+            default:
+                return "";
+        }
+    }
+
     private void setCardFalse() {
         cardTrangChu.setVisible(false);
         cardInformation.setVisible(false);
@@ -6498,16 +6859,24 @@ public class Menu_Admin extends javax.swing.JFrame {
     }
 
     private void initTablePoint() {
-        String columns[] = {"ID Student", "ID Class", "Year", "Course Name", "ID Teacher", "GPA", "Classification"};
+        String columns[] = {"ID Student", "ID Class", "ID Subject", "Year", "Course Name", "ID Teacher", "Point", "Note"};
         tableModelPoint.setColumnIdentifiers(columns);
         tablePoint.setModel(tableModelPoint);
     }
 
     private void fillTablePoint() {
         tableModelPoint.setRowCount(0);
-        List<Object[]> list = pointDAO.getGPA();
-        for (Object[] row : list) {
-            tableModelPoint.addRow(row);
+        try {
+            String keyword = txtFindPoint.getText();
+            List<Point> list = pointDAO.selectByKeyword(keyword);
+            for (Point point : list) {
+                Object[] row = {
+                    point.getID_Student(), point.getID_Class(), point.getID_Subject(), point.getYear(),
+                    point.getCourse_Name(), point.getID_Teacher(), point.getPoint(), point.getNote()};
+                tableModelPoint.addRow(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -6535,7 +6904,129 @@ public class Menu_Admin extends javax.swing.JFrame {
     private Point getFormPoint() {
         Point point = new Point();
 
+
+
+        point.setID_Student((String) cbIDStudentPoint.getSelectedItem());
+        point.setID_Subject((String) cbIDSubjectPoint.getSelectedItem());
+        point.setID_Class((String) cbIDClassPoint.getSelectedItem());
+        point.setYear((Integer) cbYearPoint.getSelectedItem());
+        point.setCourse_Name((String) cbCourseNamePoint.getSelectedItem());
+        point.setPoint(Float.valueOf(txtPoint.getText()));
+        point.setID_Teacher(txtIDTeacherPoint.getText());
+        point.setNote(txtNotePoint.getText());
+
         return point;
+    }
+
+    private void clickTablePoint() {
+        int index = tablePoint.getSelectedRow();
+        String ID_Student = tablePoint.getValueAt(index, 0).toString();
+        String ID_Class = tablePoint.getValueAt(index, 1).toString();
+        String ID_Subject = tablePoint.getValueAt(index, 2).toString();
+        String year = tablePoint.getValueAt(index, 3).toString();
+        String courseName = tablePoint.getValueAt(index, 4).toString();
+        String ID_Teacher = tablePoint.getValueAt(index, 5).toString();
+        Point point = pointDAO.selectByIdPoint(ID_Student, ID_Class, ID_Subject, ID_Teacher, year, courseName);
+        this.setFormPoint(point);
+    }
+
+    private void addPoint() {
+        if (txtPoint.getText().isEmpty()) {
+            Message.alert(this, "Please enter complete information !");
+            txtPoint.requestFocus();
+            return;
+        }
+        Point entity = getFormPoint();
+        if (pointDAO.checkID(entity) == true) {
+            Message.alert(this, "The information already exists, new data cannot be added !");
+            return;
+        }
+        try {
+            float point = Float.parseFloat(txtPoint.getText());
+            if (point < 0 || point > 10) {
+                Message.alert(this, "Point must be from 0 to 10 !");
+                return;
+            }
+        } catch (Exception e) {
+            Message.alert(this, "Points must be numbers !");
+            return;
+        }
+        try {
+            pointDAO.insert(entity);
+            this.fillTablePoint();
+            this.resetFormPoint();
+            Message.alert(this, "Added point successfully !");
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }
+
+    private void updatePoint() {
+        if (txtPoint.getText().isEmpty()) {
+            Message.alert(this, "Please enter complete information !");
+            txtPoint.requestFocus();
+            return;
+        }
+        Point entity = getFormPoint();
+        if (pointDAO.checkID(entity) == false) {
+            Message.alert(this, "This information is not available !");
+            return;
+        }
+        try {
+            float point = Float.parseFloat(txtPoint.getText());
+            if (point < 0 || point > 10) {
+                Message.alert(this, "Point must be from 0 to 10 !");
+                return;
+            }
+        } catch (Exception e) {
+            Message.alert(this, "Points must be numbers !");
+            return;
+        }
+        try {
+            pointDAO.update(entity);
+            this.fillTablePoint();
+            this.resetFormPoint();
+            Message.alert(this, "Added point successfully !");
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }
+
+    private void initTableBonus() {
+        String columns[] = {"ID Bonus", "Year", "Course Name", "Level", "ID Student",
+            "GPA"};
+        tableModelBonus.setColumnIdentifiers(columns);
+        tableBonus.setModel(tableModelBonus);
+    }
+
+    private void fillTableBonus() {
+        tableModelBonus.setRowCount(0);
+        try {
+            String keyword = txtFindBonus.getText();
+            List<Bonus> list = bonusDAO.selectByKeyword(keyword);
+            for (Bonus bonus : list) {
+                Object[] row = {bonus.getID_Bonus(), bonus.getYear(), bonus.getCourse_Name(), bonus.getLevel(),
+                    bonus.getID_Student(), bonus.getGPA()};
+                tableModelBonus.addRow(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void fillComboboxBonus() {
+        IsValidForm.fillComboBox(new DefaultComboBoxModel(), studentDAO.selectAllIDStudent(), cbStudentBonus);
+        final String courseName[] = {"Spring", "Summer", "Fall"};
+        IsValidForm.fillComboBox(new DefaultComboBoxModel(courseName), Arrays.asList(courseName), cbBonusName);
+
+        final int currentYear = Year.now().getValue();
+        DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel<>();
+        for (int i = currentYear; i >= 2015; i--) {
+            comboBoxModel.addElement(i);
+        }
+        cbYearBonus.setModel(comboBoxModel);
+        final String level[] = {"Good", "Medium", "Excellent"};
+        IsValidForm.fillComboBox(new DefaultComboBoxModel(level), Arrays.asList(level), cblevelBnous);
     }
 
     /**
@@ -6653,6 +7144,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JPanel cardListTeacher;
     private javax.swing.JPanel cardQRCode;
     private javax.swing.JPanel cardTrangChu;
+    private javax.swing.JComboBox<String> cbBonusName;
     private javax.swing.JComboBox<String> cbClassCourse;
     private javax.swing.JComboBox<String> cbClassTeacher;
     private javax.swing.JComboBox<String> cbCourse;
@@ -6676,19 +7168,24 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbScheduleStudent;
     private javax.swing.JComboBox<String> cbScheduleSubject;
     private javax.swing.JComboBox<String> cbScheduleTeacher;
+    private javax.swing.JComboBox<String> cbStudentBonus;
     private javax.swing.JComboBox<String> cbStudentCourse;
     private javax.swing.JComboBox<String> cbTeacherCourse;
+    private javax.swing.JComboBox<String> cbYearBonus;
     private javax.swing.JComboBox<String> cbYearPoint;
     private javax.swing.JComboBox<String> cbYearStaff;
     private javax.swing.JComboBox<String> cbYearStudent;
     private javax.swing.JComboBox<String> cbYearTeacher;
+    private javax.swing.JComboBox<String> cblevelBnous;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -6712,7 +7209,14 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel116;
     private javax.swing.JLabel jLabel117;
     private javax.swing.JLabel jLabel118;
+    private javax.swing.JLabel jLabel119;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel120;
+    private javax.swing.JLabel jLabel121;
+    private javax.swing.JLabel jLabel122;
+    private javax.swing.JLabel jLabel123;
+    private javax.swing.JLabel jLabel124;
+    private javax.swing.JLabel jLabel125;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -6799,6 +7303,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel89;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabel90;
+    private javax.swing.JLabel jLabel91;
     private javax.swing.JLabel jLabel92;
     private javax.swing.JLabel jLabel93;
     private javax.swing.JLabel jLabel94;
@@ -6820,6 +7325,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JLayeredPane jLayeredPane19;
     private javax.swing.JLayeredPane jLayeredPane2;
     private javax.swing.JLayeredPane jLayeredPane20;
+    private javax.swing.JLayeredPane jLayeredPane21;
     private javax.swing.JLayeredPane jLayeredPane3;
     private javax.swing.JLayeredPane jLayeredPane4;
     private javax.swing.JLayeredPane jLayeredPane5;
@@ -6847,6 +7353,8 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane23;
     private javax.swing.JScrollPane jScrollPane24;
     private javax.swing.JScrollPane jScrollPane25;
+    private javax.swing.JScrollPane jScrollPane26;
+    private javax.swing.JScrollPane jScrollPane27;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
@@ -6855,6 +7363,9 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JPanel jplMain;
     private javax.swing.JPanel jplSlideMenu;
@@ -6900,6 +7411,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JTabbedPane tabStaff;
     private javax.swing.JTabbedPane tabStudent;
     private javax.swing.JTabbedPane tabTeacher;
+    private javax.swing.JTable tableBonus;
     private javax.swing.JTable tableClass;
     private javax.swing.JTable tableCourse;
     private javax.swing.JTable tableCourse_Relationship;
@@ -6928,6 +7440,7 @@ public class Menu_Admin extends javax.swing.JFrame {
     private javax.swing.JTextField txtEmailStaff;
     private javax.swing.JTextField txtEmailTeacher;
     private javax.swing.JPasswordField txtEnterPass;
+    private javax.swing.JTextField txtFindBonus;
     private javax.swing.JTextField txtFindClass;
     private javax.swing.JTextField txtFindCourse;
     private javax.swing.JTextField txtFindCourseInformation;
