@@ -3,26 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/duan1/Du_An_1/src/com/Utils/Authentication.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/Main/Menu.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/DAO/myInterFace.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/Utils/ExcelUtils.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/Main/Login.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/Utils/JDBCHelper.java</file>
-            <file>file:/D:/duan1/Du_An_1/src/com/DAO/PointDAO.java</file>
-
-            <file>file:/E:/DUAN1-PRO1401/Project/Du_An_1/src/com/DAO/Staff_SalaryDAO.java</file>
-            <file>file:/E:/DUAN1-PRO1401/Project/Du_An_1/src/com/Main/Menu_Admin.java</file>
-            <file>file:/E:/DUAN1-PRO1401/Project/Du_An_1/src/com/Data/DataBase.sql</file>
-            <file>file:/E:/DUAN1-PRO1401/Project/Du_An_1/src/com/Main/Form_Staff.java</file>
-            <file>file:/E:/DUAN1-PRO1401/Project/Du_An_1/src/com/Entity/Staff_Salary.java</file>
-            <file>file:/E:/DUAN1-PRO1401/Project/Du_An_1/src/com/Main/Login.java</file>
-            <file>file:/E:/DUAN1-PRO1401/Project/Du_An_1/src/com/Utils/XImage.java</file>
-
+            <file>file:/D:/Du_An_1/Bai_lab/Du_An_Truong_Mam_Non/src/com/DAO/BonusDAO.java</file>
+            <file>file:/D:/Du_An_1/Bai_lab/Du_An_Truong_Mam_Non/src/com/Main/Menu.java</file>
+            <file>file:/D:/Du_An_1/Bai_lab/Du_An_Truong_Mam_Non/src/com/Main/Login.java</file>
             <file>file:/D:/Du_An_1/Bai_lab/Du_An_Truong_Mam_Non/src/com/Main/Menu_Admin.java</file>
+            <file>file:/D:/Du_An_1/Bai_lab/Du_An_Truong_Mam_Non/src/com/Utils/JDBCHelper.java</file>
             <file>file:/D:/Du_An_1/Bai_lab/Du_An_Truong_Mam_Non/src/com/Utils/ExcelUtils.java</file>
-            <file>file:/D:/Du_An_1/Bai_lab/Du_An_Truong_Mam_Non/src/com/DAO/PointDAO.java</file>
-
         </group>
     </open-files>
 </project-private>
