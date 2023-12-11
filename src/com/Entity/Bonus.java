@@ -10,17 +10,9 @@ package com.Entity;
  */
 public class Bonus {
 
-    private String ID_Bonus, Course_Name, Level, ID_Student, Note;
-    private int year;
+    private String Course_Name, Level, ID_Student, Note;
+    private int year, ID_Bonus;
     private float GPA;
-
-    public String getID_Bonus() {
-        return ID_Bonus;
-    }
-
-    public void setID_Bonus(String ID_Bonus) {
-        this.ID_Bonus = ID_Bonus;
-    }
 
     public String getCourse_Name() {
         return Course_Name;
@@ -73,13 +65,22 @@ public class Bonus {
     public Bonus() {
     }
 
-    public Bonus(String ID_Bonus, String Course_Name, String Level, String ID_Student, String Note, int year, float GPA) {
-        this.ID_Bonus = ID_Bonus;
+    public Bonus(String Course_Name, String Level, String ID_Student, String Note, int year, int ID_Bonus, float GPA) {
         this.Course_Name = Course_Name;
         this.Level = Level;
         this.ID_Student = ID_Student;
         this.Note = Note;
         this.year = year;
+        this.ID_Bonus = ID_Bonus;
         this.GPA = GPA;
     }
+
+    public int getID_Bonus() {
+        return ID_Bonus;
+    }
+
+    public void setID_Bonus(int ID_Bonus) {
+        this.ID_Bonus = ID_Bonus;
+    }
+
 }
