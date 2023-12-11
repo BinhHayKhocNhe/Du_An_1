@@ -348,6 +348,8 @@ VALUES
     ('STU008', 'C008', 'MAT001', 'TCH008', 2023, 8.5, 'Fall', 'Note for Point 8'),
     ('STU009', 'C009', 'MAT001', 'TCH009', 2023, 9, 'Fall', 'Note for Point 9'),
     ('STU010', 'C010', 'DR001', 'TCH010', 2023, 10, 'Fall', 'Note for Point 10');
+	INSERT INTO Point (ID_Student, ID_Class, ID_Subject, ID_Teacher, Year, Point, Course_Name, Note)
+VALUES ('STU001', 'C001', 'MAT001', 'TCH001', 2023, 8, 'Fall', 'Note for Point 1')
 
 CREATE TABLE Attendance_Student(
 ID_Attendance NVARCHAR(50) NOT NULL,

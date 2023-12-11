@@ -19,23 +19,20 @@ public class BonusDAO implements myInterFace<Bonus, String> {
 
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Bonus WHERE ID_Bonus = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM Bonus";
-    private final String INSERT_SQL = "INSERT INTO Bonus (Year, Course_Name, Level, ID_Student, GPA, Note)\n"
-            + "VALUES( ?, ?, ?, ?, ?, ?);";
 
     @Override
     public void insert(Bonus entity) {
-        JDBCHelper.executeUpdate(INSERT_SQL, entity.getYear(), entity.getCourse_Name(),
-                entity.getLevel(), entity.getID_Student(), entity.getGPA(), entity.getNote());
+        return;
     }
 
     @Override
     public void update(Bonus entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return;
     }
 
     @Override
     public void delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return;
     }
 
     @Override
