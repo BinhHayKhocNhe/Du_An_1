@@ -93,6 +93,7 @@ public class Form_Staff extends javax.swing.JFrame {
         cardAddStudent.setVisible(false);
         cardhelp.setVisible(false);
         cardHome1.setVisible(false);
+        cardSchedule.setVisible(false);
         closeMenu();
     }
 
