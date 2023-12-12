@@ -189,19 +189,37 @@ public class StaffDAO implements myInterFace<Staff, String> {
         try {
             // Truyền tham số vào câu SQL
             ResultSet rs = JDBCHelper.executeQuery(sql, ID);
-
+            
             // Kiểm tra xem có dữ liệu không
             if (rs.next()) {
                 // Di chuyển con trỏ đến dòng đầu tiên và lấy giá trị từ cột "Position"
                 position = rs.getString("Position");
             }
-
+            
             // Đóng ResultSet
             rs.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         return position;
+    }
+
+    public List<String> returntListIDstaff() {
+        return getUniqueColumnValues("ID_Staff");
+    }
+
+    private List<String> getUniqueColumnValues(String columnName) {
+        List<String> values = new ArrayList<>();
+        String sql = "SELECT DISTINCT " + columnName + " FROM Staff where Position = 'Doctor'";
+        try (ResultSet resultSet = JDBCHelper.executeQuery(sql)) {
+            while (resultSet.next()) {
+                values.add(resultSet.getString(columnName));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            // Handle the exception as needed
+        }
+        return values;
     }
 }

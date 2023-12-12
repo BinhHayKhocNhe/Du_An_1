@@ -39,7 +39,7 @@ public class Administrators_DAO implements myInterFace<Administrators, String> {
     public void delete(String id) {
         return;
     }
-
+    
     @Override
     public boolean checkID(Administrators entity) {
         try {

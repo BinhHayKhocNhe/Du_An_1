@@ -113,6 +113,20 @@ public class StudentDAO implements myInterFace<Student, String> {
         return getUniqueColumnValues("ID_Class");
     }
 
+    public List<String> getidlStudentByID(String ID) {
+        List<String> values = new ArrayList<>();
+        String sql = "SELECT DISTINCT ID_Student FROM Student where ID_Student like ?";
+        try (ResultSet resultSet = JDBCHelper.executeQuery(sql, "%" + ID + "%")) {
+            while (resultSet.next()) {
+                values.add(resultSet.getString("ID_Student"));
+            }
+        } catch (java.sql.SQLException ex) {
+            ex.printStackTrace();
+            // Handle the exception as needed
+        }
+        return values;
+    }
+
     // Phương thức trợ giúp để lấy giá trị độc nhất từ một cột cụ thể
     private List<String> getUniqueColumnValues(String columnName) {
         List<String> values = new ArrayList<>();

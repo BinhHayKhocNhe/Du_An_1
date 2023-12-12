@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -110,4 +112,35 @@ public class CoursesDAO implements myInterFace<Courses, String> {
         }
         return list;
     }
+
+    public List<String> returntListCouseName() {
+        return getUniqueColumnValues("ID_Course");
+    }
+
+    private List<String> getUniqueColumnValues(String columnName) {
+        List<String> values = new ArrayList<>();
+        String sql = "SELECT DISTINCT " + columnName + " FROM Course";
+        try (ResultSet resultSet = JDBCHelper.executeQuery(sql)) {
+            while (resultSet.next()) {
+                values.add(resultSet.getString(columnName));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            // Handle the exception as needed
+        }
+        return values;
+    }
+public String returnCourseName(String ID){
+    String sql = "select course_name from Course where ID_Course = ?";
+    String courseName = null;
+    ResultSet resultSet = JDBCHelper.executeQuery(sql,ID);
+        try {
+            while (resultSet.next()) {
+                courseName = resultSet.getString("course_name");
+                
+            }   } catch (SQLException ex) {
+            Logger.getLogger(CoursesDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return courseName;
+}
 }

@@ -6,6 +6,9 @@
 package com.Main;
 
 import com.DAO.ClassDAO;
+import com.DAO.CoursesDAO;
+import com.DAO.HealthDAO;
+import com.DAO.ScheduleStaffDAO;
 import com.DAO.StaffDAO;
 import com.DAO.Staff_SalaryDAO;
 import com.DAO.StudentDAO;
@@ -13,6 +16,8 @@ import com.Entity.Staff;
 import com.Entity.Staff_Salary;
 import com.Entity.Student;
 import com.Entity.Class;
+import com.Entity.Health;
+import com.Entity.Schedule_Staff;
 import com.Utils.Authentication;
 import com.Utils.IsValidForm;
 import com.Utils.Message;
@@ -49,6 +54,9 @@ public class Form_Staff extends javax.swing.JFrame {
     StudentDAO daostu = new StudentDAO();
     ClassDAO classDAO = new ClassDAO();
     Staff_SalaryDAO salaryDAO = new Staff_SalaryDAO();
+    HealthDAO healthDAO = new HealthDAO();
+    CoursesDAO coursesDAO = new CoursesDAO();
+    ScheduleStaffDAO scheduleStaffDAO = new ScheduleStaffDAO();
 
     /**
      * Creates new form Menu
@@ -70,14 +78,17 @@ public class Form_Staff extends javax.swing.JFrame {
         setRdo();
         setMonthSalary();
         tableSalary();
-
+        loadTableHealth();
+        loadTableIDStudent();
+        loadCboIDCourseANDcboIDStaff();
+        loadTblSchedule();
     }
 
     private void CardFalse() {
         cardHome.setVisible(false);
         cardStaff_Salary.setVisible(false);
         cardInfor.setVisible(false);
-        cardSchedule.setVisible(false);
+        cardHealth.setVisible(false);
         cardStaff.setVisible(false);
         cardAddStudent.setVisible(false);
         cardhelp.setVisible(false);
@@ -91,6 +102,7 @@ public class Form_Staff extends javax.swing.JFrame {
         lblSta_Li.setOpaque(false);
         lblStudent.setOpaque(false);
         lblSche.setOpaque(false);
+        lblHealth.setOpaque(false);
         lblSalary.setOpaque(false);
 
     }
@@ -534,6 +546,7 @@ public class Form_Staff extends javax.swing.JFrame {
         rdoOn.setSelected(true);
         rdoOn1.setSelected(true);
         rdoStatus_Student_On.setSelected(true);
+        rdoGood.setSelected(true);
     }
 // Tăng tự động id học sinh
 
@@ -571,7 +584,7 @@ public class Form_Staff extends javax.swing.JFrame {
         if (Authentication.staff != null) {
             String staffID = Authentication.staff.getID_Staff();
             try {
-                // Đảm bảo selectedItem không phải là null
+// Đảm bảo selectedItem không phải là null
                 Object selectedItem = cboMonthSalary.getSelectedIndex();
 
                 // Chuyển đổi selectedItem thành String
@@ -623,6 +636,177 @@ public class Form_Staff extends javax.swing.JFrame {
         cboMonthSalary.setModel(model);
     }
 
+// Health
+    private void setPositionDoctor() {
+        String position = daoStaff.ReturnPosition(Authentication.staff.getID_Staff());
+        if (!position.equals("Doctor")) {
+            Message.alert(this, "you don't have access");
+        } else {
+            CardFalse();
+            lbTitle.setText("Viet Duc School - Health");
+            setBackGround();
+            lblHealth.setOpaque(true);
+            lblHealth.setBackground(Color.getHSBColor((float) 0.16, (float) 0.6, (float) 0.9));
+            cardHealth.setVisible(true);
+        }
+    }
+// load table Health
+
+    private void loadTableHealth() {
+        DefaultTableModel model = (DefaultTableModel) tblHealth.getModel();
+        model.setRowCount(0);
+        try {
+            List<Health> health = healthDAO.selectAll();
+            for (Health health1 : health) {
+                Object row[] = {
+                    health1.getID_Course(),
+                    health1.getID_Student(),
+                    health1.getID_Staff(),
+                    health1.getHeight(),
+                    health1.getWeight(),
+                    health1.isStatus() ? "Good" : "Bad",
+                    health1.getNote()
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+            Message.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+// load table ID student
+
+    private void loadTableIDStudent() {
+        DefaultTableModel model = (DefaultTableModel) tblIDStudent.getModel();
+        model.setRowCount(0);
+        try {
+            String keyword = txtIDStudentHealth.getText();
+            List<String> idStudent = daostu.getidlStudentByID(keyword);
+            for (String idStu : idStudent) {
+                Object rowObject[] = {
+                    idStu
+                };
+                model.addRow(rowObject);
+            }
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+            Message.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+
+// load cbo ID Course
+    private void loadCboIDCourseANDcboIDStaff() {
+        DefaultComboBoxModel modelCourse = (DefaultComboBoxModel) cboIDCourse.getModel();
+        DefaultComboBoxModel modelStaff = (DefaultComboBoxModel) cboIDStaffDoctor.getModel();
+        modelCourse.removeAllElements();
+        modelStaff.removeAllElements();
+        List<String> cboCourse = coursesDAO.returntListCouseName();
+        List<String> cboStaff = daoStaff.returntListIDstaff();
+        modelCourse.addElement("Choose");
+        modelStaff.addElement("Choose");
+        for (String string : cboCourse) {
+            modelCourse.addElement(string);
+        }
+        for (String string1 : cboStaff) {
+            modelStaff.addElement(string1);
+        }
+        cboIDStaffDoctor.setSelectedItem(Authentication.staff.getID_Staff());
+        cboIDStaffDoctor.setEnabled(false);
+    }
+// save health
+
+    private Health getFormHealth() {
+        Health health = new Health();
+        health.setID_Course((String) cboIDCourse.getSelectedItem());
+        health.setCourse_Name(txtCourseName.getText());
+        health.setID_Staff((String) cboIDStaffDoctor.getSelectedItem());
+        health.setID_Student(txtIDStudentHealth.getText());
+        health.setStatus(rdoGood.isSelected());
+
+        // Thực hiện kiểm tra trước khi chuyển đổi từ chuỗi sang số
+        try {
+            health.setHeight(Integer.parseInt(txtHeight.getText()));
+            health.setWeight(Integer.parseInt(txtWeight.getText()));
+        } catch (NumberFormatException e) {
+            // Xử lý khi có lỗi chuyển đổi
+            e.printStackTrace();
+            Message.alert(this, "Please enter valid numbers for Height and Weight.");
+            return null; // Trả về null để biểu thị rằng có lỗi xảy ra
+        }
+
+        health.setNote(txtaNote.getText());
+        return health;
+    }
+
+    private void addHealth() {
+        JTextComponent text[] = {txtCourseName, txtIDStudentHealth, txtHeight, txtWeight};
+
+        // Kiểm tra null và kiểm tra chuỗi rỗng
+        IsValidForm.checkNull(text);
+
+        try {
+            // Kiểm tra định dạng số cho chiều cao và cân nặng
+            if (!txtHeight.getText().trim().isEmpty() && !txtWeight.getText().trim().isEmpty()) {
+                int height = Integer.parseInt(txtHeight.getText());
+                int weight = Integer.parseInt(txtWeight.getText());
+
+                // Kiểm tra giá trị hợp lệ cho chiều cao và cân nặng
+                if (height < 70) {
+                    Message.alert(this, "Please fill in the correct number of Centimeters!");
+                    return;
+                }
+
+                if (weight < 10) {
+                    Message.alert(this, "Please fill in the correct number of Kilograms!");
+                    return;
+                }
+            } else {
+                Message.alert(this, "Please enter valid numbers for Height and Weight.");
+                return;
+            }
+
+            // Tạo đối tượng Health từ các trường nhập liệu
+            Health health = getFormHealth();
+
+            // Kiểm tra null trước khi thêm vào cơ sở dữ liệu
+            if (health != null) {
+                healthDAO.insert(health);
+                this.loadTableHealth();
+                Message.alert(this, "Health added successfully!");
+            }
+        } catch (NumberFormatException e) {
+            // Xử lý ngoại lệ nếu không thể chuyển đổi thành số
+            e.printStackTrace();
+            Message.alert(this, "Please enter valid numbers for Height and Weight.");
+        } catch (Exception e) {
+            // Xử lý ngoại lệ chung
+            e.printStackTrace();
+            Message.alert(this, "An error occurred while adding health information.");
+        }
+    }
+
+// Load Table Schedule
+    private void loadTblSchedule() {
+
+        DefaultTableModel model = (DefaultTableModel) tblSchedule.getModel();
+        model.setRowCount(0);
+        String ID = Authentication.staff.getID_Staff();
+        try {
+            List<Schedule_Staff> ssdao = scheduleStaffDAO.selectSchedule(ID);
+            for (Schedule_Staff schedule_Staff : ssdao) {
+                Object row[] = {
+                    schedule_Staff.getWork_Date(),
+                    schedule_Staff.getDay_Of_Week(),
+                    schedule_Staff.getStart_Time(),
+                    schedule_Staff.getEnd_Time()
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -638,6 +822,7 @@ public class Form_Staff extends javax.swing.JFrame {
         buttonGroup4 = new javax.swing.ButtonGroup();
         buttonGroup5 = new javax.swing.ButtonGroup();
         buttonGroup6 = new javax.swing.ButtonGroup();
+        buttonGroup7 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jplSlideMenu = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -651,8 +836,9 @@ public class Form_Staff extends javax.swing.JFrame {
         lblLog_out = new javax.swing.JLabel();
         lblHelp = new javax.swing.JLabel();
         lblStudent = new javax.swing.JLabel();
-        lblSalary = new javax.swing.JLabel();
+        lblHealth = new javax.swing.JLabel();
         lblSche = new javax.swing.JLabel();
+        lblSalary = new javax.swing.JLabel();
         jpllMenuBar = new javax.swing.JPanel();
         lblOpenMenu = new javax.swing.JLabel();
         jplTitle = new javax.swing.JPanel();
@@ -736,10 +922,7 @@ public class Form_Staff extends javax.swing.JFrame {
         txtEmail1 = new javax.swing.JTextField();
         txtP_Num1 = new javax.swing.JTextField();
         txtAddress1 = new javax.swing.JTextField();
-        btnNew1 = new javax.swing.JButton();
-        btnAdd1 = new javax.swing.JButton();
         btnEdit1 = new javax.swing.JButton();
-        btnDelete1 = new javax.swing.JButton();
         jLabel36 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
         cboYear1 = new javax.swing.JComboBox<>();
@@ -813,9 +996,38 @@ public class Form_Staff extends javax.swing.JFrame {
         tblList_stu = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         txtFind_Stu = new javax.swing.JTextField();
-        cardSchedule = new javax.swing.JPanel();
+        cardHealth = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jSeparator7 = new javax.swing.JSeparator();
+        cboIDCourse = new javax.swing.JComboBox<>();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tblIDStudent = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel61 = new javax.swing.JLabel();
+        txtIDStudentHealth = new javax.swing.JTextField();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        txtaNote = new javax.swing.JTextArea();
+        jLabel62 = new javax.swing.JLabel();
+        jLabel63 = new javax.swing.JLabel();
+        cboIDStaffDoctor = new javax.swing.JComboBox<>();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        tblHealth = new javax.swing.JTable();
+        jLabel64 = new javax.swing.JLabel();
+        txtCourseName = new javax.swing.JTextField();
+        jLabel65 = new javax.swing.JLabel();
+        jLabel66 = new javax.swing.JLabel();
+        txtHeight = new javax.swing.JTextField();
+        txtWeight = new javax.swing.JTextField();
+        rdoGood = new javax.swing.JRadioButton();
+        rdoBab = new javax.swing.JRadioButton();
+        jLabel67 = new javax.swing.JLabel();
+        btnSaveHealth = new javax.swing.JButton();
+        jLabel68 = new javax.swing.JLabel();
+        cardSchedule = new javax.swing.JPanel();
+        jLabel60 = new javax.swing.JLabel();
+        jSeparator9 = new javax.swing.JSeparator();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        tblSchedule = new javax.swing.JTable();
         cardhelp = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         lblAVT = new javax.swing.JLabel();
@@ -952,11 +1164,11 @@ public class Form_Staff extends javax.swing.JFrame {
             }
         });
         jplSlideMenu.add(lblSta_Li, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 250, 120, 30));
-        jplSlideMenu.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 469, 210, 10));
+        jplSlideMenu.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 520, 210, 10));
 
-        lblLog_out.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lblLog_out.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblLog_out.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblLog_out.setText("Log Out");
+        lblLog_out.setText("LOG OUT");
         lblLog_out.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblLog_outMouseClicked(evt);
@@ -968,11 +1180,11 @@ public class Form_Staff extends javax.swing.JFrame {
                 lblLog_outMouseExited(evt);
             }
         });
-        jplSlideMenu.add(lblLog_out, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 550, 120, 30));
+        jplSlideMenu.add(lblLog_out, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 590, 120, 30));
 
-        lblHelp.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lblHelp.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblHelp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblHelp.setText("Help");
+        lblHelp.setText("HELP");
         lblHelp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblHelpMouseClicked(evt);
@@ -984,7 +1196,7 @@ public class Form_Staff extends javax.swing.JFrame {
                 lblHelpMouseExited(evt);
             }
         });
-        jplSlideMenu.add(lblHelp, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 500, 120, 30));
+        jplSlideMenu.add(lblHelp, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 540, 120, 30));
 
         lblStudent.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblStudent.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1002,21 +1214,21 @@ public class Form_Staff extends javax.swing.JFrame {
         });
         jplSlideMenu.add(lblStudent, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 300, 120, 30));
 
-        lblSalary.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        lblSalary.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSalary.setText("SALARY");
-        lblSalary.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblHealth.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lblHealth.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblHealth.setText("HEALTH");
+        lblHealth.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblSalaryMouseClicked(evt);
+                lblHealthMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lblSalaryMouseEntered(evt);
+                lblHealthMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                lblSalaryMouseExited(evt);
+                lblHealthMouseExited(evt);
             }
         });
-        jplSlideMenu.add(lblSalary, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 400, 120, 30));
+        jplSlideMenu.add(lblHealth, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 450, 120, 30));
 
         lblSche.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblSche.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1033,6 +1245,22 @@ public class Form_Staff extends javax.swing.JFrame {
             }
         });
         jplSlideMenu.add(lblSche, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 350, 120, 30));
+
+        lblSalary.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lblSalary.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblSalary.setText("SALARY");
+        lblSalary.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblSalaryMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblSalaryMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblSalaryMouseExited(evt);
+            }
+        });
+        jplSlideMenu.add(lblSalary, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 400, 120, 30));
 
         jPanel1.add(jplSlideMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 0, 600));
 
@@ -1590,36 +1818,28 @@ public class Form_Staff extends javax.swing.JFrame {
         buttonGroup3.add(rdoFemale1);
         rdoFemale1.setText("Female");
 
-        btnNew1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/newadd.png"))); // NOI18N
-        btnNew1.setText("New");
-        btnNew1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNew1ActionPerformed(evt);
-            }
-        });
-
-        btnAdd1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Add.png"))); // NOI18N
-        btnAdd1.setText("Add");
+        txtId_Staff1.setEnabled(false);
+        txtId_Staff1.setOpaque(true);
 
         btnEdit1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Edit.png"))); // NOI18N
         btnEdit1.setText("Edit");
-
-        btnDelete1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Trash.png"))); // NOI18N
-        btnDelete1.setText("Delete");
 
         jLabel36.setText("Note:");
 
         jLabel37.setText("Year of birth:");
 
         cboYear1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", " " }));
+        cboYear1.setEnabled(false);
 
         jLabel38.setText("Month of birth:");
 
         cboMonth1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", " " }));
+        cboMonth1.setEnabled(false);
 
         jLabel39.setText("Day of birth:");
 
         cboDay1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", " " }));
+        cboDay1.setEnabled(false);
         cboDay1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboDay1ActionPerformed(evt);
@@ -1641,6 +1861,8 @@ public class Form_Staff extends javax.swing.JFrame {
         jLabel41.setText("Status");
 
         jLabel42.setText("Start Day");
+
+        txtStartDay1.setEditable(false);
 
         buttonGroup4.add(rdoOn1);
         rdoOn1.setText("On");
@@ -1665,28 +1887,9 @@ public class Form_Staff extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtL_Name1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtId_Staff1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtF_Name1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtM_Name1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(btnNew1)))
+                            .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel8Layout.createSequentialGroup()
@@ -1695,17 +1898,33 @@ public class Form_Staff extends javax.swing.JFrame {
                                 .addComponent(jLabel38)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cboMonth1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(12, 12, 12))
+                                .addGap(18, 18, 18))
                             .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addComponent(btnAdd1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(btnEdit1)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnDelete1))
+                                .addGap(117, 117, 117))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel8Layout.createSequentialGroup()
                                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtL_Name1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtId_Staff1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtF_Name1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtM_Name1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
@@ -1796,17 +2015,9 @@ public class Form_Staff extends javax.swing.JFrame {
                                         .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(82, 82, 82))
                                     .addComponent(jScrollPane5))
-                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel8Layout.createSequentialGroup()
-                                        .addGap(13, 13, 13)
-                                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(btnNew1)
-                                            .addComponent(btnAdd1)))
-                                    .addGroup(jPanel8Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(btnDelete1)
-                                            .addComponent(btnEdit1)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnEdit1)
+                                .addGap(1, 1, 1))
                             .addGroup(jPanel8Layout.createSequentialGroup()
                                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel40, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2342,31 +2553,265 @@ public class Form_Staff extends javax.swing.JFrame {
 
         jplMain.add(cardAddStudent, "card3");
 
+        cardHealth.setBackground(new java.awt.Color(255, 255, 255));
+        cardHealth.setPreferredSize(new java.awt.Dimension(1100, 540));
+
+        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel6.setText("HEALTH");
+
+        cboIDCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboIDCourse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboIDCourseActionPerformed(evt);
+            }
+        });
+
+        tblIDStudent.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "ID Student"
+            }
+        ));
+        tblIDStudent.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblIDStudentMouseClicked(evt);
+            }
+        });
+        jScrollPane8.setViewportView(tblIDStudent);
+
+        jLabel3.setText("Couse Name:");
+
+        jLabel61.setText("ID Student:");
+
+        txtIDStudentHealth.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIDStudentHealthKeyReleased(evt);
+            }
+        });
+
+        txtaNote.setColumns(20);
+        txtaNote.setRows(5);
+        jScrollPane9.setViewportView(txtaNote);
+
+        jLabel62.setText("Note:");
+
+        jLabel63.setText("ID Staff:");
+
+        cboIDStaffDoctor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        tblHealth.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID Couse", "ID Student", "ID Staff", "Height", "Weight", "Status", "Note"
+            }
+        ));
+        jScrollPane10.setViewportView(tblHealth);
+
+        jLabel64.setText("ID Course");
+
+        txtCourseName.setEditable(false);
+
+        jLabel65.setText("Height:");
+
+        jLabel66.setText("Weight:");
+
+        buttonGroup7.add(rdoGood);
+        rdoGood.setText("Good ");
+
+        buttonGroup7.add(rdoBab);
+        rdoBab.setText("Bab");
+
+        jLabel67.setText("Status:");
+
+        btnSaveHealth.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/Icon/Accept.png"))); // NOI18N
+        btnSaveHealth.setText("Save");
+        btnSaveHealth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveHealthActionPerformed(evt);
+            }
+        });
+
+        jLabel68.setForeground(new java.awt.Color(255, 0, 51));
+        jLabel68.setText("Find ID Student Form Table");
+
+        javax.swing.GroupLayout cardHealthLayout = new javax.swing.GroupLayout(cardHealth);
+        cardHealth.setLayout(cardHealthLayout);
+        cardHealthLayout.setHorizontalGroup(
+            cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cardHealthLayout.createSequentialGroup()
+                .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(cardHealthLayout.createSequentialGroup()
+                        .addGap(520, 520, 520)
+                        .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator7)))
+                    .addGroup(cardHealthLayout.createSequentialGroup()
+                        .addGap(215, 215, 215)
+                        .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(cardHealthLayout.createSequentialGroup()
+                                .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(cardHealthLayout.createSequentialGroup()
+                                        .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(cardHealthLayout.createSequentialGroup()
+                                                .addComponent(jLabel61, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(txtIDStudentHealth, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(cardHealthLayout.createSequentialGroup()
+                                                .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel64, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(18, 18, 18)
+                                                .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(cboIDCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(cardHealthLayout.createSequentialGroup()
+                                                .addGap(129, 129, 129)
+                                                .addComponent(jLabel66, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardHealthLayout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel63, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jLabel65, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(jLabel67, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnSaveHealth, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(cardHealthLayout.createSequentialGroup()
+                                        .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(cardHealthLayout.createSequentialGroup()
+                                                .addComponent(cboIDStaffDoctor, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(88, 88, 88)
+                                                .addComponent(jLabel62, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(txtHeight, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtWeight, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(cardHealthLayout.createSequentialGroup()
+                                                .addComponent(rdoGood, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(rdoBab, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(cardHealthLayout.createSequentialGroup()
+                                .addComponent(jLabel68)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(46, 46, 46))
+        );
+        cardHealthLayout.setVerticalGroup(
+            cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cardHealthLayout.createSequentialGroup()
+                .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(cardHealthLayout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel62, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardHealthLayout.createSequentialGroup()
+                        .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(cardHealthLayout.createSequentialGroup()
+                                .addGap(59, 59, 59)
+                                .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel64, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cboIDCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel63, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cboIDStaffDoctor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel65, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtHeight, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel61, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtIDStudentHealth, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel66, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtWeight, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(cardHealthLayout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(0, 0, 0)
+                                .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(cardHealthLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(cardHealthLayout.createSequentialGroup()
+                                        .addGroup(cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(rdoBab, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, cardHealthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(rdoGood)
+                                                .addComponent(jLabel67, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(51, 51, 51)
+                                        .addComponent(btnSaveHealth, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18))
+                            .addGroup(cardHealthLayout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(jLabel68)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49))
+        );
+
+        jplMain.add(cardHealth, "card3");
+
         cardSchedule.setBackground(new java.awt.Color(255, 255, 255));
         cardSchedule.setPreferredSize(new java.awt.Dimension(1100, 540));
 
-        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel6.setText("SCHEDULE");
+        jLabel60.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel60.setText("SCHEDULE");
+
+        tblSchedule.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Work Date", "Day Of Week", "Start Time", "End Time"
+            }
+        ));
+        jScrollPane11.setViewportView(tblSchedule);
 
         javax.swing.GroupLayout cardScheduleLayout = new javax.swing.GroupLayout(cardSchedule);
         cardSchedule.setLayout(cardScheduleLayout);
         cardScheduleLayout.setHorizontalGroup(
             cardScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cardScheduleLayout.createSequentialGroup()
-                .addGap(520, 520, 520)
-                .addGroup(cardScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator7))
-                .addContainerGap(447, Short.MAX_VALUE))
+                .addGroup(cardScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(cardScheduleLayout.createSequentialGroup()
+                        .addGap(520, 520, 520)
+                        .addGroup(cardScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel60, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator9)))
+                    .addGroup(cardScheduleLayout.createSequentialGroup()
+                        .addGap(215, 215, 215)
+                        .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
         cardScheduleLayout.setVerticalGroup(
             cardScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cardScheduleLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jLabel6)
+                .addComponent(jLabel60)
                 .addGap(0, 0, 0)
-                .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(501, Short.MAX_VALUE))
+                .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         jplMain.add(cardSchedule, "card3");
@@ -2584,22 +3029,20 @@ public class Form_Staff extends javax.swing.JFrame {
     }//GEN-LAST:event_lblHelpMouseClicked
 
     private void lblLog_outMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLog_outMouseClicked
-        System.exit(0);
+        if (Message.confirm(this, "Do you want log out ?")) {
+            Login login = new Login();
+            login.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_lblLog_outMouseClicked
 
     private void cardHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cardHomeMouseClicked
 
     }//GEN-LAST:event_cardHomeMouseClicked
 
-    private void lblSalaryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSalaryMouseClicked
-        CardFalse();
-        lbTitle.setText("Viet Duc School - Salary");
-        setBackGround();
-        lblSalary.setOpaque(true);
-        lblSalary.setBackground(Color.getHSBColor((float) 0.16, (float) 0.6, (float) 0.9));
-
-        cardStaff_Salary.setVisible(true);
-    }//GEN-LAST:event_lblSalaryMouseClicked
+    private void lblHealthMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHealthMouseClicked
+        setPositionDoctor();
+    }//GEN-LAST:event_lblHealthMouseClicked
 
     private void lblCloseMenuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCloseMenuMouseEntered
         // TODO add your handling code here:this.setBackground(Color.yellow);
@@ -2654,11 +3097,11 @@ public class Form_Staff extends javax.swing.JFrame {
         lblStudent.setForeground(Color.RED);
     }//GEN-LAST:event_lblStudentMouseEntered
 
-    private void lblSalaryMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSalaryMouseEntered
+    private void lblHealthMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHealthMouseEntered
         // TODO add your handling code here:
         this.setCursor(new Cursor(HAND_CURSOR));
-        lblSalary.setForeground(Color.RED);
-    }//GEN-LAST:event_lblSalaryMouseEntered
+        lblHealth.setForeground(Color.RED);
+    }//GEN-LAST:event_lblHealthMouseEntered
 
     private void lblHelpMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHelpMouseEntered
         // TODO add your handling code here:
@@ -2696,11 +3139,11 @@ public class Form_Staff extends javax.swing.JFrame {
         lblStudent.setForeground(Color.BLACK);
     }//GEN-LAST:event_lblStudentMouseExited
 
-    private void lblSalaryMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSalaryMouseExited
+    private void lblHealthMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHealthMouseExited
         // TODO add your handling code here:
         this.setCursor(new Cursor(DEFAULT_CURSOR));
-        lblSalary.setForeground(Color.BLACK);
-    }//GEN-LAST:event_lblSalaryMouseExited
+        lblHealth.setForeground(Color.BLACK);
+    }//GEN-LAST:event_lblHealthMouseExited
 
     private void lblHelpMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHelpMouseExited
         // TODO add your handling code here:
@@ -2765,10 +3208,6 @@ public class Form_Staff extends javax.swing.JFrame {
     private void btnUpload1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpload1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnUpload1ActionPerformed
-
-    private void btnNew1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNew1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnNew1ActionPerformed
 
     private void rdoMale1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoMale1ActionPerformed
         // TODO add your handling code here:
@@ -2919,6 +3358,61 @@ public class Form_Staff extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cboMonthSalaryItemStateChanged
 
+    private void lblSalaryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSalaryMouseClicked
+        // TODO add your handling code here:
+        CardFalse();
+        lbTitle.setText("Viet Duc School - Salary");
+        setBackGround();
+        lblSalary.setOpaque(true);
+        lblSalary.setBackground(Color.getHSBColor((float) 0.16, (float) 0.6, (float) 0.9));
+        cardStaff_Salary.setVisible(true);
+    }//GEN-LAST:event_lblSalaryMouseClicked
+
+    private void lblSalaryMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSalaryMouseEntered
+        // TODO add your handling code here:
+        this.setCursor(new Cursor(HAND_CURSOR));
+        lblSalary.setForeground(Color.RED);
+    }//GEN-LAST:event_lblSalaryMouseEntered
+
+    private void lblSalaryMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSalaryMouseExited
+        // TODO add your handling code here
+        this.setCursor(new Cursor(DEFAULT_CURSOR));
+        lblSalary.setForeground(Color.BLACK);
+    
+    }//GEN-LAST:event_lblSalaryMouseExited
+
+    private void cboIDCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboIDCourseActionPerformed
+        // TODO add your handling code here:
+        Object selectedItem = cboIDCourse.getSelectedItem();
+        if (selectedItem != null) {
+            String name = selectedItem.toString();
+            String courseName = coursesDAO.returnCourseName(name);
+            txtCourseName.setText(courseName);
+        } else {
+            // Xử lý khi không có mục nào được chọn trong ComboBox
+            txtCourseName.setText(""); // hoặc thực hiện các hành động khác tùy thuộc vào yêu cầu của bạn
+        }
+    }//GEN-LAST:event_cboIDCourseActionPerformed
+
+    private void txtIDStudentHealthKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIDStudentHealthKeyReleased
+        // TODO add your handling code here:
+        loadTableIDStudent();
+    }//GEN-LAST:event_txtIDStudentHealthKeyReleased
+
+    private void tblIDStudentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblIDStudentMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 1) {
+            int row = tblIDStudent.getSelectedRow();
+            txtIDStudentHealth.setText(String.valueOf(tblIDStudent.getValueAt(row, 0)));
+
+        }
+    }//GEN-LAST:event_tblIDStudentMouseClicked
+
+    private void btnSaveHealthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveHealthActionPerformed
+        // TODO add your handling code here:
+        addHealth();
+    }//GEN-LAST:event_btnSaveHealthActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2960,16 +3454,14 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JTabbedPane INFORSTUDENT;
     private javax.swing.JButton btnAccept;
     private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnAdd1;
     private javax.swing.JButton btnAdd2;
     private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnDelete1;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnEdit1;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnNew;
-    private javax.swing.JButton btnNew1;
     private javax.swing.JButton btnNew2;
+    private javax.swing.JButton btnSaveHealth;
     private javax.swing.JButton btnUpload;
     private javax.swing.JButton btnUpload1;
     private javax.swing.JButton btnUpload2;
@@ -2979,7 +3471,9 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup4;
     private javax.swing.ButtonGroup buttonGroup5;
     private javax.swing.ButtonGroup buttonGroup6;
+    private javax.swing.ButtonGroup buttonGroup7;
     private javax.swing.JPanel cardAddStudent;
+    private javax.swing.JPanel cardHealth;
     private javax.swing.JPanel cardHome;
     private javax.swing.JPanel cardHome1;
     private javax.swing.JPanel cardInfor;
@@ -2990,6 +3484,8 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cboDay;
     private javax.swing.JComboBox<String> cboDay1;
     private javax.swing.JComboBox<String> cboDay2;
+    private javax.swing.JComboBox<String> cboIDCourse;
+    private javax.swing.JComboBox<String> cboIDStaffDoctor;
     private javax.swing.JComboBox<String> cboID_Class_Student;
     private javax.swing.JComboBox<String> cboMonth;
     private javax.swing.JComboBox<String> cboMonth1;
@@ -3020,6 +3516,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
@@ -3053,6 +3550,15 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel58;
     private javax.swing.JLabel jLabel59;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel60;
+    private javax.swing.JLabel jLabel61;
+    private javax.swing.JLabel jLabel62;
+    private javax.swing.JLabel jLabel63;
+    private javax.swing.JLabel jLabel64;
+    private javax.swing.JLabel jLabel65;
+    private javax.swing.JLabel jLabel66;
+    private javax.swing.JLabel jLabel67;
+    private javax.swing.JLabel jLabel68;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -3066,12 +3572,16 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
@@ -3080,6 +3590,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
+    private javax.swing.JSeparator jSeparator9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTextPane jTextPane1;
@@ -3098,6 +3609,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JLabel lblAvatar1;
     private javax.swing.JLabel lblAvatar2;
     private javax.swing.JLabel lblCloseMenu;
+    private javax.swing.JLabel lblHealth;
     private javax.swing.JLabel lblHelp;
     private javax.swing.JLabel lblHome;
     private javax.swing.JLabel lblLog_out;
@@ -3107,9 +3619,11 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JLabel lblSche;
     private javax.swing.JLabel lblSta_Li;
     private javax.swing.JLabel lblStudent;
+    private javax.swing.JRadioButton rdoBab;
     private javax.swing.JRadioButton rdoFemale;
     private javax.swing.JRadioButton rdoFemale1;
     private javax.swing.JRadioButton rdoFemale_Student;
+    private javax.swing.JRadioButton rdoGood;
     private javax.swing.JRadioButton rdoMale;
     private javax.swing.JRadioButton rdoMale1;
     private javax.swing.JRadioButton rdoMale_Student;
@@ -3119,12 +3633,16 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JRadioButton rdoOn1;
     private javax.swing.JRadioButton rdoStatus_Student_Off;
     private javax.swing.JRadioButton rdoStatus_Student_On;
+    private javax.swing.JTable tblHealth;
+    private javax.swing.JTable tblIDStudent;
     private javax.swing.JTable tblList_stu;
     private javax.swing.JTable tblSalary_Student;
+    private javax.swing.JTable tblSchedule;
     private javax.swing.JTable tblStaff;
     private javax.swing.JTextField txtAdd_Student;
     private javax.swing.JTextField txtAddress;
     private javax.swing.JTextField txtAddress1;
+    private javax.swing.JTextField txtCourseName;
     private javax.swing.JPasswordField txtCurrentPass;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEmail1;
@@ -3134,6 +3652,8 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JTextField txtF_Name_Student;
     private javax.swing.JTextField txtFind;
     private javax.swing.JTextField txtFind_Stu;
+    private javax.swing.JTextField txtHeight;
+    private javax.swing.JTextField txtIDStudentHealth;
     private javax.swing.JTextField txtID_Student;
     private javax.swing.JTextField txtId_Staff;
     private javax.swing.JTextField txtId_Staff1;
@@ -3153,5 +3673,7 @@ public class Form_Staff extends javax.swing.JFrame {
     private javax.swing.JTextField txtPosition1;
     private javax.swing.JTextField txtStartDay;
     private javax.swing.JTextField txtStartDay1;
+    private javax.swing.JTextField txtWeight;
+    private javax.swing.JTextArea txtaNote;
     // End of variables declaration//GEN-END:variables
 }

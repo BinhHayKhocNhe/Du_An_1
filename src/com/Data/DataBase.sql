@@ -67,6 +67,37 @@ VALUES
 ('EMP019', 'waitstaff', 'Ethan', 'D.', 'Gomez', 'ethan.g@email.com', '222111000', 1, 1, 'Office', '222 Restaurant Street, Town', 'avatar19.jpg', 2, 8, 1997, 'Ensuring a pleasant dining experience for customers.'),
 ('EMP020', 'itsupport1', 'Chloe', '', 'Russell', 'chloe.r@email.com', '666000999', 0, 1, 'IT', '333 Tech Lane, Village', 'avatar20.jpg', 7, 10, 1985, 'Assisting with IT issues and technical support.');
 
+
+CREATE TABLE Schedule_Staff (
+    ID_Schedule INT PRIMARY KEY IDENTITY(1,1),
+    ID_Staff NVARCHAR(50) NOT NULL,
+    Work_Date DATE NOT NULL,
+    Day_Of_Week NVARCHAR(20) NOT NULL,
+    Start_Time TIME NOT NULL,
+    End_Time TIME NOT NULL,
+    FOREIGN KEY (ID_Staff) REFERENCES Staff(ID_Staff)
+);
+INSERT INTO Schedule_Staff (ID_Staff, Work_Date, Day_Of_Week, Start_Time, End_Time)
+VALUES 
+('EMP001', '2023-12-18', 'Monday', '08:00:00', '12:00:00'),
+('EMP001', '2023-12-18', 'Monday', '13:00:00', '17:00:00'),
+('EMP001', '2023-12-19', 'Tuesday', '09:00:00', '13:00:00'),
+('EMP001', '2023-12-19', 'Tuesday', '14:00:00', '18:00:00'),
+('EMP001', '2023-12-20', 'Wednesday', '08:00:00', '12:00:00'),
+('EMP001', '2023-12-20', 'Wednesday', '13:00:00', '17:00:00'),
+('EMP002', '2023-12-18', 'Monday', '08:30:00', '12:30:00'),
+('EMP002', '2023-12-18', 'Monday', '13:30:00', '17:30:00'),
+('EMP002', '2023-12-19', 'Tuesday', '09:30:00', '13:30:00'),
+('EMP002', '2023-12-19', 'Tuesday', '14:30:00', '18:30:00'),
+('EMP002', '2023-12-20', 'Wednesday', '08:30:00', '12:30:00'),
+('EMP002', '2023-12-20', 'Wednesday', '13:30:00', '17:30:00'),
+('EMP003', '2023-12-18', 'Monday', '08:00:00', '12:00:00'),
+('EMP003', '2023-12-18', 'Monday', '13:00:00', '17:00:00'),
+('EMP003', '2023-12-19', 'Tuesday', '09:00:00', '13:00:00'),
+('EMP003', '2023-12-19', 'Tuesday', '14:00:00', '18:00:00'),
+('EMP003', '2023-12-20', 'Wednesday', '08:00:00', '12:00:00'),
+('EMP003', '2023-12-20', 'Wednesday', '13:00:00', '17:00:00');
+
 CREATE TABLE Teacher (
 ID_Teacher NVARCHAR(50) NOT NULL,
 Password_Teacher NVARCHAR(50) NOT NULL,
