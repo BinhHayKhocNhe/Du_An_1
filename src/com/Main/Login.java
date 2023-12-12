@@ -1,4 +1,3 @@
-
 package com.Main;
 
 import com.DAO.Administrators_DAO;
@@ -161,7 +160,9 @@ public class Login extends javax.swing.JFrame {
 
         txtUsername.setForeground(new java.awt.Color(255, 255, 255));
         txtUsername.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+
         txtUsername.setText("EMP001");
+
         txtUsername.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(255, 255, 255), null));
         txtUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -171,7 +172,9 @@ public class Login extends javax.swing.JFrame {
 
         txtPass.setForeground(new java.awt.Color(255, 255, 255));
         txtPass.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+
         txtPass.setText("password123");
+
         txtPass.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.white, null));
         txtPass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -22,27 +22,39 @@ public class BonusDAO implements myInterFace<Bonus, String> {
 
     @Override
     public void insert(Bonus entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return;
     }
 
     @Override
     public void update(Bonus entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return;
     }
 
     @Override
     public void delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return;
     }
 
     @Override
     public boolean checkID(Bonus entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        final String sql = "SELECT COUNT(ID_Bonus) FROM Bonus WHERE ID_Bonus = ?;";
+        try {
+            ResultSet rs = JDBCHelper.executeQuery(sql, entity.getID_Bonus());
+            while (rs.next()) {
+                int count = rs.getInt(1);
+                if (count > 0) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return false;
     }
 
     @Override
     public void find(Bonus entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return;
     }
 
     @Override
@@ -64,7 +76,7 @@ public class BonusDAO implements myInterFace<Bonus, String> {
             while (resultSet.next()) {
                 Bonus bonus = new Bonus();
                 bonus.setID_Student(resultSet.getString("ID_Student"));
-                bonus.setID_Bonus(resultSet.getString("ID_Bonus"));
+                bonus.setID_Bonus(resultSet.getInt("ID_Bonus"));
                 bonus.setYear(resultSet.getInt("Year"));
                 bonus.setLevel(resultSet.getString("Level"));
                 bonus.setCourse_Name(resultSet.getString("Course_Name"));

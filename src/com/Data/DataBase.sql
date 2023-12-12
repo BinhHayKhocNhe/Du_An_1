@@ -1,6 +1,6 @@
 ﻿create database Du_An_1;
 use Du_An_1;
-
+drop database Du_An_1
 CREATE TABLE Administrators(
 ID_Administrator NVARCHAR(50) NOT NULL,
 Password_Administrator NVARCHAR(50) NOT NULL,
@@ -379,6 +379,8 @@ VALUES
     ('STU008', 'C008', 'MAT001', 'TCH008', 2023, 8.5, 'Fall', 'Note for Point 8'),
     ('STU009', 'C009', 'MAT001', 'TCH009', 2023, 9, 'Fall', 'Note for Point 9'),
     ('STU010', 'C010', 'DR001', 'TCH010', 2023, 10, 'Fall', 'Note for Point 10');
+	INSERT INTO Point (ID_Student, ID_Class, ID_Subject, ID_Teacher, Year, Point, Course_Name, Note)
+VALUES ('STU001', 'C001', 'MAT001', 'TCH001', 2023, 8, 'Fall', 'Note for Point 1')
 
 CREATE TABLE Attendance_Student(
 ID_Attendance NVARCHAR(50) NOT NULL,
@@ -433,9 +435,9 @@ VALUES
 ('C003', 'Fall', 'EMP009', 'STU006', 0, 160, 55, 'Requires follow-up'),
 ('C003', 'Fall', 'EMP016', 'STU007', 1, 175, 70, 'No specific notes'),
 ('C003', 'Fall', 'EMP017', 'STU008', 0, 180, 80, 'Needs dietary adjustments');
-
+ 
 CREATE TABLE Bonus(
-ID_Bonus NVARCHAR(50) NOT NULL,
+ID_Bonus INT IDENTITY(1,1),
 Year INT NOT NULL,
 Course_Name NVARCHAR(50) NOT NULL,
 Level NVARCHAR(50) NOT NULL,
@@ -445,41 +447,41 @@ Note NVARCHAR(255),
 CONSTRAINT FK_Bonus_Student FOREIGN KEY (ID_Student) REFERENCES Student(ID_Student),
 CONSTRAINT PK_ID_Bonus PRIMARY KEY(ID_Bonus)
 );
-INSERT INTO Bonus (ID_Bonus, Year, Course_Name, Level, ID_Student, GPA, Note)
-VALUES
-('B001', 2020, 'Fall', 'Good', 'STU021', 8.5, 'High performance in coursework'),
-('B002', 2019, 'Summer', 'Excellent', 'STU022', 9, 'Above-average grades'),
-('B003', 2021, 'Spring', 'Medium', 'STU023', 6.5, 'Top scorer in the class'),
-('B004', 2018, 'Spring', 'Good', 'STU024', 8, 'Consistent academic performance'),
-('B005', 2020, 'Summer', 'Good', 'STU025', 8.3, 'Received special recognition'),
-('B006', 2019, 'Fall', 'Good', 'STU026', 8.7, 'Active participant in research projects'),
-('B007', 2021, 'Spring', 'Good', 'STU027', 8.5, 'Exceptional performance in mathematics'),
-('B008', 2018, 'Fall', 'Good', 'STU028', 8.6, 'Completed additional coursework'),
-('B009', 2019, 'Summer', 'Good', 'STU029', 8, 'Received scholarship for academic achievements'),
-('B010', 2022, 'Summer', 'Good', 'STU030', 8, 'Consistently improving grades');
 
+INSERT INTO Bonus (Year, Course_Name, Level, ID_Student, GPA, Note)
+VALUES
+( 2020, 'Fall', 'Good', 'STU021', 8.5, 'High performance in coursework'),
+( 2019, 'Summer', 'Excellent', 'STU022', 9, 'Above-average grades'),
+( 2021, 'Spring', 'Medium', 'STU023', 6.5, 'Top scorer in the class'),
+( 2018, 'Spring', 'Good', 'STU024', 8, 'Consistent academic performance'),
+( 2020, 'Summer', 'Good', 'STU025', 8.3, 'Received special recognition'),
+(2019, 'Fall', 'Good', 'STU026', 8.7, 'Active participant in research projects'),
+( 2021, 'Spring', 'Good', 'STU027', 8.5, 'Exceptional performance in mathematics'),
+( 2019, 'Summer', 'Good', 'STU029', 8, 'Received scholarship for academic achievements'),
+(2022, 'Summer', 'Good', 'STU030', 8, 'Consistently improving grades');
+select * from Bonus
 
 CREATE TABLE Former_Student(
-ID_Bonus NVARCHAR(50) NOT NULL,
-ID_Student NVARCHAR(50) NOT NULL,
-Year INT NOT NULL,
-Course_Name NVARCHAR(50) NOT NULL,
-Note NVARCHAR(255),
-CONSTRAINT FK_Former_Student FOREIGN KEY (ID_Student) REFERENCES Student(ID_Student),
-CONSTRAINT FK_Former_Bonus FOREIGN KEY (ID_Bonus) REFERENCES Bonus(ID_Bonus)
+    ID_Former_Student INT IDENTITY(1,1) PRIMARY KEY,
+    ID_Bonus INT NOT NULL,
+    ID_Student NVARCHAR(50) NOT NULL,
+    Year INT NOT NULL,
+    Course_Name NVARCHAR(50) NOT NULL,
+    Note NVARCHAR(255),
+    CONSTRAINT FK_Former_Student_Bonus FOREIGN KEY (ID_Bonus) REFERENCES Bonus(ID_Bonus),
+    CONSTRAINT FK_Former_Student_Student FOREIGN KEY (ID_Student) REFERENCES Student(ID_Student)
 );
 INSERT INTO Former_Student (ID_Bonus, ID_Student, Year, Course_Name, Note)
 VALUES
-('B001', 'STU021', 2020, 'Fall', 'Good performance in the course'),
-('B002', 'STU022', 2019, 'Summer', 'Completed the course successfully'),
-('B003', 'STU023', 2021, 'Summer', 'Excellent academic record'),
-('B004', 'STU018', 2018, 'Spring', 'Received special recognition'),
-('B005', 'STU025', 2020, 'Fall', 'Completed with honors'),
-('B006', 'STU026', 2019, 'Summer', 'Research project published'),
-('B007', 'STU027', 2021, 'Fall', 'Top scorer in the class'),
-('B008', 'STU028', 2018, 'Spring', 'Participated in science fair'),
-('B009', 'STU029', 2019, 'Summer', 'Received scholarship'),
-('B010', 'STU030', 2022, 'Spring', 'Internship at research institute');
+(1, 'STU021', 2020, 'Fall', 'Good performance in the course'),
+(2, 'STU022', 2019, 'Summer', 'Completed the course successfully'),
+(3, 'STU023', 2021, 'Summer', 'Excellent academic record'),
+(4, 'STU018', 2018, 'Spring', 'Received special recognition'),
+(5, 'STU025', 2020, 'Fall', 'Completed with honors'),
+(6, 'STU026', 2019, 'Summer', 'Research project published'),
+(7, 'STU027', 2021, 'Fall', 'Top scorer in the class'),
+(8, 'STU028', 2018, 'Spring', 'Participated in science fair'),
+(9, 'STU029', 2022, 'Summer', 'Received scholarship');
 
 CREATE TABLE Guardian_Student_Relationship(
 ID_Student NVARCHAR(50) NOT NULL,
@@ -514,24 +516,38 @@ VALUES
 ('STU019', 'GRD009'),
 ('STU020', 'GRD010');
 
+CREATE TABLE Tuition (
+    ID_Bill NVARCHAR(50) PRIMARY KEY,
+    Money INT NOT NULL,
+    Status INT NOT NULL,
+    ID_Staff NVARCHAR(50) NOT NULL,
+    ID_Guardians NVARCHAR(50) NOT NULL,
+    Year INT NOT NULL,
+    ID_Course NVARCHAR(50) NOT NULL,
+    Course_Name NVARCHAR(50) NOT NULL,
+    Note NVARCHAR(255),
+    CONSTRAINT FK_Tuition_Staff FOREIGN KEY (ID_Staff) REFERENCES Staff(ID_Staff),
+    CONSTRAINT FK_Tuition_Guardians FOREIGN KEY (ID_Guardians) REFERENCES Guardians(ID_Guardians),
+    CONSTRAINT FK_Tuition_Course FOREIGN KEY (ID_Course) REFERENCES Course(ID_Course)
+);
 
 INSERT INTO Tuition (ID_Bill, Money, Status, ID_Staff, ID_Guardians, Year, ID_Course, Course_Name, Note)
 VALUES
-('B001', 500, 1, 'EMP001', 'GRD001', 2023, 'C001', 'Spring', 'Tuition 1'),
+('B001', 500, 1, 'EMP002', 'GRD001', 2023, 'C001', 'Spring', 'Tuition 1'),
 ('B002', 500, 1, 'EMP002', 'GRD002', 2023, 'C002', 'Summer', 'Tuition 1'),
-('B003', 500, 1, 'EMP003', 'GRD003', 2023, 'C003', 'Fall', 'Tuition 1'),
-('B004', 500, 1, 'EMP004', 'GRD004', 2023, 'C001', 'Summer', 'Tuition 2'),
-('B005', 500, 1, 'EMP005', 'GRD005', 2023, 'C002', 'Spring', 'Tuition 2'),
-('B006', 650, 1, 'EMP006', 'GRD006', 2023, 'C003', 'Fall', 'Tuition 2'),
-('B007', 700, 1, 'EMP007', 'GRD007', 2023, 'C001', 'Fall', 'Tuition 3'),
-('B008', 4500, 1, 'EMP008', 'GRD008', 2023, 'C002', 'Spring', 'Tuition 3'),
-('B009', 550, 1, 'EMP009', 'GRD009', 2023, 'C003', 'Summer', 'Tuition 3'),
-('B010', 600, 1, 'EMP010', 'GRD010', 2023, 'C001', 'Spring', 'Tuition 4'),
-('B011', 500, 1, 'EMP011', 'GRD011', 2023, 'C002', 'Spring', 'Tuition 4'),
-('B012', 700, 1, 'EMP012', 'GRD012', 2023, 'C003', 'Fall', 'Tuition 4'),
-('B013', 450, 1, 'EMP013', 'GRD013', 2023, 'C001', 'Summer', 'Tuition 5'),
-('B014', 550, 1, 'EMP014', 'GRD014', 2023, 'C002', 'Summer', 'Tuition 5'),
-('B015', 600, 1, 'EMP015', 'GRD015', 2023, 'C003', 'Fall', 'Tuition 5');
+('B003', 500, 1, 'EMP002', 'GRD003', 2023, 'C003', 'Fall', 'Tuition 1'),
+('B004', 500, 1, 'EMP002', 'GRD004', 2023, 'C001', 'Summer', 'Tuition 2'),
+('B005', 500, 1, 'EMP002', 'GRD005', 2023, 'C002', 'Spring', 'Tuition 2'),
+('B006', 650, 1, 'EMP002', 'GRD006', 2023, 'C003', 'Fall', 'Tuition 2'),
+('B007', 700, 1, 'EMP002', 'GRD007', 2023, 'C001', 'Fall', 'Tuition 3'),
+('B008', 4500, 1, 'EMP002', 'GRD008', 2023, 'C002', 'Spring', 'Tuition 3'),
+('B009', 550, 1, 'EMP002', 'GRD009', 2023, 'C003', 'Summer', 'Tuition 3'),
+('B010', 600, 1, 'EMP002', 'GRD010', 2023, 'C001', 'Spring', 'Tuition 4'),
+('B011', 500, 1, 'EMP002', 'GRD011', 2023, 'C002', 'Spring', 'Tuition 4'),
+('B012', 700, 1, 'EMP002', 'GRD012', 2023, 'C003', 'Fall', 'Tuition 4'),
+('B013', 450, 1, 'EMP002', 'GRD013', 2023, 'C001', 'Summer', 'Tuition 5'),
+('B014', 550, 1, 'EMP002', 'GRD014', 2023, 'C002', 'Summer', 'Tuition 5'),
+('B015', 600, 1, 'EMP002', 'GRD015', 2023, 'C003', 'Fall', 'Tuition 5');
 
 CREATE TABLE Poor_Households(
 ID_Poor_Households NVARCHAR(50) NOT NULL,
